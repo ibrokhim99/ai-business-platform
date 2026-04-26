@@ -340,7 +340,13 @@ const D: ModelDef[] = [
       const net = Math.max(100, p.monthly_revenue_estimate - variableCosts - p.monthly_fixed_costs - p.monthly_rent);
       return { payback_months: p.initial_investment / net, npv: net * 24 - p.initial_investment, irr_pct: 28 };
     },
-    formatHeadline: (r) => ({ label: 'Qaytarish', value: `${Number(r.payback_months ?? 0).toFixed(1)} oy`, tone: Number(r.payback_months ?? 99) < 18 ? 'pos' : 'neg' }),
+    formatHeadline: (r) => {
+      const roi = Number(r.roi_pct);
+      if (Number.isFinite(roi)) {
+        return { label: 'ROI', value: fmtPct(roi, 1), tone: roi > 0 ? 'pos' : 'neg' };
+      }
+      return { label: 'Qaytarish', value: `${Number(r.payback_months ?? 0).toFixed(1)} oy`, tone: Number(r.payback_months ?? 99) < 18 ? 'pos' : 'neg' };
+    },
   },
   {
     modelId: 'M-D4', block: 'D', title: 'Ijara yuki', endpoint: '/financial/rental-burden',
