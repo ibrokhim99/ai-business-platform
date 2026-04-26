@@ -123,6 +123,18 @@ def test_money_amounts_with_million_override_stale_profile_values():
     assert fields["monthly_revenue_estimate"] == 20_000_000
 
 
+def test_revenue_and_initial_investment_do_not_overwrite_each_other():
+    fields = infer_profile_patch_from_text(
+        "Samarqand markazida mehmonxona ochmoqchiman. "
+        "Oylik daromadim 18 mln so'm, boshlang'ich sarmoyam 220 mln so'm."
+    )
+
+    assert fields["region_id"] == "samarkand-01"
+    assert fields["mcc_code"] == "7011"
+    assert fields["monthly_revenue_estimate"] == 18_000_000
+    assert fields["initial_investment"] == 220_000_000
+
+
 def test_normalize_region_adds_dependent_fields():
     fields = normalize_profile_fields({"region_id": "samarkand-01"})
 

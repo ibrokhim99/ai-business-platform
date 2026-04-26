@@ -8,9 +8,17 @@ import { useConversations } from '@/lib/chat/store';
 import { useProfile, getProfileSnapshot } from '@/lib/chat/profile';
 import { streamAnswer, toBackendHistory, type ModelResult } from '@/lib/chat/brain';
 import { buildRecommendation, REQUIRED_MODEL_IDS } from '@/lib/chat/recommendation';
-import type { Block, BlockEvidence, EvidenceRow, EvidenceSummary, Message } from '@/lib/chat/types';
+import { buildAlternativeBusinessBlocks } from '@/lib/chat/alternatives';
+import type { AlternativeBusiness, Block, BlockEvidence, EvidenceRow, EvidenceSummary, Message } from '@/lib/chat/types';
 import type { CsvSummary } from '@/lib/chat/csv';
 import { fetchEvidence } from '@/lib/api';
+
+const EXPLICIT_LOAN_REQUEST_RE =
+  /(?:kredit|qarz|loan).{0,40}\d|\d.{0,40}(?:kredit|qarz|loan)/i;
+
+function asksForLoanSizing(text: string): boolean {
+  return EXPLICIT_LOAN_REQUEST_RE.test(text);
+}
 
 export function NotebookLayout() {
   const conversations = useConversations();
@@ -69,6 +77,7 @@ export function NotebookLayout() {
       sources: string[];
       modelsUsed?: string[];
       perBlock?: BlockEvidence[];
+      alternatives?: AlternativeBusiness[];
     } | null = null;
 
     const composeBlocks = (): Block[] => {
@@ -79,12 +88,14 @@ export function NotebookLayout() {
       const ordered = Array.from(results.values());
       const blocks: Block[] = [];
       if (ordered.length) {
-        // Skip the recommendation card unless the LLM picked at least one of
-        // the required credit/financial models. Otherwise it sits at "0/6".
+        // The recommendation card is a loan-sizing/repayment card, not a bank
+        // product card. Product-advice prompts may run credit models for
+        // validation, but should not show "So'ralgan vs Tavsiya qilingan"
+        // unless the user actually gave a loan amount.
         const anyRequiredPicked = ordered.some((r) =>
           (REQUIRED_MODEL_IDS as readonly string[]).includes(r.modelId),
         );
-        if (anyRequiredPicked) {
+        if (anyRequiredPicked && asksForLoanSizing(userMsg.text ?? '')) {
           const rec = buildRecommendation(live, ordered, streamDone);
           blocks.push({ kind: 'recommendation', rec });
         }
@@ -94,6 +105,10 @@ export function NotebookLayout() {
           results: ordered,
         });
         if (evidence) {
+          blocks.push(...buildAlternativeBusinessBlocks(live, ordered, {
+            summary: evidence.summary,
+            alternatives: evidence.alternatives ?? [],
+          }));
           blocks.push({
             kind: 'data-sources',
             profile: { region_label: live.region_label, mcc_label: live.mcc_label },
@@ -178,6 +193,7 @@ export function NotebookLayout() {
                   sources: res.sources,
                   modelsUsed: e.chosenModels,
                   perBlock: res.blocks,
+                  alternatives: res.alternatives as AlternativeBusiness[],
                 };
                 flush();
               })

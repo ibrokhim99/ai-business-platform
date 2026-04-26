@@ -26,6 +26,22 @@ export interface EvidenceSummary {
   median_growth_pct: number;
 }
 
+export interface AlternativeBusiness {
+  region_id: string;
+  mcc_code: string;
+  niche: string;
+  niche_label: string;
+  monthly_revenue: number;
+  initial_investment: number;
+  monthly_net_cash_flow: number;
+  growth_rate_pct: number;
+  competitor_count: number;
+  gross_margin_pct: number;
+  success_rate: number;
+  support_count: number;
+  rationale: string;
+}
+
 /** Per-block dataset evidence — what real CSV rows informed the answer. */
 export interface BlockEvidence {
   block: string;

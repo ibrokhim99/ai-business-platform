@@ -41,6 +41,25 @@ def test_evidence_service_rows_stay_within_requested_region_and_mcc():
     )
 
 
+def test_evidence_service_returns_same_region_alternative_businesses():
+    result = EvidenceService().find_similar(
+        region_id="samarkand-01",
+        mcc_code="7011",
+        monthly_revenue=18_000,
+        initial_investment=220_000,
+        limit=10,
+        blocks=["D", "F"],
+    )
+
+    assert result.alternatives
+    assert len(result.alternatives) <= 3
+    assert all(alt.region_id == "samarkand-01" for alt in result.alternatives)
+    assert all(alt.mcc_code != "7011" for alt in result.alternatives)
+    assert all(alt.support_count > 0 for alt in result.alternatives)
+    assert all(alt.success_rate >= 0.45 for alt in result.alternatives)
+    assert all(alt.rationale for alt in result.alternatives)
+
+
 def test_lookup_blocks_for_models_returns_no_matches_for_unknown_region():
     lookups = lookup_blocks_for_models(
         ["M-D1", "M-F1"],
