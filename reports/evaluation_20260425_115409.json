@@ -1,0 +1,6146 @@
+{
+  "generated_at": "2026-04-25T11:54:09+00:00",
+  "n_models_evaluated": 55,
+  "max_rows_per_model": 100,
+  "include_explanation": false,
+  "results": [
+    {
+      "model_id": "M-A1",
+      "block": "A",
+      "name": "Market Sizing (TAM/SAM/SOM)",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.074,
+        "p95": 0.231,
+        "mean": 0.101,
+        "min": 0.06,
+        "max": 0.382
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "methodology": {
+          "top": [
+            [
+              "bayesian_bottom_up_mcc_penetration",
+              100
+            ]
+          ]
+        },
+        "sam": {
+          "min": 78208.52,
+          "max": 27273139.92,
+          "mean": 6774527.5241,
+          "median": 5449151.615
+        },
+        "som": {
+          "min": 19552.13,
+          "max": 6818284.98,
+          "mean": 1693631.8811,
+          "median": 1362287.905
+        },
+        "tam": {
+          "min": 195521.3,
+          "max": 68182849.81,
+          "mean": 16936318.8111,
+          "median": 13622879.04
+        }
+      },
+      "sample_input": {
+        "region_id": "tashkent-02",
+        "mcc_code": "7011",
+        "population": 311501,
+        "avg_income": 584.73,
+        "niche": "hotel"
+      },
+      "sample_output": {
+        "tam": 18214397.97,
+        "sam": 7285759.19,
+        "som": 1821439.8,
+        "confidence_interval": [
+          1289515.41,
+          2473829.51
+        ],
+        "methodology": "bayesian_bottom_up_mcc_penetration"
+      }
+    },
+    {
+      "model_id": "M-A2",
+      "block": "A",
+      "name": "GAP Analysis",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.028,
+        "p95": 0.039,
+        "mean": 0.031,
+        "min": 0.025,
+        "max": 0.167
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "actual_count": {
+          "min": 0.0,
+          "max": 78.0,
+          "mean": 37.84,
+          "median": 37.5
+        },
+        "gap": {
+          "min": -63.9,
+          "max": 320.5,
+          "mean": 66.648,
+          "median": 47.55
+        },
+        "gap_pct": {
+          "min": -3230.7,
+          "max": 100.0,
+          "mean": -24.109,
+          "median": 53.05
+        },
+        "normative_count": {
+          "min": 1.4,
+          "max": 363.5,
+          "mean": 104.488,
+          "median": 84.6
+        },
+        "verdict": {
+          "top": [
+            [
+              "underserved",
+              71
+            ],
+            [
+              "oversaturated",
+              24
+            ],
+            [
+              "balanced",
+              5
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "region_id": "tashkent-02",
+        "mcc_code": "7011",
+        "normative_density": 0.64,
+        "actual_count": 67,
+        "population": 311501
+      },
+      "sample_output": {
+        "normative_count": 19.9,
+        "actual_count": 67,
+        "gap": -47.1,
+        "gap_pct": -236.1,
+        "verdict": "oversaturated"
+      }
+    },
+    {
+      "model_id": "M-A3",
+      "block": "A",
+      "name": "Saturation Index",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.007,
+        "p95": 0.01,
+        "mean": 0.008,
+        "min": 0.006,
+        "max": 0.038
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "level": {
+          "top": [
+            [
+              "medium",
+              85
+            ],
+            [
+              "critical",
+              10
+            ],
+            [
+              "high",
+              5
+            ]
+          ]
+        },
+        "saturation_index": {
+          "min": 34.4,
+          "max": 98.7,
+          "mean": 47.092,
+          "median": 41.65
+        }
+      },
+      "sample_input": {
+        "region_id": "tashkent-02",
+        "mcc_code": "7011",
+        "competitor_count": 30,
+        "population": 311501,
+        "avg_revenue_per_outlet": 45827.28
+      },
+      "sample_output": {
+        "saturation_index": 36.5,
+        "level": "medium",
+        "components": {
+          "density_component": 2.3,
+          "revenue_component": 34.3,
+          "density_per_10k": 0.963,
+          "revenue_norm": 0.143
+        }
+      }
+    },
+    {
+      "model_id": "M-A4",
+      "block": "A",
+      "name": "Wallet Share Estimator",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.005,
+        "p95": 0.008,
+        "mean": 0.006,
+        "min": 0.005,
+        "max": 0.02
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "confidence": {
+          "min": 0.2,
+          "max": 0.95,
+          "mean": 0.3279,
+          "median": 0.2
+        },
+        "estimated_monthly_revenue": {
+          "min": 358.36,
+          "max": 15167116.89,
+          "mean": 397370.4901,
+          "median": 51633.38
+        },
+        "wallet_share_pct": {
+          "min": 0.5,
+          "max": 85.0,
+          "mean": 4.8819,
+          "median": 1.1
+        }
+      },
+      "sample_input": {
+        "region_id": "tashkent-02",
+        "mcc_code": "7011",
+        "population": 311501,
+        "avg_monthly_spend": 426.16,
+        "competitor_count": 30
+      },
+      "sample_output": {
+        "wallet_share_pct": 1.1,
+        "estimated_monthly_revenue": 87357.58,
+        "confidence": 0.2
+      }
+    },
+    {
+      "model_id": "M-A5",
+      "block": "A",
+      "name": "Niche Opportunity Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.301,
+        "p95": 0.615,
+        "mean": 0.346,
+        "min": 0.11,
+        "max": 1.126
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "opportunity_score": {
+          "min": 14.9,
+          "max": 46.9,
+          "mean": 26.713,
+          "median": 25.35
+        },
+        "rank": {
+          "top": [
+            [
+              "poor",
+              80
+            ],
+            [
+              "moderate",
+              20
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "region_id": "tashkent-02",
+        "mcc_code": "7011",
+        "population": 311501,
+        "avg_income": 584.73,
+        "competitor_count": 30,
+        "growth_rate_pct": -4.45
+      },
+      "sample_output": {
+        "opportunity_score": 21.1,
+        "rank": "poor",
+        "top_factors": {
+          "population_score": 6.1,
+          "income_score": 4.5,
+          "competition_score": 6.7,
+          "growth_score": 3.8
+        }
+      }
+    },
+    {
+      "model_id": "M-A6",
+      "block": "A",
+      "name": "Cross-Niche Cannibalization",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.005,
+        "p95": 0.007,
+        "mean": 0.005,
+        "min": 0.003,
+        "max": 0.018
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "cannibalization_risk": {
+          "min": 0.0,
+          "max": 0.25,
+          "mean": 0.0401,
+          "median": 0.025
+        },
+        "net_revenue_impact_pct": {
+          "min": -3.75,
+          "max": -0.0,
+          "mean": -0.6033,
+          "median": -0.38
+        },
+        "recommendation": {
+          "top": [
+            [
+              "Low cannibalization risk \u2014 proceed with standard market entry.",
+              89
+            ],
+            [
+              "Moderate risk \u2014 consider differentiation strategy to reduce overlap.",
+              11
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "new_mcc_code": "7011",
+        "location_lat": 41.109309,
+        "location_lon": 69.437479,
+        "radius_m": 500,
+        "adjacent_mcc_codes": []
+      },
+      "sample_output": {
+        "cannibalization_risk": 0.0,
+        "affected_niches": [],
+        "net_revenue_impact_pct": -0.0,
+        "recommendation": "Low cannibalization risk \u2014 proceed with standard market entry."
+      }
+    },
+    {
+      "model_id": "M-B1",
+      "block": "B",
+      "name": "Demand Forecasting (12/24/36 months)",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 97,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 3,
+      "success_rate": 0.97,
+      "latency_ms": {
+        "p50": 17.719,
+        "p95": 21.22,
+        "mean": 18.319,
+        "min": 16.452,
+        "max": 41.788
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [
+        "LinAlgError: SVD did not converge in Linear Least Squares",
+        "LinAlgError: SVD did not converge in Linear Least Squares",
+        "LinAlgError: SVD did not converge in Linear Least Squares"
+      ],
+      "runtime_error_traceback": "Traceback (most recent call last):\n  File \"/app/scripts/evaluate_models.py\", line 851, in evaluate_one\n    out = model.predict(payload)\n          ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/app/ml/block_b/b1_demand_forecast.py\", line 99, in predict\n    slope = float(np.polyfit(range(len(fc_values)), fc_values, 1)[0])\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nnumpy.linalg.LinAlgError: SVD did not converge in Linear Least Squares\n",
+      "output_summary": {
+        "cagr_pct": {
+          "min": -9.6,
+          "max": 35.35,
+          "mean": 6.2118,
+          "median": 8.16
+        },
+        "model_used": {
+          "top": [
+            [
+              "ExponentialSmoothing",
+              97
+            ]
+          ]
+        },
+        "trend": {
+          "top": [
+            [
+              "growing",
+              93
+            ],
+            [
+              "stable",
+              3
+            ],
+            [
+              "declining",
+              1
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "region_id": "fergana-01",
+        "mcc_code": "5734",
+        "horizon_months": 23,
+        "base_monthly_revenue": 65686.81
+      },
+      "sample_output": {
+        "forecast": [
+          {
+            "month": 1,
+            "predicted": 71266.63,
+            "lower": 63505.94,
+            "upper": 79027.32
+          },
+          {
+            "month": 2,
+            "predicted": 71187.78,
+            "lower": 60212.51,
+            "upper": 82163.06
+          },
+          {
+            "month": 3,
+            "predicted": 90781.47,
+            "lower": 77339.55,
+            "upper": 104223.38
+          },
+          {
+            "month": 4,
+            "predicted": 91031.02,
+            "lower": 75509.63,
+            "upper": 106552.4
+          },
+          {
+            "month": 5,
+            "predicted": 85890.01,
+            "lower": 68536.57,
+            "upper": 103243.44
+          },
+          {
+            "month": 6,
+            "predicted": 83348.68,
+            "lower": 64338.95,
+            "upper": 102358.42
+          },
+          {
+            "month": 7,
+            "predicted": 82071.38,
+            "lower": 61538.52,
+            "upper": 102604.24
+          },
+          {
+            "month": 8,
+            "predicted": 80385.78,
+            "lower": 58435.23,
+            "upper": 102336.33
+          },
+          {
+            "month": 9,
+            "predicted": 85028.11,
+            "lower": 61746.04,
+            "upper": 108310.18
+          },
+          {
+            "month": 10,
+            "predicted": 90704.35,
+            "lower": 66162.89,
+            "upper": 115245.82
+          },
+          {
+            "month": 11,
+            "predicted": 102607.28,
+            "lower": 76867.98,
+            "upper": 128346.58
+          },
+          {
+            "month": 12,
+            "predicted": 110364.41,
+            "lower": 83480.59,
+            "upper": 137248.23
+          },
+          {
+            "month": 13,
+            "predicted": 77244.97,
+            "lower": 49263.4,
+            "upper": 105226.54
+          },
+          {
+            "month": 14,
+            "predicted": 77166.13,
+            "lower": 48128.28,
+            "upper": 106203.98
+          },
+          {
+            "month": 15,
+            "predicted": 96759.81,
+            "lower": 66702.79,
+            "upper": 126816.84
+          },
+          {
+            "month": 16,
+            "predicted": 97009.36,
+            "lower": 65966.6,
+            "upper": 128052.13
+          },
+          {
+            "month": 17,
+            "predicted": 91868.35,
+            "lower": 59870.2,
+            "upper": 123866.5
+          },
+          {
+            "month": 18,
+            "predicted": 89327.03,
+            "lower": 56401.21,
+            "upper": 122252.86
+          },
+          {
+            "month": 19,
+            "predicted": 88049.72,
+            "lower": 54221.66,
+            "upper": 121877.79
+          },
+          {
+            "month": 20,
+            "predicted": 86364.13,
+            "lower": 51657.27,
+            "upper": 121071.0
+          },
+          {
+            "month": 21,
+            "predicted": 91006.46,
+            "lower": 55442.5,
+            "upper": 126570.41
+          },
+          {
+            "month": 22,
+            "predicted": 96682.7,
+            "lower": 60281.83,
+            "upper": 133083.57
+          },
+          {
+            "month": 23,
+            "predicted": 108585.62,
+            "lower": 71366.66,
+            "upper": 145804.59
+          }
+        ],
+        "trend": "growing",
+        "cagr_pct": 8.73,
+        "model_used": "ExponentialSmoothing"
+      }
+    },
+    {
+      "model_id": "M-B2",
+      "block": "B",
+      "name": "Seasonality Model",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.01,
+        "p95": 0.015,
+        "mean": 0.012,
+        "min": 0.01,
+        "max": 0.053
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {},
+      "sample_input": {
+        "mcc_code": "5734",
+        "region_id": "fergana-01",
+        "year": 2029
+      },
+      "sample_output": {
+        "monthly_indices": [
+          0.838,
+          0.81,
+          1.048,
+          1.095,
+          1.0,
+          0.905,
+          0.952,
+          0.933,
+          0.971,
+          1.067,
+          1.143,
+          1.238
+        ],
+        "peak_months": [
+          4,
+          11,
+          12
+        ],
+        "trough_months": [
+          1,
+          2,
+          6
+        ],
+        "events": [
+          {
+            "name": "Navro'z (Persian New Year)",
+            "months": [
+              3
+            ],
+            "impact": "+15% retail, +20% food & hospitality",
+            "type": "cultural"
+          },
+          {
+            "name": "Ramadan",
+            "months": [
+              12,
+              1
+            ],
+            "impact": "+10% food (pre-iftar), -15% entertainment",
+            "type": "religious"
+          },
+          {
+            "name": "Eid al-Fitr",
+            "months": [
+              1
+            ],
+            "impact": "+25% apparel, +20% food",
+            "type": "religious"
+          },
+          {
+            "name": "Wedding Season (Spring)",
+            "months": [
+              4,
+              5,
+              6
+            ],
+            "impact": "+25% celebrations, +15% hospitality",
+            "type": "cultural"
+          },
+          {
+            "name": "Wedding Season (Autumn)",
+            "months": [
+              9,
+              10
+            ],
+            "impact": "+20% celebrations, +12% hospitality",
+            "type": "cultural"
+          },
+          {
+            "name": "Independence Day",
+            "months": [
+              9
+            ],
+            "impact": "+8% retail",
+            "type": "national"
+          },
+          {
+            "name": "New Year (Gregorian)",
+            "months": [
+              12,
+              1
+            ],
+            "impact": "+30% retail, +20% food",
+            "type": "cultural"
+          }
+        ]
+      }
+    },
+    {
+      "model_id": "M-B3",
+      "block": "B",
+      "name": "Population Dynamics",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.035,
+        "p95": 0.054,
+        "mean": 0.036,
+        "min": 0.014,
+        "max": 0.084
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "demographic_shift": {
+          "top": [
+            [
+              "aging_transition",
+              61
+            ],
+            [
+              "moderate_growth",
+              20
+            ],
+            [
+              "youth_bulge",
+              19
+            ]
+          ]
+        },
+        "growth_rate_annual_pct": {
+          "min": 1.61,
+          "max": 3.49,
+          "mean": 2.1686,
+          "median": 1.83
+        }
+      },
+      "sample_input": {
+        "region_id": "fergana-01",
+        "horizon_years": 16
+      },
+      "sample_output": {
+        "projections": [
+          {
+            "year": 2026,
+            "population": 400000,
+            "working_age_pct": 64.5
+          },
+          {
+            "year": 2027,
+            "population": 406736,
+            "working_age_pct": 64.7
+          },
+          {
+            "year": 2028,
+            "population": 413586,
+            "working_age_pct": 64.8
+          },
+          {
+            "year": 2029,
+            "population": 420551,
+            "working_age_pct": 65.0
+          },
+          {
+            "year": 2030,
+            "population": 427634,
+            "working_age_pct": 65.1
+          },
+          {
+            "year": 2031,
+            "population": 434836,
+            "working_age_pct": 65.2
+          },
+          {
+            "year": 2032,
+            "population": 442159,
+            "working_age_pct": 65.4
+          },
+          {
+            "year": 2033,
+            "population": 449606,
+            "working_age_pct": 65.5
+          },
+          {
+            "year": 2034,
+            "population": 457177,
+            "working_age_pct": 65.7
+          },
+          {
+            "year": 2035,
+            "population": 464877,
+            "working_age_pct": 65.8
+          },
+          {
+            "year": 2036,
+            "population": 472706,
+            "working_age_pct": 66.0
+          },
+          {
+            "year": 2037,
+            "population": 480667,
+            "working_age_pct": 66.2
+          },
+          {
+            "year": 2038,
+            "population": 488762,
+            "working_age_pct": 66.3
+          },
+          {
+            "year": 2039,
+            "population": 496993,
+            "working_age_pct": 66.5
+          },
+          {
+            "year": 2040,
+            "population": 505363,
+            "working_age_pct": 66.6
+          },
+          {
+            "year": 2041,
+            "population": 513874,
+            "working_age_pct": 66.8
+          },
+          {
+            "year": 2042,
+            "population": 522529,
+            "working_age_pct": 66.9
+          }
+        ],
+        "growth_rate_annual_pct": 1.68,
+        "demographic_shift": "aging_transition"
+      }
+    },
+    {
+      "model_id": "M-B4",
+      "block": "B",
+      "name": "Income Trend Forecast",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 5.831,
+        "p95": 17.927,
+        "mean": 7.433,
+        "min": 3.776,
+        "max": 20.601
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "inflation_adjusted": {
+          "true": 100,
+          "false": 0
+        },
+        "real_growth_rate_pct": {
+          "min": 3.24,
+          "max": 4.68,
+          "mean": 3.6251,
+          "median": 3.6
+        }
+      },
+      "sample_input": {
+        "region_id": "fergana-01",
+        "horizon_months": 23,
+        "current_avg_income": 860.71
+      },
+      "sample_output": {
+        "forecast": [
+          {
+            "month": 1,
+            "avg_income": 879.97,
+            "lower": 717.34,
+            "upper": 1042.61
+          },
+          {
+            "month": 2,
+            "avg_income": 878.62,
+            "lower": 702.89,
+            "upper": 1108.62
+          },
+          {
+            "month": 3,
+            "avg_income": 879.5,
+            "lower": 703.6,
+            "upper": 1161.2
+          },
+          {
+            "month": 4,
+            "avg_income": 878.92,
+            "lower": 703.14,
+            "upper": 1204.19
+          },
+          {
+            "month": 5,
+            "avg_income": 879.3,
+            "lower": 703.44,
+            "upper": 1242.97
+          },
+          {
+            "month": 6,
+            "avg_income": 879.05,
+            "lower": 703.24,
+            "upper": 1277.43
+          },
+          {
+            "month": 7,
+            "avg_income": 879.22,
+            "lower": 703.37,
+            "upper": 1309.51
+          },
+          {
+            "month": 8,
+            "avg_income": 879.11,
+            "lower": 703.29,
+            "upper": 1339.12
+          },
+          {
+            "month": 9,
+            "avg_income": 879.18,
+            "lower": 703.34,
+            "upper": 1367.09
+          },
+          {
+            "month": 10,
+            "avg_income": 879.13,
+            "lower": 703.31,
+            "upper": 1393.44
+          },
+          {
+            "month": 11,
+            "avg_income": 879.16,
+            "lower": 703.33,
+            "upper": 1418.57
+          },
+          {
+            "month": 12,
+            "avg_income": 879.14,
+            "lower": 703.32,
+            "upper": 1442.53
+          },
+          {
+            "month": 13,
+            "avg_income": 879.16,
+            "lower": 703.33,
+            "upper": 1465.55
+          },
+          {
+            "month": 14,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1487.68
+          },
+          {
+            "month": 15,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1509.04
+          },
+          {
+            "month": 16,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1529.7
+          },
+          {
+            "month": 17,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1549.72
+          },
+          {
+            "month": 18,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1569.16
+          },
+          {
+            "month": 19,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1588.07
+          },
+          {
+            "month": 20,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1606.48
+          },
+          {
+            "month": 21,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1624.45
+          },
+          {
+            "month": 22,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1641.98
+          },
+          {
+            "month": 23,
+            "avg_income": 879.15,
+            "lower": 703.32,
+            "upper": 1659.13
+          }
+        ],
+        "real_growth_rate_pct": 3.42,
+        "inflation_adjusted": true
+      }
+    },
+    {
+      "model_id": "M-B5",
+      "block": "B",
+      "name": "MCC Trend Detector",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.466,
+        "p95": 1.176,
+        "mean": 0.53,
+        "min": 0.097,
+        "max": 1.246
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "forecast_3m_pct": {
+          "min": -5.68,
+          "max": 9.42,
+          "mean": 2.2264,
+          "median": 2.34
+        },
+        "momentum_score": {
+          "min": -0.503,
+          "max": 0.567,
+          "mean": 0.0717,
+          "median": 0.075
+        },
+        "trend_direction": {
+          "top": [
+            [
+              "growing",
+              48
+            ],
+            [
+              "stable",
+              45
+            ],
+            [
+              "declining",
+              6
+            ],
+            [
+              "volatile",
+              1
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "region_id": "fergana-01",
+        "lookback_months": 41
+      },
+      "sample_output": {
+        "trend_direction": "growing",
+        "changepoints": [],
+        "momentum_score": 0.04,
+        "forecast_3m_pct": 2.76
+      }
+    },
+    {
+      "model_id": "M-B6",
+      "block": "B",
+      "name": "Business Registration Forecast",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.586,
+        "p95": 0.639,
+        "mean": 0.592,
+        "min": 0.514,
+        "max": 1.176
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "annual_growth_pct": {
+          "min": -151.7,
+          "max": 104.9,
+          "mean": 7.062,
+          "median": 6.05
+        },
+        "competition_intensity": {
+          "top": [
+            [
+              "low",
+              40
+            ],
+            [
+              "very_high",
+              24
+            ],
+            [
+              "medium",
+              21
+            ],
+            [
+              "high",
+              15
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "region_id": "fergana-01",
+        "mcc_code": "5734",
+        "horizon_months": 23
+      },
+      "sample_output": {
+        "forecast": [
+          {
+            "month": 1,
+            "new_registrations": 8,
+            "cumulative": 8
+          },
+          {
+            "month": 2,
+            "new_registrations": 10,
+            "cumulative": 18
+          },
+          {
+            "month": 3,
+            "new_registrations": 9,
+            "cumulative": 27
+          },
+          {
+            "month": 4,
+            "new_registrations": 8,
+            "cumulative": 35
+          },
+          {
+            "month": 5,
+            "new_registrations": 9,
+            "cumulative": 44
+          },
+          {
+            "month": 6,
+            "new_registrations": 9,
+            "cumulative": 53
+          },
+          {
+            "month": 7,
+            "new_registrations": 9,
+            "cumulative": 62
+          },
+          {
+            "month": 8,
+            "new_registrations": 9,
+            "cumulative": 71
+          },
+          {
+            "month": 9,
+            "new_registrations": 9,
+            "cumulative": 80
+          },
+          {
+            "month": 10,
+            "new_registrations": 9,
+            "cumulative": 89
+          },
+          {
+            "month": 11,
+            "new_registrations": 9,
+            "cumulative": 98
+          },
+          {
+            "month": 12,
+            "new_registrations": 9,
+            "cumulative": 107
+          },
+          {
+            "month": 13,
+            "new_registrations": 9,
+            "cumulative": 116
+          },
+          {
+            "month": 14,
+            "new_registrations": 9,
+            "cumulative": 125
+          },
+          {
+            "month": 15,
+            "new_registrations": 9,
+            "cumulative": 134
+          },
+          {
+            "month": 16,
+            "new_registrations": 9,
+            "cumulative": 143
+          },
+          {
+            "month": 17,
+            "new_registrations": 9,
+            "cumulative": 152
+          },
+          {
+            "month": 18,
+            "new_registrations": 9,
+            "cumulative": 161
+          },
+          {
+            "month": 19,
+            "new_registrations": 9,
+            "cumulative": 170
+          },
+          {
+            "month": 20,
+            "new_registrations": 10,
+            "cumulative": 180
+          },
+          {
+            "month": 21,
+            "new_registrations": 10,
+            "cumulative": 190
+          },
+          {
+            "month": 22,
+            "new_registrations": 10,
+            "cumulative": 200
+          },
+          {
+            "month": 23,
+            "new_registrations": 10,
+            "cumulative": 210
+          }
+        ],
+        "annual_growth_pct": 11.7,
+        "competition_intensity": "high"
+      }
+    },
+    {
+      "model_id": "M-C1",
+      "block": "C",
+      "name": "Location Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.042,
+        "p95": 0.049,
+        "mean": 0.043,
+        "min": 0.039,
+        "max": 0.081
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "grade": {
+          "top": [
+            [
+              "F",
+              100
+            ]
+          ]
+        },
+        "recommendation": {
+          "top": [
+            [
+              "Below-average location \u2014 significant risks; consider alternative sites.",
+              97
+            ],
+            [
+              "Moderate location \u2014 address weak sub-scores before committing.",
+              3
+            ]
+          ]
+        },
+        "score": {
+          "min": 36.8,
+          "max": 58.3,
+          "mean": 43.404,
+          "median": 42.3
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "mcc_code": "5712",
+        "radius_m": 750
+      },
+      "sample_output": {
+        "score": 43.8,
+        "grade": "F",
+        "sub_scores": {
+          "traffic": 26.8,
+          "competition": 88.8,
+          "vitality": 38.9,
+          "anchor": 40.4,
+          "visibility": 30.7,
+          "isochrone": 54.9,
+          "demographic": 27.9,
+          "income": 40.6
+        },
+        "recommendation": "Below-average location \u2014 significant risks; consider alternative sites."
+      }
+    },
+    {
+      "model_id": "M-C2",
+      "block": "C",
+      "name": "Traffic Scoring",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 18.404,
+        "p95": 18.839,
+        "mean": 18.485,
+        "min": 18.184,
+        "max": 21.492
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "daily_auto_traffic": {
+          "min": 175.0,
+          "max": 4691.0,
+          "mean": 1751.82,
+          "median": 1000.0
+        },
+        "daily_foot_traffic": {
+          "min": 1607.0,
+          "max": 55020.0,
+          "mean": 20226.21,
+          "median": 11493.0
+        },
+        "seasonal_factor": {
+          "min": 1.12,
+          "max": 1.12,
+          "mean": 1.12,
+          "median": 1.12
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "radius_m": 750
+      },
+      "sample_output": {
+        "daily_foot_traffic": 28657,
+        "daily_auto_traffic": 2506,
+        "peak_hours": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "peak_days": [
+          "Friday",
+          "Saturday"
+        ],
+        "hourly_profile": [
+          0.221,
+          0.221,
+          0.221,
+          0.224,
+          0.228,
+          0.295,
+          0.384,
+          0.603,
+          0.88,
+          0.994,
+          1.0,
+          0.867,
+          0.562,
+          0.421,
+          0.373,
+          0.373,
+          0.469,
+          0.643,
+          0.768,
+          0.799,
+          0.633,
+          0.473,
+          0.329,
+          0.281
+        ],
+        "seasonal_factor": 1.12
+      }
+    },
+    {
+      "model_id": "M-C3",
+      "block": "C",
+      "name": "Isochrone Demand",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.005,
+        "p95": 0.008,
+        "mean": 0.006,
+        "min": 0.004,
+        "max": 0.024
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "total_addressable_population": {
+          "min": 814.0,
+          "max": 12634.0,
+          "mean": 2247.37,
+          "median": 814.0
+        },
+        "total_consumer_potential_usd": {
+          "min": 14652.0,
+          "max": 3638592.0,
+          "mean": 95540.76,
+          "median": 22491.0
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "walk_minutes": [
+          5,
+          10
+        ],
+        "mcc_code": "5712"
+      },
+      "sample_output": {
+        "zones": [
+          {
+            "minutes": 5,
+            "area_sqkm": 0.4072,
+            "population": 203,
+            "consumer_potential_usd": 4263.0
+          },
+          {
+            "minutes": 10,
+            "area_sqkm": 1.6286,
+            "population": 814,
+            "consumer_potential_usd": 17094.0
+          }
+        ],
+        "total_addressable_population": 814,
+        "total_consumer_potential_usd": 17094.0
+      }
+    },
+    {
+      "model_id": "M-C4",
+      "block": "C",
+      "name": "Street Vitality Index",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.012,
+        "p95": 0.014,
+        "mean": 0.012,
+        "min": 0.011,
+        "max": 0.026
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "active_storefronts": {
+          "min": 0.0,
+          "max": 880.0,
+          "mean": 50.03,
+          "median": 13.5
+        },
+        "poi_count": {
+          "min": 1.0,
+          "max": 959.0,
+          "mean": 61.0,
+          "median": 22.0
+        },
+        "vacant_storefronts": {
+          "min": 1.0,
+          "max": 79.0,
+          "mean": 10.97,
+          "median": 5.0
+        },
+        "vitality_index": {
+          "min": 39.0,
+          "max": 80.6,
+          "mean": 51.39,
+          "median": 48.8
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "radius_m": 750
+      },
+      "sample_output": {
+        "vitality_index": 50.0,
+        "active_storefronts": 18,
+        "vacant_storefronts": 10,
+        "poi_count": 28,
+        "dominant_categories": [
+          "Food & Beverage",
+          "Retail",
+          "Services",
+          "Wholesale"
+        ]
+      }
+    },
+    {
+      "model_id": "M-C5",
+      "block": "C",
+      "name": "Anchor Effect Model",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.007,
+        "p95": 0.008,
+        "mean": 0.008,
+        "min": 0.007,
+        "max": 0.028
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "anchor_boost_pct": {
+          "min": 0.0,
+          "max": 0.2,
+          "mean": 0.002,
+          "median": 0.0
+        },
+        "dominant_anchor": {
+          "top": [
+            [
+              "Korzinka Superstore",
+              1
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "radius_m": 750
+      },
+      "sample_output": {
+        "anchor_boost_pct": 0.0,
+        "anchors": [],
+        "dominant_anchor": null
+      }
+    },
+    {
+      "model_id": "M-C6",
+      "block": "C",
+      "name": "Visibility Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.017,
+        "p95": 0.022,
+        "mean": 0.018,
+        "min": 0.017,
+        "max": 0.046
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "road_frontage_m": {
+          "min": 6.0,
+          "max": 24.8,
+          "mean": 13.993,
+          "median": 12.75
+        },
+        "sidewalk_width_m": {
+          "min": 1.5,
+          "max": 5.5,
+          "mean": 3.028,
+          "median": 2.65
+        },
+        "visibility_score": {
+          "min": 23.1,
+          "max": 76.6,
+          "mean": 53.74,
+          "median": 55.85
+        }
+      },
+      "sample_input": {
+        "lat": 40.38933,
+        "lon": 71.828049,
+        "facade_direction_deg": 359.0
+      },
+      "sample_output": {
+        "visibility_score": 37.5,
+        "road_frontage_m": 18.6,
+        "sidewalk_width_m": 2.6,
+        "sight_lines": {
+          "north": 34.8,
+          "east": 17.1,
+          "south": 0.0,
+          "west": 17.7
+        },
+        "obstructions": [
+          "parked_vehicles"
+        ]
+      }
+    },
+    {
+      "model_id": "M-D1",
+      "block": "D",
+      "name": "Viability Check",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 8.163,
+        "p95": 8.417,
+        "mean": 8.195,
+        "min": 8.043,
+        "max": 8.611
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "monthly_break_even": {
+          "min": 4323.42,
+          "max": 89995.18,
+          "mean": 36233.9383,
+          "median": 33570.875
+        },
+        "months_to_break_even": {
+          "min": 0.1,
+          "max": 151.1,
+          "mean": 12.1021,
+          "median": 5.35
+        },
+        "survival_probability_2y": {
+          "min": 0.03,
+          "max": 0.97,
+          "mean": 0.8353,
+          "median": 0.97
+        },
+        "verdict": {
+          "top": [
+            [
+              "viable",
+              86
+            ],
+            [
+              "high_risk",
+              11
+            ],
+            [
+              "marginal",
+              3
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "region_id": "jizzakh-01",
+        "monthly_revenue_estimate": 103043.44,
+        "monthly_fixed_costs": 21688.97,
+        "initial_investment": 182662.23,
+        "monthly_rent": 5378.08
+      },
+      "sample_output": {
+        "survival_probability_2y": 0.97,
+        "verdict": "viable",
+        "key_risks": [],
+        "monthly_break_even": 27067.05,
+        "months_to_break_even": 2.4
+      }
+    },
+    {
+      "model_id": "M-D2",
+      "block": "D",
+      "name": "Unit Economics",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.008,
+        "p95": 0.011,
+        "mean": 0.009,
+        "min": 0.008,
+        "max": 0.023
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "cac": {
+          "min": 5.04,
+          "max": 289.49,
+          "mean": 152.0287,
+          "median": 155.855
+        },
+        "ltv": {
+          "min": 6.14,
+          "max": 18229.39,
+          "mean": 1723.9065,
+          "median": 782.21
+        },
+        "ltv_cac_ratio": {
+          "min": 0.022,
+          "max": 1652.606,
+          "mean": 35.3557,
+          "median": 5.6905
+        },
+        "net_margin_pct": {
+          "min": 3.7,
+          "max": 35.6,
+          "mean": 16.184,
+          "median": 15.6
+        },
+        "payback_months": {
+          "min": 0.1,
+          "max": 206.6,
+          "mean": 6.899,
+          "median": 1.45
+        },
+        "unit_economics_grade": {
+          "top": [
+            [
+              "A",
+              57
+            ],
+            [
+              "F",
+              13
+            ],
+            [
+              "B",
+              13
+            ],
+            [
+              "D",
+              9
+            ],
+            [
+              "C",
+              8
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "avg_transaction_value": 162.17,
+        "monthly_transactions": 7949,
+        "customer_acquisition_cost": 25.65,
+        "monthly_churn_rate_pct": 1.04,
+        "gross_margin_pct": 60.16
+      },
+      "sample_output": {
+        "ltv": 9380.91,
+        "cac": 25.65,
+        "ltv_cac_ratio": 365.728,
+        "payback_months": 0.3,
+        "net_margin_pct": 21.1,
+        "unit_economics_grade": "A"
+      }
+    },
+    {
+      "model_id": "M-D3",
+      "block": "D",
+      "name": "ROI Estimator",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.04,
+        "p95": 0.125,
+        "mean": 0.053,
+        "min": 0.003,
+        "max": 0.137
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "irr_pct": {
+          "min": 8.34,
+          "max": 1176707513.4,
+          "mean": 20291773.4271,
+          "median": 138.915
+        },
+        "npv": {
+          "min": -737578.77,
+          "max": 3464398.93,
+          "mean": 150691.393,
+          "median": 15187.655
+        },
+        "payback_months": {
+          "min": 0.3,
+          "max": 66.7,
+          "mean": 18.0638,
+          "median": 11.9
+        },
+        "roi_pct": {
+          "min": -985.08,
+          "max": 27581.52,
+          "mean": 769.1145,
+          "median": 54.445
+        },
+        "verdict": {
+          "top": [
+            [
+              "profitable",
+              52
+            ],
+            [
+              "unprofitable",
+              44
+            ],
+            [
+              "marginal",
+              4
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "initial_investment": 182662.23,
+        "monthly_net_cash_flow": 122.06,
+        "discount_rate_annual_pct": 8.6,
+        "horizon_years": 10
+      },
+      "sample_output": {
+        "npv": -172859.88,
+        "irr_pct": null,
+        "payback_months": null,
+        "roi_pct": -91.98,
+        "verdict": "unprofitable"
+      }
+    },
+    {
+      "model_id": "M-D4",
+      "block": "D",
+      "name": "Rental Burden Model",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.001,
+        "p95": 0.002,
+        "mean": 0.001,
+        "min": 0.001,
+        "max": 0.006
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "critical_threshold_pct": {
+          "min": 18.0,
+          "max": 40.0,
+          "mean": 32.71,
+          "median": 35.0
+        },
+        "max_affordable_rent": {
+          "min": 396.75,
+          "max": 37216.1,
+          "mean": 15376.7803,
+          "median": 14918.675
+        },
+        "rent_to_revenue_pct": {
+          "min": 0.13,
+          "max": 170.96,
+          "mean": 11.679,
+          "median": 5.815
+        },
+        "safe_threshold_pct": {
+          "min": 10.0,
+          "max": 25.0,
+          "mean": 19.26,
+          "median": 20.0
+        },
+        "status": {
+          "top": [
+            [
+              "safe",
+              88
+            ],
+            [
+              "critical",
+              9
+            ],
+            [
+              "warning",
+              3
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "monthly_revenue_estimate": 103043.44,
+        "monthly_rent": 5378.08
+      },
+      "sample_output": {
+        "rent_to_revenue_pct": 5.22,
+        "safe_threshold_pct": 20.0,
+        "critical_threshold_pct": 35.0,
+        "status": "safe",
+        "max_affordable_rent": 20608.69
+      }
+    },
+    {
+      "model_id": "M-D5",
+      "block": "D",
+      "name": "Cash Flow Simulator",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 9.03,
+        "p95": 14.922,
+        "mean": 9.414,
+        "min": 2.589,
+        "max": 19.565
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "break_even_month": {
+          "min": 1.0,
+          "max": 29.0,
+          "mean": 9.25,
+          "median": 8.5
+        },
+        "final_balance": {
+          "min": -602164.44,
+          "max": 8022372.88,
+          "mean": 478189.4417,
+          "median": 104368.65
+        },
+        "total_net": {
+          "min": -302594.88,
+          "max": 8071259.74,
+          "mean": 728709.3288,
+          "median": 375462.52
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "region_id": "jizzakh-01",
+        "initial_investment": 182662.23,
+        "monthly_revenue_base": 103043.44,
+        "monthly_fixed_costs": 21688.97,
+        "cogs_pct": 27.48,
+        "growth_rate_monthly_pct": -1.81,
+        "horizon_months": 10
+      },
+      "sample_output": {
+        "monthly_cashflows": [
+          {
+            "month": 1,
+            "revenue": 89359.11,
+            "costs": 46244.85,
+            "net_cashflow": 43114.26,
+            "cumulative": -139547.97
+          },
+          {
+            "month": 2,
+            "revenue": 84571.8,
+            "costs": 44929.3,
+            "net_cashflow": 39642.5,
+            "cumulative": -99905.47
+          },
+          {
+            "month": 3,
+            "revenue": 107251.82,
+            "costs": 51161.77,
+            "net_cashflow": 56090.05,
+            "cumulative": -43815.42
+          },
+          {
+            "month": 4,
+            "revenue": 110056.07,
+            "costs": 51932.38,
+            "net_cashflow": 58123.69,
+            "cumulative": 14308.27
+          },
+          {
+            "month": 5,
+            "revenue": 98724.67,
+            "costs": 48818.51,
+            "net_cashflow": 49906.16,
+            "cumulative": 64214.42
+          },
+          {
+            "month": 6,
+            "revenue": 87712.8,
+            "costs": 45792.45,
+            "net_cashflow": 41920.36,
+            "cumulative": 106134.78
+          },
+          {
+            "month": 7,
+            "revenue": 91412.63,
+            "costs": 46809.16,
+            "net_cashflow": 44603.47,
+            "cumulative": 150738.25
+          },
+          {
+            "month": 8,
+            "revenue": 87032.16,
+            "costs": 45605.41,
+            "net_cashflow": 41426.75,
+            "cumulative": 192165.0
+          },
+          {
+            "month": 9,
+            "revenue": 89301.16,
+            "costs": 46228.93,
+            "net_cashflow": 43072.23,
+            "cumulative": 235237.23
+          },
+          {
+            "month": 10,
+            "revenue": 95166.13,
+            "costs": 47840.62,
+            "net_cashflow": 47325.51,
+            "cumulative": 282562.74
+          }
+        ],
+        "total_net": 465224.98,
+        "cash_gap_months": [
+          1,
+          2,
+          3
+        ],
+        "break_even_month": 4,
+        "final_balance": 282562.74
+      }
+    },
+    {
+      "model_id": "M-D6",
+      "block": "D",
+      "name": "COGS & Margin Estimator",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.007,
+        "p95": 0.008,
+        "mean": 0.007,
+        "min": 0.007,
+        "max": 0.023
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "benchmark_source": {
+          "top": [
+            [
+              "central_asia_industry_benchmarks_v1",
+              100
+            ]
+          ]
+        },
+        "cogs_pct": {
+          "min": 16.74,
+          "max": 75.6,
+          "mean": 42.1503,
+          "median": 43.0
+        },
+        "gross_margin_pct": {
+          "min": 24.4,
+          "max": 83.26,
+          "mean": 57.8497,
+          "median": 57.0
+        },
+        "industry_comparison": {
+          "top": [
+            [
+              "at",
+              77
+            ],
+            [
+              "below",
+              22
+            ],
+            [
+              "above",
+              1
+            ]
+          ]
+        },
+        "net_margin_pct": {
+          "min": 3.4,
+          "max": 22.8,
+          "mean": 12.394,
+          "median": 12.0
+        },
+        "operating_margin_pct": {
+          "min": 6.0,
+          "max": 29.0,
+          "mean": 17.79,
+          "median": 18.0
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5734",
+        "monthly_revenue": 103043.44,
+        "region_id": "jizzakh-01"
+      },
+      "sample_output": {
+        "cogs_pct": 45.0,
+        "gross_margin_pct": 55.0,
+        "operating_margin_pct": 16.0,
+        "net_margin_pct": 10.8,
+        "benchmark_source": "central_asia_industry_benchmarks_v1",
+        "industry_comparison": "at"
+      }
+    },
+    {
+      "model_id": "M-E1",
+      "block": "E",
+      "name": "Competitor Intelligence",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.018,
+        "p95": 0.024,
+        "mean": 0.02,
+        "min": 0.017,
+        "max": 0.164
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "avg_rating": {
+          "min": 3.44,
+          "max": 4.56,
+          "mean": 4.0037,
+          "median": 4.005
+        },
+        "market_leader": {
+          "top": [
+            [
+              "Store #4",
+              4
+            ],
+            [
+              "Business #3",
+              4
+            ],
+            [
+              "Business #5",
+              4
+            ],
+            [
+              "Point #1",
+              4
+            ],
+            [
+              "Shop #2",
+              3
+            ]
+          ]
+        },
+        "threat_level": {
+          "top": [
+            [
+              "critical",
+              100
+            ]
+          ]
+        },
+        "total_count": {
+          "min": 8.0,
+          "max": 8.0,
+          "mean": 8.0,
+          "median": 8.0
+        }
+      },
+      "sample_input": {
+        "lat": 40.156566,
+        "lon": 67.928978,
+        "mcc_code": "5511",
+        "radius_300m": true,
+        "radius_1km": true
+      },
+      "sample_output": {
+        "competitors_300m": [
+          {
+            "name": "Shop #2",
+            "lat": 40.157662,
+            "lon": 67.931566,
+            "distance_m": 251,
+            "rating": 4.6,
+            "type": "direct"
+          },
+          {
+            "name": "Point #7",
+            "lat": 40.157049,
+            "lon": 67.92949,
+            "distance_m": 69,
+            "rating": 4.5,
+            "type": "indirect"
+          }
+        ],
+        "competitors_1km": [
+          {
+            "name": "Shop #1",
+            "lat": 40.152298,
+            "lon": 67.930901,
+            "distance_m": 502,
+            "rating": 4.4,
+            "type": "indirect"
+          },
+          {
+            "name": "Shop #2",
+            "lat": 40.157662,
+            "lon": 67.931566,
+            "distance_m": 251,
+            "rating": 4.6,
+            "type": "direct"
+          },
+          {
+            "name": "Shop #3",
+            "lat": 40.153975,
+            "lon": 67.935928,
+            "distance_m": 657,
+            "rating": 3.2,
+            "type": "direct"
+          },
+          {
+            "name": "Store #4",
+            "lat": 40.163092,
+            "lon": 67.925353,
+            "distance_m": 788,
+            "rating": 3.7,
+            "type": "indirect"
+          },
+          {
+            "name": "Business #5",
+            "lat": 40.157583,
+            "lon": 67.932633,
+            "distance_m": 331,
+            "rating": 3.7,
+            "type": "direct"
+          },
+          {
+            "name": "Shop #6",
+            "lat": 40.159266,
+            "lon": 67.934216,
+            "distance_m": 537,
+            "rating": 4.1,
+            "type": "direct"
+          },
+          {
+            "name": "Point #7",
+            "lat": 40.157049,
+            "lon": 67.92949,
+            "distance_m": 69,
+            "rating": 4.5,
+            "type": "indirect"
+          },
+          {
+            "name": "Business #8",
+            "lat": 40.158908,
+            "lon": 67.92367,
+            "distance_m": 521,
+            "rating": 3.6,
+            "type": "direct"
+          }
+        ],
+        "total_count": 8,
+        "avg_rating": 3.98,
+        "market_leader": "Shop #2",
+        "threat_level": "critical"
+      }
+    },
+    {
+      "model_id": "M-E2",
+      "block": "E",
+      "name": "Churn Prediction",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.91,
+        "p95": 1.095,
+        "mean": 0.852,
+        "min": 0.597,
+        "max": 1.548
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "closure_probability_2y": {
+          "min": 0.061,
+          "max": 0.72,
+          "mean": 0.4177,
+          "median": 0.44
+        },
+        "risk_level": {
+          "top": [
+            [
+              "medium",
+              51
+            ],
+            [
+              "high",
+              25
+            ],
+            [
+              "low",
+              24
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5511",
+        "region_id": "jizzakh-01",
+        "monthly_revenue": 88459.42,
+        "initial_investment": 239412.49,
+        "owner_experience_years": 15.4,
+        "location_score": 96.3,
+        "competition_count": 11
+      },
+      "sample_output": {
+        "closure_probability_2y": 0.599,
+        "risk_level": "high",
+        "top_risk_factors": [
+          "High local competition"
+        ],
+        "survival_curve": [
+          {
+            "month": 1,
+            "survival_probability": 0.975
+          },
+          {
+            "month": 2,
+            "survival_probability": 0.951
+          },
+          {
+            "month": 3,
+            "survival_probability": 0.928
+          },
+          {
+            "month": 4,
+            "survival_probability": 0.905
+          },
+          {
+            "month": 5,
+            "survival_probability": 0.883
+          },
+          {
+            "month": 6,
+            "survival_probability": 0.861
+          },
+          {
+            "month": 7,
+            "survival_probability": 0.84
+          },
+          {
+            "month": 8,
+            "survival_probability": 0.819
+          },
+          {
+            "month": 9,
+            "survival_probability": 0.799
+          },
+          {
+            "month": 10,
+            "survival_probability": 0.779
+          },
+          {
+            "month": 11,
+            "survival_probability": 0.76
+          },
+          {
+            "month": 12,
+            "survival_probability": 0.741
+          },
+          {
+            "month": 13,
+            "survival_probability": 0.723
+          },
+          {
+            "month": 14,
+            "survival_probability": 0.705
+          },
+          {
+            "month": 15,
+            "survival_probability": 0.688
+          },
+          {
+            "month": 16,
+            "survival_probability": 0.671
+          },
+          {
+            "month": 17,
+            "survival_probability": 0.654
+          },
+          {
+            "month": 18,
+            "survival_probability": 0.638
+          },
+          {
+            "month": 19,
+            "survival_probability": 0.622
+          },
+          {
+            "month": 20,
+            "survival_probability": 0.607
+          },
+          {
+            "month": 21,
+            "survival_probability": 0.592
+          },
+          {
+            "month": 22,
+            "survival_probability": 0.577
+          },
+          {
+            "month": 23,
+            "survival_probability": 0.563
+          },
+          {
+            "month": 24,
+            "survival_probability": 0.549
+          }
+        ]
+      }
+    },
+    {
+      "model_id": "M-E3",
+      "block": "E",
+      "name": "Regulatory Risk Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.001,
+        "p95": 0.002,
+        "mean": 0.001,
+        "min": 0.001,
+        "max": 0.007
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "inspection_frequency": {
+          "top": [
+            [
+              "annually",
+              62
+            ],
+            [
+              "quarterly",
+              30
+            ],
+            [
+              "monthly",
+              8
+            ]
+          ]
+        },
+        "risk_level": {
+          "top": [
+            [
+              "low",
+              48
+            ],
+            [
+              "medium",
+              48
+            ],
+            [
+              "high",
+              4
+            ]
+          ]
+        },
+        "risk_score": {
+          "min": 20.0,
+          "max": 70.0,
+          "mean": 38.9,
+          "median": 40.0
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5511",
+        "region_id": "jizzakh-01",
+        "business_age_months": 118
+      },
+      "sample_output": {
+        "risk_score": 30.0,
+        "risk_level": "low",
+        "applicable_regulations": [
+          "Business registration (tax authority)",
+          "KKM registration",
+          "Fire safety inspection",
+          "Sanitary inspection"
+        ],
+        "inspection_frequency": "annually",
+        "common_violations": [
+          "Late tax filing",
+          "Unregistered cash register"
+        ]
+      }
+    },
+    {
+      "model_id": "M-E4",
+      "block": "E",
+      "name": "Market Entry Barrier Index",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.003,
+        "mean": 0.003,
+        "min": 0.002,
+        "max": 0.011
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "barrier_index": {
+          "min": 26.9,
+          "max": 94.5,
+          "mean": 65.097,
+          "median": 68.5
+        },
+        "barrier_level": {
+          "top": [
+            [
+              "high",
+              44
+            ],
+            [
+              "very_high",
+              30
+            ],
+            [
+              "medium",
+              22
+            ],
+            [
+              "low",
+              4
+            ]
+          ]
+        },
+        "recommendation": {
+          "top": [
+            [
+              "Barrier level: high. High capital requirement (\u2265$100k) is the primary constraint. Regulatory compliance adds 13.5 pts.",
+              26
+            ],
+            [
+              "Barrier level: medium. Market is relatively accessible. Focus on brand differentiation to build loyalty.",
+              22
+            ],
+            [
+              "Barrier level: very_high. High capital requirement (\u2265$100k) is the primary constraint. Regulatory compliance adds 19.5 pts.",
+              9
+            ],
+            [
+              "Barrier level: very_high. High capital requirement (\u2265$100k) is the primary constraint. Regulatory compliance adds 18.0 pts.",
+              7
+            ],
+            [
+              "Barrier level: very_high. High capital requirement (\u2265$100k) is the primary constraint. Regulatory compliance adds 21.0 pts.",
+              6
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5511",
+        "region_id": "jizzakh-01",
+        "initial_investment": 239412.49
+      },
+      "sample_output": {
+        "barrier_index": 68.5,
+        "barrier_level": "high",
+        "components": {
+          "capital_requirement": 40.0,
+          "regulatory": 13.5,
+          "brand_loyalty": 8.0,
+          "economies_of_scale": 5.0,
+          "switching_costs": 2.0
+        },
+        "recommendation": "Barrier level: high. High capital requirement (\u2265$100k) is the primary constraint. Regulatory compliance adds 13.5 pts."
+      }
+    },
+    {
+      "model_id": "M-E5",
+      "block": "E",
+      "name": "Price Pressure Model",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.002,
+        "mean": 0.002,
+        "min": 0.002,
+        "max": 0.008
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "margin_at_recommended": {
+          "min": 0.3,
+          "max": 0.65,
+          "mean": 0.4905,
+          "median": 0.5
+        },
+        "price_elasticity": {
+          "min": -2.5,
+          "max": -0.9,
+          "mean": -1.667,
+          "median": -1.6
+        },
+        "price_pressure_score": {
+          "min": 0.011,
+          "max": 1.0,
+          "mean": 0.4833,
+          "median": 0.4885
+        },
+        "recommended_price": {
+          "min": 3.55,
+          "max": 620.89,
+          "mean": 279.6708,
+          "median": 273.185
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5511",
+        "region_id": "jizzakh-01",
+        "target_price": 177.64,
+        "competitor_avg_price": 142.0
+      },
+      "sample_output": {
+        "price_pressure_score": 0.837,
+        "optimal_price_range": [
+          127.8,
+          156.2
+        ],
+        "price_elasticity": -1.6,
+        "recommended_price": 149.1,
+        "margin_at_recommended": 0.5
+      }
+    },
+    {
+      "model_id": "M-F1",
+      "block": "F",
+      "name": "Credit Risk Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.399,
+        "p95": 0.484,
+        "mean": 0.388,
+        "min": 0.232,
+        "max": 0.746
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "credit_score": {
+          "min": 505.0,
+          "max": 989.0,
+          "mean": 898.7,
+          "median": 932.0
+        },
+        "decision": {
+          "top": [
+            [
+              "approve",
+              99
+            ],
+            [
+              "conditional",
+              1
+            ]
+          ]
+        },
+        "default_probability": {
+          "min": 0.02,
+          "max": 0.12,
+          "mean": 0.0238,
+          "median": 0.02
+        },
+        "max_recommended_loan": {
+          "min": 7373.22,
+          "max": 598950.96,
+          "mean": 294051.2208,
+          "median": 287630.7
+        },
+        "risk_grade": {
+          "top": [
+            [
+              "AAA",
+              88
+            ],
+            [
+              "AA",
+              9
+            ],
+            [
+              "A",
+              2
+            ],
+            [
+              "BBB",
+              1
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-43C6BC35",
+        "mcc_code": "5047",
+        "region_id": "namangan-01",
+        "lat": 41.038337,
+        "lon": 71.721381,
+        "monthly_revenue_estimate": 48382.97,
+        "requested_loan_amount": 1311190.95,
+        "business_age_months": 45,
+        "owner_credit_history_score": 409.0,
+        "collateral_value": 2054990.91
+      },
+      "sample_output": {
+        "credit_score": 887.0,
+        "risk_grade": "AAA",
+        "default_probability": 0.02,
+        "max_recommended_loan": 290297.82,
+        "decision": "approve",
+        "conditions": []
+      }
+    },
+    {
+      "model_id": "M-F2",
+      "block": "F",
+      "name": "Loan Sizing Recommender",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.003,
+        "mean": 0.002,
+        "min": 0.002,
+        "max": 0.011
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "affordability_verdict": {
+          "top": [
+            [
+              "affordable",
+              96
+            ],
+            [
+              "tight",
+              2
+            ],
+            [
+              "unaffordable",
+              2
+            ]
+          ]
+        },
+        "dti_ratio": {
+          "min": 0.3442,
+          "max": 1.2944,
+          "mean": 0.3739,
+          "median": 0.3539
+        },
+        "max_loan": {
+          "min": 0.0,
+          "max": 2209560.72,
+          "mean": 522286.1807,
+          "median": 352256.465
+        },
+        "monthly_payment": {
+          "min": 0.0,
+          "max": 33385.86,
+          "mean": 14828.5262,
+          "median": 14075.67
+        },
+        "recommended_loan": {
+          "min": 0.0,
+          "max": 1767648.58,
+          "mean": 417828.9448,
+          "median": 281805.17
+        }
+      },
+      "sample_input": {
+        "monthly_net_cashflow": 749.32,
+        "monthly_revenue": 48382.97,
+        "existing_debt_monthly": 209.07,
+        "loan_term_months": 120,
+        "interest_rate_annual_pct": 24.68
+      },
+      "sample_output": {
+        "recommended_loan": 731505.54,
+        "max_loan": 914381.93,
+        "monthly_payment": 16476.49,
+        "dti_ratio": 0.3449,
+        "affordability_verdict": "affordable"
+      }
+    },
+    {
+      "model_id": "M-F3",
+      "block": "F",
+      "name": "DTI Predictor",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.003,
+        "mean": 0.002,
+        "min": 0.002,
+        "max": 0.01
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "dti_at_12m": {
+          "min": 0.0425,
+          "max": 2.9985,
+          "mean": 0.904,
+          "median": 0.6471
+        },
+        "dti_at_24m": {
+          "min": 0.0386,
+          "max": 2.7251,
+          "mean": 0.8108,
+          "median": 0.5832
+        },
+        "dti_at_6m": {
+          "min": 0.0445,
+          "max": 3.1454,
+          "mean": 0.9547,
+          "median": 0.6787
+        },
+        "safe_threshold": {
+          "min": 0.43,
+          "max": 0.43,
+          "mean": 0.43,
+          "median": 0.43
+        },
+        "trajectory": {
+          "top": [
+            [
+              "improving",
+              96
+            ],
+            [
+              "stable",
+              4
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "mcc_code": "5047",
+        "region_id": "namangan-01",
+        "initial_monthly_revenue": 48382.97,
+        "proposed_loan_amount": 1311190.95,
+        "loan_term_months": 120,
+        "interest_rate_annual_pct": 24.68
+      },
+      "sample_output": {
+        "dti_at_6m": 0.5819,
+        "dti_at_12m": 0.5547,
+        "dti_at_24m": 0.5042,
+        "safe_threshold": 0.43,
+        "risk_periods": [
+          6,
+          12,
+          24
+        ],
+        "trajectory": "improving"
+      }
+    },
+    {
+      "model_id": "M-F4",
+      "block": "F",
+      "name": "NPL Early Warning",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.531,
+        "p95": 0.563,
+        "mean": 0.536,
+        "min": 0.492,
+        "max": 1.037
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "alert_level": {
+          "top": [
+            [
+              "red",
+              100
+            ]
+          ]
+        },
+        "days_to_potential_default": {
+          "min": 30.0,
+          "max": 30.0,
+          "mean": 30.0,
+          "median": 30.0
+        },
+        "npl_probability": {
+          "min": 0.795,
+          "max": 0.99,
+          "mean": 0.9726,
+          "median": 0.99
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-43C6BC35",
+        "loan_id": "LOAN-EC8CBDA4",
+        "months_since_disbursement": 37,
+        "payment_delays_count": 8,
+        "revenue_trend_3m_pct": 18.45,
+        "current_dti": 0.196,
+        "location_score": 50.0
+      },
+      "sample_output": {
+        "npl_probability": 0.962,
+        "alert_level": "red",
+        "days_to_potential_default": 30,
+        "recommended_actions": [
+          "Immediate collection action required",
+          "Collateral valuation and security review",
+          "Mandatory loan restructuring or write-off provisioning"
+        ],
+        "anomaly_flags": [
+          "Multiple payment delays detected"
+        ]
+      }
+    },
+    {
+      "model_id": "M-F5",
+      "block": "F",
+      "name": "Bank Product Recommender",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.006,
+        "p95": 0.007,
+        "mean": 0.006,
+        "min": 0.003,
+        "max": 0.012
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "primary_recommendation": {
+          "top": [
+            [
+              "Business Deposit",
+              47
+            ],
+            [
+              "POS Terminal",
+              22
+            ],
+            [
+              "Business Loan",
+              11
+            ],
+            [
+              "Equipment Leasing",
+              8
+            ],
+            [
+              "Overdraft Facility",
+              7
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-43C6BC35",
+        "mcc_code": "5047",
+        "monthly_revenue": 48382.97,
+        "business_age_months": 45,
+        "existing_products": [
+          "pos_terminal",
+          "business_loan"
+        ],
+        "credit_score": 318.0
+      },
+      "sample_output": {
+        "recommendations": [
+          {
+            "product": "Business Deposit",
+            "type": "deposit",
+            "score": 0.61,
+            "rationale": "Park excess liquidity in a business deposit account for returns.",
+            "amount_range": [
+              1000,
+              1000000
+            ]
+          }
+        ],
+        "primary_recommendation": "Business Deposit",
+        "cross_sell_opportunities": []
+      }
+    },
+    {
+      "model_id": "M-G1",
+      "block": "G",
+      "name": "Customer Segment Profiler",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.01,
+        "p95": 0.014,
+        "mean": 0.011,
+        "min": 0.01,
+        "max": 0.047
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "dominant_segment": {
+          "top": [
+            [
+              "Family Shopper",
+              50
+            ],
+            [
+              "Young Urban Professional",
+              37
+            ],
+            [
+              "Premium Buyer",
+              13
+            ]
+          ]
+        },
+        "total_addressable_customers": {
+          "min": 251.0,
+          "max": 100530.0,
+          "mean": 33743.89,
+          "median": 14137.0
+        }
+      },
+      "sample_input": {
+        "lat": 41.383047,
+        "lon": 69.226484,
+        "radius_m": 300,
+        "mcc_code": "5047"
+      },
+      "sample_output": {
+        "segments": [
+          {
+            "segment_id": "S1",
+            "label": "Young Urban Professional",
+            "avg_age": 28,
+            "avg_income": 900,
+            "top_categories": [
+              "Coffee",
+              "Electronics",
+              "Fitness"
+            ],
+            "visit_frequency": "daily",
+            "share_pct": 31
+          },
+          {
+            "segment_id": "S2",
+            "label": "Family Shopper",
+            "avg_age": 38,
+            "avg_income": 650,
+            "top_categories": [
+              "Groceries",
+              "Kids",
+              "Pharmacy"
+            ],
+            "visit_frequency": "weekly",
+            "share_pct": 17
+          },
+          {
+            "segment_id": "S3",
+            "label": "Premium Buyer",
+            "avg_age": 46,
+            "avg_income": 1400,
+            "top_categories": [
+              "Fine Dining",
+              "Fashion",
+              "Travel"
+            ],
+            "visit_frequency": "weekly",
+            "share_pct": 25
+          },
+          {
+            "segment_id": "S4",
+            "label": "Budget Conscious",
+            "avg_age": 33,
+            "avg_income": 350,
+            "top_categories": [
+              "Discount Retail",
+              "Fast Food",
+              "Transport"
+            ],
+            "visit_frequency": "daily",
+            "share_pct": 27
+          }
+        ],
+        "dominant_segment": "Family Shopper",
+        "total_addressable_customers": 2261
+      }
+    },
+    {
+      "model_id": "M-G2",
+      "block": "G",
+      "name": "Day Population Estimator",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.003,
+        "p95": 0.003,
+        "mean": 0.003,
+        "min": 0.003,
+        "max": 0.009
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "residents": {
+          "min": 157.0,
+          "max": 62831.0,
+          "mean": 21089.59,
+          "median": 8835.0
+        },
+        "total_population": {
+          "min": 227.0,
+          "max": 121891.0,
+          "mean": 38575.74,
+          "median": 12898.0
+        },
+        "transit_passers": {
+          "min": 18.0,
+          "max": 17592.0,
+          "mean": 5125.63,
+          "median": 1099.0
+        },
+        "visitors": {
+          "min": 25.0,
+          "max": 15079.0,
+          "mean": 3763.54,
+          "median": 1413.0
+        },
+        "workers": {
+          "min": 15.0,
+          "max": 31415.0,
+          "mean": 8596.98,
+          "median": 1570.0
+        }
+      },
+      "sample_input": {
+        "lat": 41.383047,
+        "lon": 69.226484,
+        "radius_m": 300,
+        "hour_of_day": 11,
+        "day_of_week": 0
+      },
+      "sample_output": {
+        "residents": 1413,
+        "workers": 706,
+        "visitors": 226,
+        "transit_passers": 395,
+        "total_population": 2740,
+        "hourly_profile": [
+          411,
+          219,
+          137,
+          137,
+          219,
+          685,
+          1507,
+          2329,
+          2740,
+          2603,
+          2466,
+          2411,
+          2329,
+          2192,
+          2137,
+          2246,
+          2520,
+          2740,
+          2603,
+          2192,
+          1863,
+          1424,
+          1041,
+          602
+        ]
+      }
+    },
+    {
+      "model_id": "M-G3",
+      "block": "G",
+      "name": "Consumer Behavior Classifier",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.002,
+        "mean": 0.002,
+        "min": 0.001,
+        "max": 0.005
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "dominant_type": {
+          "top": [
+            [
+              "lunch_regular",
+              75
+            ],
+            [
+              "business_traveller",
+              13
+            ],
+            [
+              "evening_grocer",
+              7
+            ],
+            [
+              "prescription_patient",
+              5
+            ]
+          ]
+        },
+        "marketing_insight": {
+          "top": [
+            [
+              "Mixed consumer base \u2014 invest in broad-range promotions and multi-daypart service.",
+              63
+            ],
+            [
+              "Corporate accounts and booking platform presence are critical. Weekend leisure packages can fill occupancy gaps.",
+              13
+            ],
+            [
+              "Focus on quick-service lunch formats and loyalty programs. Evening premium dining is a strong secondary revenue driver.",
+              12
+            ],
+            [
+              "Stock promotions and bundles for evening shoppers. Weekend large-basket purchases drive the highest revenue per transaction.",
+              7
+            ],
+            [
+              "Convenience and fast service are key. Wellness product cross-sell offers strong upsell potential.",
+              5
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "lat": 41.383047,
+        "lon": 69.226484,
+        "radius_m": 300,
+        "mcc_code": "5047"
+      },
+      "sample_output": {
+        "consumer_types": [
+          {
+            "type": "morning_commuter",
+            "share_pct": 22,
+            "peak_hours": [
+              7,
+              8,
+              9
+            ],
+            "avg_spend": 8,
+            "description": "Quick grab-and-go, pre-work"
+          },
+          {
+            "type": "lunch_regular",
+            "share_pct": 30,
+            "peak_hours": [
+              12,
+              13,
+              14
+            ],
+            "avg_spend": 15,
+            "description": "Work-hour lunch visits"
+          },
+          {
+            "type": "premium_leisure",
+            "share_pct": 18,
+            "peak_hours": [
+              18,
+              19,
+              20
+            ],
+            "avg_spend": 45,
+            "description": "Evening leisure, quality-focused"
+          },
+          {
+            "type": "bargain_hunter",
+            "share_pct": 20,
+            "peak_hours": [
+              10,
+              11,
+              16
+            ],
+            "avg_spend": 9,
+            "description": "Discount-driven, price-sensitive"
+          },
+          {
+            "type": "weekend_family",
+            "share_pct": 10,
+            "peak_hours": [
+              11,
+              12,
+              13
+            ],
+            "avg_spend": 35,
+            "description": "Weekend family outings"
+          }
+        ],
+        "dominant_type": "lunch_regular",
+        "marketing_insight": "Mixed consumer base \u2014 invest in broad-range promotions and multi-daypart service."
+      }
+    },
+    {
+      "model_id": "M-G4",
+      "block": "G",
+      "name": "Brand Affinity Model",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.003,
+        "p95": 0.004,
+        "mean": 0.003,
+        "min": 0.003,
+        "max": 0.016
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "brand_loyalty_index": {
+          "min": 0.17,
+          "max": 0.694,
+          "mean": 0.3314,
+          "median": 0.212
+        },
+        "chain_preference_pct": {
+          "min": 20.0,
+          "max": 81.6,
+          "mean": 39.002,
+          "median": 25.0
+        },
+        "independent_preference_pct": {
+          "min": 18.4,
+          "max": 80.0,
+          "mean": 60.998,
+          "median": 75.0
+        },
+        "opportunity_type": {
+          "top": [
+            [
+              "independent",
+              64
+            ],
+            [
+              "chain",
+              31
+            ],
+            [
+              "mixed",
+              5
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "lat": 41.383047,
+        "lon": 69.226484,
+        "radius_m": 300,
+        "mcc_code": "5047"
+      },
+      "sample_output": {
+        "chain_preference_pct": 64.7,
+        "independent_preference_pct": 35.3,
+        "top_chains": [
+          "Leading Brand A",
+          "Leading Brand B",
+          "Leading Brand C"
+        ],
+        "brand_loyalty_index": 0.55,
+        "opportunity_type": "chain"
+      }
+    },
+    {
+      "model_id": "M-G5",
+      "block": "G",
+      "name": "Spending Power Index",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.082,
+        "p95": 0.095,
+        "mean": 0.084,
+        "min": 0.081,
+        "max": 0.12
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "avg_monthly_spend_per_capita": {
+          "min": 402.5,
+          "max": 554.0,
+          "mean": 462.32,
+          "median": 457.5
+        },
+        "quartile": {
+          "top": [
+            [
+              "Q3",
+              60
+            ],
+            [
+              "Q2",
+              26
+            ],
+            [
+              "Q4",
+              14
+            ]
+          ]
+        },
+        "spending_power_index": {
+          "min": 50.5,
+          "max": 80.8,
+          "mean": 62.464,
+          "median": 61.5
+        }
+      },
+      "sample_input": {
+        "lat": 41.383047,
+        "lon": 69.226484,
+        "radius_m": 300
+      },
+      "sample_output": {
+        "spending_power_index": 78.4,
+        "avg_monthly_spend_per_capita": 542.0,
+        "quartile": "Q4",
+        "heatmap_cells": [
+          {
+            "lat": 41.380344,
+            "lon": 69.222882,
+            "index": 78.5
+          },
+          {
+            "lat": 41.380344,
+            "lon": 69.224683,
+            "index": 78.5
+          },
+          {
+            "lat": 41.380344,
+            "lon": 69.226484,
+            "index": 78.5
+          },
+          {
+            "lat": 41.380344,
+            "lon": 69.228285,
+            "index": 78.5
+          },
+          {
+            "lat": 41.380344,
+            "lon": 69.230086,
+            "index": 78.5
+          },
+          {
+            "lat": 41.381696,
+            "lon": 69.222882,
+            "index": 78.4
+          },
+          {
+            "lat": 41.381696,
+            "lon": 69.224683,
+            "index": 78.5
+          },
+          {
+            "lat": 41.381696,
+            "lon": 69.226484,
+            "index": 78.5
+          },
+          {
+            "lat": 41.381696,
+            "lon": 69.228285,
+            "index": 78.5
+          },
+          {
+            "lat": 41.381696,
+            "lon": 69.230086,
+            "index": 78.5
+          },
+          {
+            "lat": 41.383047,
+            "lon": 69.222882,
+            "index": 78.4
+          },
+          {
+            "lat": 41.383047,
+            "lon": 69.224683,
+            "index": 78.4
+          },
+          {
+            "lat": 41.383047,
+            "lon": 69.226484,
+            "index": 78.4
+          },
+          {
+            "lat": 41.383047,
+            "lon": 69.228285,
+            "index": 78.4
+          },
+          {
+            "lat": 41.383047,
+            "lon": 69.230086,
+            "index": 78.4
+          },
+          {
+            "lat": 41.384398,
+            "lon": 69.222882,
+            "index": 78.4
+          },
+          {
+            "lat": 41.384398,
+            "lon": 69.224683,
+            "index": 78.4
+          },
+          {
+            "lat": 41.384398,
+            "lon": 69.226484,
+            "index": 78.4
+          },
+          {
+            "lat": 41.384398,
+            "lon": 69.228285,
+            "index": 78.4
+          },
+          {
+            "lat": 41.384398,
+            "lon": 69.230086,
+            "index": 78.4
+          },
+          {
+            "lat": 41.38575,
+            "lon": 69.222882,
+            "index": 78.3
+          },
+          {
+            "lat": 41.38575,
+            "lon": 69.224683,
+            "index": 78.3
+          },
+          {
+            "lat": 41.38575,
+            "lon": 69.226484,
+            "index": 78.3
+          },
+          {
+            "lat": 41.38575,
+            "lon": 69.228285,
+            "index": 78.3
+          },
+          {
+            "lat": 41.38575,
+            "lon": 69.230086,
+            "index": 78.3
+          }
+        ],
+        "category_breakdown": {
+          "food": 30.0,
+          "retail": 24.0,
+          "transport": 14.0,
+          "services": 18.0,
+          "entertainment": 14.0
+        }
+      }
+    },
+    {
+      "model_id": "M-H1",
+      "block": "H",
+      "name": "CAC Predictor",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.063,
+        "p95": 0.076,
+        "mean": 0.065,
+        "min": 0.059,
+        "max": 0.159
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "cac_range_high": {
+          "min": 2.88,
+          "max": 80.23,
+          "mean": 40.5931,
+          "median": 38.835
+        },
+        "cac_range_low": {
+          "min": 1.84,
+          "max": 51.34,
+          "mean": 25.9802,
+          "median": 24.855
+        },
+        "channel_efficiency": {
+          "top": [
+            [
+              "good",
+              64
+            ],
+            [
+              "excellent",
+              29
+            ],
+            [
+              "fair",
+              7
+            ]
+          ]
+        },
+        "expected_acquisitions": {
+          "min": 14.6,
+          "max": 29876.2,
+          "mean": 3079.598,
+          "median": 1825.1
+        },
+        "predicted_cac": {
+          "min": 2.3,
+          "max": 64.18,
+          "mean": 32.4748,
+          "median": 31.07
+        }
+      },
+      "sample_input": {
+        "channel": "display",
+        "region_id": "jizzakh-01",
+        "monthly_budget": 57141.56,
+        "industry_mcc": "7011",
+        "target_segment": "enterprise",
+        "historical_cac": 62.71,
+        "competition_intensity": 0.149
+      },
+      "sample_output": {
+        "predicted_cac": 26.06,
+        "cac_range_low": 20.85,
+        "cac_range_high": 32.57,
+        "expected_acquisitions": 2192.7,
+        "channel_efficiency": "good",
+        "drivers": [
+          "display channel has structurally higher CAC",
+          "Industry MCC is competitive (high CAC)"
+        ]
+      }
+    },
+    {
+      "model_id": "M-H2",
+      "block": "H",
+      "name": "LTV / CAC Ratio",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.002,
+        "mean": 0.002,
+        "min": 0.002,
+        "max": 0.007
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "ltv": {
+          "min": 38.71,
+          "max": 18495.8,
+          "mean": 2631.3939,
+          "median": 1627.105
+        },
+        "ltv_cac_ratio": {
+          "min": 0.179,
+          "max": 221.415,
+          "mean": 25.6846,
+          "median": 12.8845
+        },
+        "payback_months": {
+          "min": 0.1,
+          "max": 54.0,
+          "mean": 3.5393,
+          "median": 1.38
+        },
+        "verdict": {
+          "top": [
+            [
+              "excellent",
+              72
+            ],
+            [
+              "marginal",
+              12
+            ],
+            [
+              "healthy",
+              12
+            ],
+            [
+              "unsustainable",
+              4
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "arpu_monthly": 124.57,
+        "gross_margin_pct": 0.392,
+        "monthly_churn_rate": 0.0595,
+        "discount_rate_annual": 0.072,
+        "cac": 138.01
+      },
+      "sample_output": {
+        "ltv": 747.68,
+        "ltv_cac_ratio": 5.418,
+        "payback_months": 2.83,
+        "verdict": "excellent",
+        "recommendations": [
+          "Strong unit economics \u2014 opportunity to invest more aggressively",
+          "Test higher-CAC, higher-LTV channels (e.g., enterprise)"
+        ]
+      }
+    },
+    {
+      "model_id": "M-H3",
+      "block": "H",
+      "name": "Channel Attribution",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.01,
+        "p95": 0.045,
+        "mean": 0.022,
+        "min": 0.003,
+        "max": 0.23
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "method": {
+          "top": [
+            [
+              "shapley_exact",
+              100
+            ]
+          ]
+        },
+        "primary_driver": {
+          "top": [
+            [
+              "referral",
+              30
+            ],
+            [
+              "paid_search",
+              19
+            ],
+            [
+              "direct",
+              16
+            ],
+            [
+              "video",
+              12
+            ],
+            [
+              "email",
+              10
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "journey_id": "JOUR-3459F38D",
+        "touchpoints": [
+          "social",
+          "video"
+        ],
+        "conversion_value": 1151.51
+      },
+      "sample_output": {
+        "weights": {
+          "social": 0.5,
+          "video": 0.5
+        },
+        "credit": {
+          "social": 575.75,
+          "video": 575.75
+        },
+        "primary_driver": "social",
+        "method": "shapley_exact"
+      }
+    },
+    {
+      "model_id": "M-H4",
+      "block": "H",
+      "name": "Promo Uplift Modeling",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.125,
+        "p95": 0.134,
+        "mean": 0.127,
+        "min": 0.116,
+        "max": 0.242
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "control_response_prob": {
+          "min": 0.0932,
+          "max": 0.9199,
+          "mean": 0.532,
+          "median": 0.6286
+        },
+        "expected_incremental_revenue": {
+          "min": -1245.03,
+          "max": 449.86,
+          "mean": -131.371,
+          "median": -97.33
+        },
+        "segment": {
+          "top": [
+            [
+              "sure_thing",
+              53
+            ],
+            [
+              "persuadable",
+              25
+            ],
+            [
+              "sleeping_dog",
+              21
+            ],
+            [
+              "lost_cause",
+              1
+            ]
+          ]
+        },
+        "target_decision": {
+          "top": [
+            [
+              "skip",
+              54
+            ],
+            [
+              "target",
+              25
+            ],
+            [
+              "do_not_disturb",
+              21
+            ]
+          ]
+        },
+        "treated_response_prob": {
+          "min": 0.2495,
+          "max": 0.8382,
+          "mean": 0.5372,
+          "median": 0.5338
+        },
+        "uplift_probability": {
+          "min": -0.4422,
+          "max": 0.507,
+          "mean": 0.0052,
+          "median": -0.0646
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-7546B099",
+        "promo_type": "bundle",
+        "promo_value": 32.69,
+        "customer_recency_days": 283,
+        "customer_frequency_30d": 7,
+        "customer_monetary_30d": 2319.09,
+        "historical_response_rate": 0.384
+      },
+      "sample_output": {
+        "uplift_probability": -0.2026,
+        "treated_response_prob": 0.4931,
+        "control_response_prob": 0.6957,
+        "expected_incremental_revenue": -469.87,
+        "target_decision": "do_not_disturb",
+        "segment": "sleeping_dog"
+      }
+    },
+    {
+      "model_id": "M-H5",
+      "block": "H",
+      "name": "Optimal Pricing",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.002,
+        "p95": 0.003,
+        "mean": 0.003,
+        "min": 0.002,
+        "max": 0.009
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "confidence": {
+          "top": [
+            [
+              "high",
+              69
+            ],
+            [
+              "low",
+              24
+            ],
+            [
+              "medium",
+              7
+            ]
+          ]
+        },
+        "expected_margin": {
+          "min": 5454.25,
+          "max": 4013980.16,
+          "mean": 503628.4423,
+          "median": 326564.29
+        },
+        "expected_revenue": {
+          "min": 11019.08,
+          "max": 12033912.52,
+          "mean": 1089899.724,
+          "median": 512234.805
+        },
+        "expected_units": {
+          "min": 7.22,
+          "max": 137212.63,
+          "mean": 7757.004,
+          "median": 2327.095
+        },
+        "margin_lift_pct": {
+          "min": 0.0,
+          "max": 344.22,
+          "mean": 37.9229,
+          "median": 15.875
+        },
+        "optimal_price": {
+          "min": 10.52,
+          "max": 80750.67,
+          "mean": 1130.2485,
+          "median": 225.155
+        },
+        "revenue_lift_pct": {
+          "min": -30.54,
+          "max": 959.41,
+          "mean": 63.7671,
+          "median": 4.645
+        }
+      },
+      "sample_input": {
+        "product_id": "PROD-4A4769CF",
+        "current_price": 281.29,
+        "current_units_sold": 2531.0,
+        "unit_cost": 196.51,
+        "elasticity_estimate": -1.967,
+        "price_floor": null,
+        "price_ceiling": null
+      },
+      "sample_output": {
+        "optimal_price": 399.73,
+        "expected_units": 1267.98,
+        "expected_revenue": 506843.94,
+        "expected_margin": 257673.59,
+        "revenue_lift_pct": -28.81,
+        "margin_lift_pct": 20.08,
+        "confidence": "high"
+      }
+    },
+    {
+      "model_id": "M-H6",
+      "block": "H",
+      "name": "Lookalike Audience",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.147,
+        "p95": 0.159,
+        "mean": 0.149,
+        "min": 0.139,
+        "max": 0.175
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "avg_similarity": {
+          "min": 0.4425,
+          "max": 0.9999,
+          "mean": 0.9895,
+          "median": 0.9998
+        }
+      },
+      "sample_input": {
+        "seed_customer_features": {
+          "monthly_budget": 57141.56,
+          "historical_cac": 62.71,
+          "competition_intensity": 0.149,
+          "arpu_monthly": 124.57,
+          "gross_margin_pct": 0.392,
+          "monthly_churn_rate": 0.0595,
+          "cac": 138.01,
+          "promo_value": 32.69,
+          "customer_recency_days": 283.0,
+          "customer_frequency_30d": 7.0,
+          "customer_monetary_30d": 2319.09,
+          "current_price": 281.29,
+          "current_units_sold": 2531.0,
+          "unit_cost": 196.51
+        },
+        "candidate_pool": [
+          {
+            "monthly_budget": 15123.28,
+            "historical_cac": 95.99,
+            "competition_intensity": 0.918,
+            "arpu_monthly": 302.6,
+            "gross_margin_pct": 0.483,
+            "monthly_churn_rate": 0.0219,
+            "cac": 127.52,
+            "promo_value": 40.9,
+            "customer_recency_days": 218.0,
+            "customer_frequency_30d": 4.0,
+            "customer_monetary_30d": 1101.31,
+            "current_price": 439.68,
+            "current_units_sold": 4386.0,
+            "unit_cost": 282.86,
+            "customer_id": "CUST-2A57560A"
+          },
+          {
+            "monthly_budget": 43305.69,
+            "historical_cac": 45.39,
+            "competition_intensity": 0.519,
+            "arpu_monthly": 428.32,
+            "gross_margin_pct": 0.661,
+            "monthly_churn_rate": 0.0057,
+            "cac": 65.47,
+            "promo_value": 74.67,
+            "customer_recency_days": 119.0,
+            "customer_frequency_30d": 5.0,
+            "customer_monetary_30d": 287.76,
+            "current_price": 332.49,
+            "current_units_sold": 1874.0,
+            "unit_cost": 209.47,
+            "customer_id": "CUST-009DB096"
+          },
+          {
+            "monthly_budget": 92759.87,
+            "historical_cac": 104.95,
+            "competition_intensity": 0.244,
+            "arpu_monthly": 319.3,
+            "gross_margin_pct": 0.153,
+            "monthly_churn_rate": 0.0141,
+            "cac": 186.44,
+            "promo_value": 60.14,
+            "customer_recency_days": 85.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 1834.01,
+            "current_price": 169.22,
+            "current_units_sold": 4819.0,
+            "unit_cost": 117.66,
+            "customer_id": "CUST-9395EEC9"
+          },
+          {
+            "monthly_budget": 41918.96,
+            "historical_cac": 47.41,
+            "competition_intensity": 0.77,
+            "arpu_monthly": 455.57,
+            "gross_margin_pct": 0.574,
+            "monthly_churn_rate": 0.0699,
+            "cac": 126.06,
+            "promo_value": 168.21,
+            "customer_recency_days": 76.0,
+            "customer_frequency_30d": 3.0,
+            "customer_monetary_30d": 654.69,
+            "current_price": 39.58,
+            "current_units_sold": 1387.0,
+            "unit_cost": 21.44,
+            "customer_id": "CUST-CBE8F475"
+          },
+          {
+            "monthly_budget": 42447.7,
+            "historical_cac": 39.28,
+            "competition_intensity": 0.437,
+            "arpu_monthly": 362.92,
+            "gross_margin_pct": 0.655,
+            "monthly_churn_rate": 0.0398,
+            "cac": 256.35,
+            "promo_value": 72.11,
+            "customer_recency_days": 55.0,
+            "customer_frequency_30d": 2.0,
+            "customer_monetary_30d": 59.71,
+            "current_price": 231.11,
+            "current_units_sold": 3675.0,
+            "unit_cost": 59.28,
+            "customer_id": "CUST-A37A9AB3"
+          },
+          {
+            "monthly_budget": 64750.14,
+            "historical_cac": 199.12,
+            "competition_intensity": 0.632,
+            "arpu_monthly": 339.42,
+            "gross_margin_pct": 0.278,
+            "monthly_churn_rate": 0.0583,
+            "cac": 107.99,
+            "promo_value": 160.77,
+            "customer_recency_days": 49.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 909.78,
+            "current_price": 381.09,
+            "current_units_sold": 4605.0,
+            "unit_cost": 104.07,
+            "customer_id": "CUST-DBF4CBEA"
+          },
+          {
+            "monthly_budget": 48339.83,
+            "historical_cac": 68.61,
+            "competition_intensity": 0.791,
+            "arpu_monthly": 259.21,
+            "gross_margin_pct": 0.726,
+            "monthly_churn_rate": 0.1076,
+            "cac": 159.63,
+            "promo_value": 13.08,
+            "customer_recency_days": 117.0,
+            "customer_frequency_30d": 14.0,
+            "customer_monetary_30d": 387.66,
+            "current_price": 22.59,
+            "current_units_sold": 1315.0,
+            "unit_cost": 12.43,
+            "customer_id": "CUST-89216258"
+          },
+          {
+            "monthly_budget": 17850.24,
+            "historical_cac": 130.67,
+            "competition_intensity": 0.446,
+            "arpu_monthly": 87.07,
+            "gross_margin_pct": 0.413,
+            "monthly_churn_rate": 0.0606,
+            "cac": 185.73,
+            "promo_value": 177.33,
+            "customer_recency_days": 55.0,
+            "customer_frequency_30d": 2.0,
+            "customer_monetary_30d": 271.24,
+            "current_price": 417.98,
+            "current_units_sold": 92.0,
+            "unit_cost": 228.94,
+            "customer_id": "CUST-DEC56B55"
+          },
+          {
+            "monthly_budget": 70906.23,
+            "historical_cac": 82.88,
+            "competition_intensity": 0.413,
+            "arpu_monthly": 95.93,
+            "gross_margin_pct": 0.178,
+            "monthly_churn_rate": 0.078,
+            "cac": 234.21,
+            "promo_value": 67.34,
+            "customer_recency_days": 193.0,
+            "customer_frequency_30d": 1.0,
+            "customer_monetary_30d": 1760.02,
+            "current_price": 450.68,
+            "current_units_sold": 4614.0,
+            "unit_cost": 141.87,
+            "customer_id": "CUST-915365A7"
+          },
+          {
+            "monthly_budget": 92392.61,
+            "historical_cac": 106.09,
+            "competition_intensity": 0.29,
+            "arpu_monthly": 223.14,
+            "gross_margin_pct": 0.472,
+            "monthly_churn_rate": 0.038,
+            "cac": 290.0,
+            "promo_value": 170.27,
+            "customer_recency_days": 52.0,
+            "customer_frequency_30d": 10.0,
+            "customer_monetary_30d": 466.86,
+            "current_price": 374.28,
+            "current_units_sold": 3627.0,
+            "unit_cost": 256.4,
+            "customer_id": "CUST-6417A257"
+          },
+          {
+            "monthly_budget": 75706.0,
+            "historical_cac": 89.54,
+            "competition_intensity": 0.375,
+            "arpu_monthly": 293.45,
+            "gross_margin_pct": 0.701,
+            "monthly_churn_rate": 0.037,
+            "cac": 245.51,
+            "promo_value": 140.03,
+            "customer_recency_days": 69.0,
+            "customer_frequency_30d": 4.0,
+            "customer_monetary_30d": 709.91,
+            "current_price": 408.63,
+            "current_units_sold": 4064.0,
+            "unit_cost": 199.46,
+            "customer_id": "CUST-8CBFFF3B"
+          },
+          {
+            "monthly_budget": 49533.58,
+            "historical_cac": 136.0,
+            "competition_intensity": 0.152,
+            "arpu_monthly": 261.16,
+            "gross_margin_pct": 0.729,
+            "monthly_churn_rate": 0.0471,
+            "cac": 154.79,
+            "promo_value": 157.27,
+            "customer_recency_days": 343.0,
+            "customer_frequency_30d": 9.0,
+            "customer_monetary_30d": 2154.82,
+            "current_price": 167.57,
+            "current_units_sold": 3157.0,
+            "unit_cost": 106.31,
+            "customer_id": "CUST-DBBEBD2E"
+          },
+          {
+            "monthly_budget": 91317.69,
+            "historical_cac": 177.67,
+            "competition_intensity": 0.694,
+            "arpu_monthly": 339.88,
+            "gross_margin_pct": 0.412,
+            "monthly_churn_rate": 0.0832,
+            "cac": 31.29,
+            "promo_value": 157.01,
+            "customer_recency_days": 275.0,
+            "customer_frequency_30d": 7.0,
+            "customer_monetary_30d": 2672.88,
+            "current_price": 78.63,
+            "current_units_sold": 1379.0,
+            "unit_cost": 40.46,
+            "customer_id": "CUST-A4D89863"
+          },
+          {
+            "monthly_budget": 14546.09,
+            "historical_cac": 107.97,
+            "competition_intensity": 0.789,
+            "arpu_monthly": 470.96,
+            "gross_margin_pct": 0.629,
+            "monthly_churn_rate": 0.0476,
+            "cac": 240.25,
+            "promo_value": 174.36,
+            "customer_recency_days": 104.0,
+            "customer_frequency_30d": 2.0,
+            "customer_monetary_30d": 2076.76,
+            "current_price": 384.68,
+            "current_units_sold": 1516.0,
+            "unit_cost": 256.5,
+            "customer_id": "CUST-8795E3B4"
+          },
+          {
+            "monthly_budget": 93980.83,
+            "historical_cac": 120.8,
+            "competition_intensity": 0.195,
+            "arpu_monthly": 210.45,
+            "gross_margin_pct": 0.29,
+            "monthly_churn_rate": 0.0348,
+            "cac": 83.75,
+            "promo_value": 72.45,
+            "customer_recency_days": 351.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 2010.13,
+            "current_price": 115.35,
+            "current_units_sold": 4873.0,
+            "unit_cost": 76.42,
+            "customer_id": "CUST-CCBFF786"
+          },
+          {
+            "monthly_budget": 64745.72,
+            "historical_cac": 33.66,
+            "competition_intensity": 0.967,
+            "arpu_monthly": 129.11,
+            "gross_margin_pct": 0.436,
+            "monthly_churn_rate": 0.0324,
+            "cac": 240.67,
+            "promo_value": 168.43,
+            "customer_recency_days": 149.0,
+            "customer_frequency_30d": 4.0,
+            "customer_monetary_30d": 832.63,
+            "current_price": 94.59,
+            "current_units_sold": 749.0,
+            "unit_cost": 41.77,
+            "customer_id": "CUST-D2226AE3"
+          },
+          {
+            "monthly_budget": 31114.83,
+            "historical_cac": 35.76,
+            "competition_intensity": 0.546,
+            "arpu_monthly": 401.42,
+            "gross_margin_pct": 0.398,
+            "monthly_churn_rate": 0.113,
+            "cac": 128.77,
+            "promo_value": 47.62,
+            "customer_recency_days": 312.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 733.43,
+            "current_price": 51.79,
+            "current_units_sold": 2628.0,
+            "unit_cost": 18.75,
+            "customer_id": "CUST-DA400265"
+          },
+          {
+            "monthly_budget": 77535.36,
+            "historical_cac": 129.21,
+            "competition_intensity": 0.855,
+            "arpu_monthly": 354.52,
+            "gross_margin_pct": 0.832,
+            "monthly_churn_rate": 0.0074,
+            "cac": 242.21,
+            "promo_value": 75.53,
+            "customer_recency_days": 27.0,
+            "customer_frequency_30d": 7.0,
+            "customer_monetary_30d": 1395.72,
+            "current_price": 354.61,
+            "current_units_sold": 4059.0,
+            "unit_cost": 218.99,
+            "customer_id": "CUST-CCC22664"
+          },
+          {
+            "monthly_budget": 25698.46,
+            "historical_cac": 137.5,
+            "competition_intensity": 0.773,
+            "arpu_monthly": 456.3,
+            "gross_margin_pct": 0.761,
+            "monthly_churn_rate": 0.1195,
+            "cac": 82.13,
+            "promo_value": 47.52,
+            "customer_recency_days": 204.0,
+            "customer_frequency_30d": 14.0,
+            "customer_monetary_30d": 254.61,
+            "current_price": 481.24,
+            "current_units_sold": 3934.0,
+            "unit_cost": 193.02,
+            "customer_id": "CUST-2C6326FC"
+          },
+          {
+            "monthly_budget": 56775.92,
+            "historical_cac": 130.92,
+            "competition_intensity": 0.076,
+            "arpu_monthly": 53.96,
+            "gross_margin_pct": 0.453,
+            "monthly_churn_rate": 0.0908,
+            "cac": 278.48,
+            "promo_value": 118.59,
+            "customer_recency_days": 269.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 994.04,
+            "current_price": 38.76,
+            "current_units_sold": 3784.0,
+            "unit_cost": 21.02,
+            "customer_id": "CUST-D80B91BF"
+          },
+          {
+            "monthly_budget": 51994.98,
+            "historical_cac": 69.08,
+            "competition_intensity": 0.777,
+            "arpu_monthly": 275.54,
+            "gross_margin_pct": 0.492,
+            "monthly_churn_rate": 0.0179,
+            "cac": 208.36,
+            "promo_value": 7.3,
+            "customer_recency_days": 273.0,
+            "customer_frequency_30d": 0.0,
+            "customer_monetary_30d": 1043.52,
+            "current_price": 491.08,
+            "current_units_sold": 1367.0,
+            "unit_cost": 220.78,
+            "customer_id": "CUST-4166AA53"
+          },
+          {
+            "monthly_budget": 99387.53,
+            "historical_cac": 149.53,
+            "competition_intensity": 0.302,
+            "arpu_monthly": 411.87,
+            "gross_margin_pct": 0.343,
+            "monthly_churn_rate": 0.073,
+            "cac": 38.83,
+            "promo_value": 89.42,
+            "customer_recency_days": 260.0,
+            "customer_frequency_30d": 0.0,
+            "customer_monetary_30d": 1522.06,
+            "current_price": 469.82,
+            "current_units_sold": 4292.0,
+            "unit_cost": 301.74,
+            "customer_id": "CUST-0ECE3583"
+          },
+          {
+            "monthly_budget": 87261.08,
+            "historical_cac": 134.28,
+            "competition_intensity": 0.519,
+            "arpu_monthly": 342.26,
+            "gross_margin_pct": 0.427,
+            "monthly_churn_rate": 0.0288,
+            "cac": 237.46,
+            "promo_value": 155.18,
+            "customer_recency_days": 338.0,
+            "customer_frequency_30d": 11.0,
+            "customer_monetary_30d": 2703.97,
+            "current_price": 122.25,
+            "current_units_sold": 2643.0,
+            "unit_cost": 37.78,
+            "customer_id": "CUST-54F9EBD5"
+          },
+          {
+            "monthly_budget": 4838.43,
+            "historical_cac": 169.54,
+            "competition_intensity": 0.591,
+            "arpu_monthly": 188.63,
+            "gross_margin_pct": 0.501,
+            "monthly_churn_rate": 0.0236,
+            "cac": 103.94,
+            "promo_value": 35.69,
+            "customer_recency_days": 215.0,
+            "customer_frequency_30d": 0.0,
+            "customer_monetary_30d": 2658.08,
+            "current_price": 64.79,
+            "current_units_sold": 3640.0,
+            "unit_cost": 30.83,
+            "customer_id": "CUST-41263E3F"
+          },
+          {
+            "monthly_budget": 81172.46,
+            "historical_cac": 111.14,
+            "competition_intensity": 0.976,
+            "arpu_monthly": 121.74,
+            "gross_margin_pct": 0.703,
+            "monthly_churn_rate": 0.0117,
+            "cac": 252.7,
+            "promo_value": 125.94,
+            "customer_recency_days": 330.0,
+            "customer_frequency_30d": 2.0,
+            "customer_monetary_30d": 2761.07,
+            "current_price": 468.14,
+            "current_units_sold": 3104.0,
+            "unit_cost": 143.43,
+            "customer_id": "CUST-23613468"
+          },
+          {
+            "monthly_budget": 72723.59,
+            "historical_cac": 36.32,
+            "competition_intensity": 0.523,
+            "arpu_monthly": 306.56,
+            "gross_margin_pct": 0.493,
+            "monthly_churn_rate": 0.0481,
+            "cac": 265.43,
+            "promo_value": 142.79,
+            "customer_recency_days": 144.0,
+            "customer_frequency_30d": 9.0,
+            "customer_monetary_30d": 2735.39,
+            "current_price": 261.41,
+            "current_units_sold": 1189.0,
+            "unit_cost": 111.54,
+            "customer_id": "CUST-B7478FD5"
+          },
+          {
+            "monthly_budget": 16533.76,
+            "historical_cac": 147.97,
+            "competition_intensity": 0.33,
+            "arpu_monthly": 26.43,
+            "gross_margin_pct": 0.42,
+            "monthly_churn_rate": 0.0626,
+            "cac": 29.21,
+            "promo_value": 97.08,
+            "customer_recency_days": 77.0,
+            "customer_frequency_30d": 12.0,
+            "customer_monetary_30d": 1949.4,
+            "current_price": 342.0,
+            "current_units_sold": 2241.0,
+            "unit_cost": 152.49,
+            "customer_id": "CUST-78E6A408"
+          },
+          {
+            "monthly_budget": 83047.28,
+            "historical_cac": 128.4,
+            "competition_intensity": 0.56,
+            "arpu_monthly": 268.36,
+            "gross_margin_pct": 0.341,
+            "monthly_churn_rate": 0.0117,
+            "cac": 112.17,
+            "promo_value": 68.32,
+            "customer_recency_days": 200.0,
+            "customer_frequency_30d": 7.0,
+            "customer_monetary_30d": 943.79,
+            "current_price": 203.6,
+            "current_units_sold": 2465.0,
+            "unit_cost": 50.13,
+            "customer_id": "CUST-DB471C38"
+          },
+          {
+            "monthly_budget": 30664.3,
+            "historical_cac": 30.72,
+            "competition_intensity": 0.162,
+            "arpu_monthly": 106.27,
+            "gross_margin_pct": 0.751,
+            "monthly_churn_rate": 0.0609,
+            "cac": 197.05,
+            "promo_value": 41.13,
+            "customer_recency_days": 84.0,
+            "customer_frequency_30d": 8.0,
+            "customer_monetary_30d": 2914.14,
+            "current_price": 359.42,
+            "current_units_sold": 2124.0,
+            "unit_cost": 150.95,
+            "customer_id": "CUST-84522B05"
+          },
+          {
+            "monthly_budget": 46128.07,
+            "historical_cac": 28.92,
+            "competition_intensity": 0.067,
+            "arpu_monthly": 258.97,
+            "gross_margin_pct": 0.791,
+            "monthly_churn_rate": 0.1102,
+            "cac": 80.62,
+            "promo_value": 102.51,
+            "customer_recency_days": 59.0,
+            "customer_frequency_30d": 6.0,
+            "customer_monetary_30d": 2934.8,
+            "current_price": 449.96,
+            "current_units_sold": 3572.0,
+            "unit_cost": 304.4,
+            "customer_id": "CUST-FEEE07B3"
+          },
+          {
+            "monthly_budget": 67649.7,
+            "historical_cac": 9.98,
+            "competition_intensity": 0.227,
+            "arpu_monthly": 64.04,
+            "gross_margin_pct": 0.289,
+            "monthly_churn_rate": 0.0058,
+            "cac": 214.77,
+            "promo_value": 142.05,
+            "customer_recency_days": 9.0,
+            "customer_frequency_30d": 1.0,
+            "customer_monetary_30d": 1322.5,
+            "current_price": 187.64,
+            "current_units_sold": 979.0,
+            "unit_cost": 75.58,
+            "customer_id": "CUST-10FB5CBA"
+          },
+          {
+            "monthly_budget": 64119.8,
+            "historical_cac": 92.81,
+            "competition_intensity": 0.299,
+            "arpu_monthly": 31.46,
+            "gross_margin_pct": 0.598,
+            "monthly_churn_rate": 0.0082,
+            "cac": 295.06,
+            "promo_value": 162.95,
+            "customer_recency_days": 167.0,
+            "customer_frequency_30d": 0.0,
+            "customer_monetary_30d": 975.16,
+            "current_price": 337.65,
+            "current_units_sold": 1439.0,
+            "unit_cost": 77.95,
+            "customer_id": "CUST-23C35F0F"
+          },
+          {
+            "monthly_budget": 12186.94,
+            "historical_cac": 19.49,
+            "competition_intensity": 0.243,
+            "arpu_monthly": 222.21,
+            "gross_margin_pct": 0.731,
+            "monthly_churn_rate": 0.0988,
+            "cac": 45.72,
+            "promo_value": 59.23,
+            "customer_recency_days": 214.0,
+            "customer_frequency_30d": 6.0,
+            "customer_monetary_30d": 1876.06,
+            "current_price": 490.83,
+            "current_units_sold": 856.0,
+            "unit_cost": 114.77,
+            "customer_id": "CUST-52EF3E56"
+          },
+          {
+            "monthly_budget": 22192.74,
+            "historical_cac": 164.54,
+            "competition_intensity": 0.072,
+            "arpu_monthly": 285.33,
+            "gross_margin_pct": 0.774,
+            "monthly_churn_rate": 0.0474,
+            "cac": 283.75,
+            "promo_value": 128.71,
+            "customer_recency_days": 11.0,
+            "customer_frequency_30d": 13.0,
+            "customer_monetary_30d": 358.22,
+            "current_price": 212.63,
+            "current_units_sold": 3259.0,
+            "unit_cost": 146.62,
+            "customer_id": "CUST-536CF5E3"
+          },
+          {
+            "monthly_budget": 66115.92,
+            "historical_cac": 183.81,
+            "competition_intensity": 0.415,
+            "arpu_monthly": 493.34,
+            "gross_margin_pct": 0.829,
+            "monthly_churn_rate": 0.1011,
+            "cac": 268.85,
+            "promo_value": 93.14,
+            "customer_recency_days": 38.0,
+            "customer_frequency_30d": 7.0,
+            "customer_monetary_30d": 313.91,
+            "current_price": 107.25,
+            "current_units_sold": 2892.0,
+            "unit_cost": 26.15,
+            "customer_id": "CUST-DE395CA5"
+          },
+          {
+            "monthly_budget": 4987.26,
+            "historical_cac": 57.38,
+            "competition_intensity": 0.561,
+            "arpu_monthly": 139.14,
+            "gross_margin_pct": 0.482,
+            "monthly_churn_rate": 0.0063,
+            "cac": 279.43,
+            "promo_value": 45.7,
+            "customer_recency_days": 58.0,
+            "customer_frequency_30d": 0.0,
+            "customer_monetary_30d": 1854.22,
+            "current_price": 329.23,
+            "current_units_sold": 814.0,
+            "unit_cost": 201.08,
+            "customer_id": "CUST-BEB972C2"
+          },
+          {
+            "monthly_budget": 51412.19,
+            "historical_cac": 134.92,
+            "competition_intensity": 0.627,
+            "arpu_monthly": 343.57,
+            "gross_margin_pct": 0.748,
+            "monthly_churn_rate": 0.0962,
+            "cac": 56.04,
+            "promo_value": 112.16,
+            "customer_recency_days": 162.0,
+            "customer_frequency_30d": 13.0,
+            "customer_monetary_30d": 1933.25,
+            "current_price": 66.22,
+            "current_units_sold": 4482.0,
+            "unit_cost": 40.66,
+            "customer_id": "CUST-7E217853"
+          },
+          {
+            "monthly_budget": 58612.81,
+            "historical_cac": 124.58,
+            "competition_intensity": 0.744,
+            "arpu_monthly": 247.25,
+            "gross_margin_pct": 0.631,
+            "monthly_churn_rate": 0.1056,
+            "cac": 105.04,
+            "promo_value": 144.73,
+            "customer_recency_days": 47.0,
+            "customer_frequency_30d": 14.0,
+            "customer_monetary_30d": 2494.5,
+            "current_price": 267.43,
+            "current_units_sold": 4895.0,
+            "unit_cost": 136.29,
+            "customer_id": "CUST-ACA3F7D9"
+          },
+          {
+            "monthly_budget": 50763.34,
+            "historical_cac": 17.49,
+            "competition_intensity": 0.287,
+            "arpu_monthly": 361.78,
+            "gross_margin_pct": 0.63,
+            "monthly_churn_rate": 0.0056,
+            "cac": 26.22,
+            "promo_value": 46.51,
+            "customer_recency_days": 346.0,
+            "customer_frequency_30d": 13.0,
+            "customer_monetary_30d": 2041.21,
+            "current_price": 161.12,
+            "current_units_sold": 1062.0,
+            "unit_cost": 104.2,
+            "customer_id": "CUST-24C83CAF"
+          },
+          {
+            "monthly_budget": 18894.22,
+            "historical_cac": 102.53,
+            "competition_intensity": 0.963,
+            "arpu_monthly": 91.91,
+            "gross_margin_pct": 0.3,
+            "monthly_churn_rate": 0.0693,
+            "cac": 188.03,
+            "promo_value": 148.33,
+            "customer_recency_days": 325.0,
+            "customer_frequency_30d": 4.0,
+            "customer_monetary_30d": 646.79,
+            "current_price": 372.39,
+            "current_units_sold": 4803.0,
+            "unit_cost": 168.14,
+            "customer_id": "CUST-53395453"
+          },
+          {
+            "monthly_budget": 35106.67,
+            "historical_cac": 33.19,
+            "competition_intensity": 0.321,
+            "arpu_monthly": 238.91,
+            "gross_margin_pct": 0.353,
+            "monthly_churn_rate": 0.0118,
+            "cac": 237.93,
+            "promo_value": 116.18,
+            "customer_recency_days": 201.0,
+            "customer_frequency_30d": 1.0,
+            "customer_monetary_30d": 2327.8,
+            "current_price": 335.8,
+            "current_units_sold": 4803.0,
+            "unit_cost": 200.77,
+            "customer_id": "CUST-DE3E31A3"
+          },
+          {
+            "monthly_budget": 31558.7,
+            "historical_cac": 33.11,
+            "competition_intensity": 0.528,
+            "arpu_monthly": 355.4,
+            "gross_margin_pct": 0.237,
+            "monthly_churn_rate": 0.0297,
+            "cac": 237.79,
+            "promo_value": 190.5,
+            "customer_recency_days": 224.0,
+            "customer_frequency_30d": 14.0,
+            "customer_monetary_30d": 2324.45,
+            "current_price": 381.63,
+            "current_units_sold": 3464.0,
+            "unit_cost": 190.12,
+            "customer_id": "CUST-B95F16FA"
+          },
+          {
+            "monthly_budget": 84409.09,
+            "historical_cac": 66.44,
+            "competition_intensity": 0.514,
+            "arpu_monthly": 386.62,
+            "gross_margin_pct": 0.426,
+            "monthly_churn_rate": 0.0319,
+            "cac": 168.01,
+            "promo_value": 190.22,
+            "customer_recency_days": 53.0,
+            "customer_frequency_30d": 9.0,
+            "customer_monetary_30d": 275.82,
+            "current_price": 285.62,
+            "current_units_sold": 1702.0,
+            "unit_cost": 105.58,
+            "customer_id": "CUST-00A244BC"
+          },
+          {
+            "monthly_budget": 63796.43,
+            "historical_cac": 38.27,
+            "competition_intensity": 0.146,
+            "arpu_monthly": 385.74,
+            "gross_margin_pct": 0.583,
+            "monthly_churn_rate": 0.0484,
+            "cac": 43.21,
+            "promo_value": 7.97,
+            "customer_recency_days": 356.0,
+            "customer_frequency_30d": 12.0,
+            "customer_monetary_30d": 2982.65,
+            "current_price": 384.33,
+            "current_units_sold": 3106.0,
+            "unit_cost": 215.94,
+            "customer_id": "CUST-94B377A5"
+          },
+          {
+            "monthly_budget": 62659.85,
+            "historical_cac": 150.48,
+            "competition_intensity": 0.741,
+            "arpu_monthly": 455.57,
+            "gross_margin_pct": 0.778,
+            "monthly_churn_rate": 0.1039,
+            "cac": 22.38,
+            "promo_value": 172.74,
+            "customer_recency_days": 136.0,
+            "customer_frequency_30d": 9.0,
+            "customer_monetary_30d": 1201.4,
+            "current_price": 310.75,
+            "current_units_sold": 1838.0,
+            "unit_cost": 76.95,
+            "customer_id": "CUST-AE964F72"
+          },
+          {
+            "monthly_budget": 75564.17,
+            "historical_cac": 149.17,
+            "competition_intensity": 0.168,
+            "arpu_monthly": 301.83,
+            "gross_margin_pct": 0.154,
+            "monthly_churn_rate": 0.0695,
+            "cac": 33.72,
+            "promo_value": 7.03,
+            "customer_recency_days": 17.0,
+            "customer_frequency_30d": 6.0,
+            "customer_monetary_30d": 1382.3,
+            "current_price": 245.85,
+            "current_units_sold": 2288.0,
+            "unit_cost": 50.04,
+            "customer_id": "CUST-7EB21105"
+          },
+          {
+            "monthly_budget": 72379.83,
+            "historical_cac": 175.34,
+            "competition_intensity": 0.684,
+            "arpu_monthly": 82.72,
+            "gross_margin_pct": 0.746,
+            "monthly_churn_rate": 0.0489,
+            "cac": 292.5,
+            "promo_value": 123.42,
+            "customer_recency_days": 51.0,
+            "customer_frequency_30d": 4.0,
+            "customer_monetary_30d": 589.41,
+            "current_price": 58.11,
+            "current_units_sold": 3076.0,
+            "unit_cost": 13.2,
+            "customer_id": "CUST-51A1867C"
+          },
+          {
+            "monthly_budget": 6168.98,
+            "historical_cac": 112.63,
+            "competition_intensity": 0.224,
+            "arpu_monthly": 269.25,
+            "gross_margin_pct": 0.444,
+            "monthly_churn_rate": 0.0656,
+            "cac": 294.26,
+            "promo_value": 155.36,
+            "customer_recency_days": 99.0,
+            "customer_frequency_30d": 9.0,
+            "customer_monetary_30d": 2464.61,
+            "current_price": 456.67,
+            "current_units_sold": 1629.0,
+            "unit_cost": 292.9,
+            "customer_id": "CUST-2F68BA96"
+          },
+          {
+            "monthly_budget": 4590.09,
+            "historical_cac": 141.47,
+            "competition_intensity": 0.724,
+            "arpu_monthly": 462.92,
+            "gross_margin_pct": 0.702,
+            "monthly_churn_rate": 0.0567,
+            "cac": 141.6,
+            "promo_value": 177.85,
+            "customer_recency_days": 279.0,
+            "customer_frequency_30d": 2.0,
+            "customer_monetary_30d": 605.07,
+            "current_price": 328.43,
+            "current_units_sold": 3571.0,
+            "unit_cost": 119.66,
+            "customer_id": "CUST-FA29F5DE"
+          },
+          {
+            "monthly_budget": 11141.83,
+            "historical_cac": 47.89,
+            "competition_intensity": 0.495,
+            "arpu_monthly": 269.16,
+            "gross_margin_pct": 0.837,
+            "monthly_churn_rate": 0.0959,
+            "cac": 233.67,
+            "promo_value": 196.42,
+            "customer_recency_days": 13.0,
+            "customer_frequency_30d": 10.0,
+            "customer_monetary_30d": 1227.69,
+            "current_price": 15.36,
+            "current_units_sold": 958.0,
+            "unit_cost": 6.18,
+            "customer_id": "CUST-811DD45C"
+          }
+        ],
+        "top_k": 10
+      },
+      "sample_output": {
+        "matches": [
+          {
+            "customer_id": "CUST-23613468",
+            "similarity": 1.0
+          },
+          {
+            "customer_id": "CUST-94B377A5",
+            "similarity": 1.0
+          },
+          {
+            "customer_id": "CUST-DBBEBD2E",
+            "similarity": 0.9998
+          },
+          {
+            "customer_id": "CUST-CCBFF786",
+            "similarity": 0.9998
+          },
+          {
+            "customer_id": "CUST-54F9EBD5",
+            "similarity": 0.9998
+          },
+          {
+            "customer_id": "CUST-9395EEC9",
+            "similarity": 0.9997
+          },
+          {
+            "customer_id": "CUST-915365A7",
+            "similarity": 0.9997
+          },
+          {
+            "customer_id": "CUST-CCC22664",
+            "similarity": 0.9997
+          },
+          {
+            "customer_id": "CUST-0ECE3583",
+            "similarity": 0.9997
+          },
+          {
+            "customer_id": "CUST-24C83CAF",
+            "similarity": 0.9997
+          }
+        ],
+        "avg_similarity": 0.9998,
+        "seed_features_used": [
+          "monthly_budget",
+          "historical_cac",
+          "competition_intensity",
+          "arpu_monthly",
+          "gross_margin_pct",
+          "monthly_churn_rate",
+          "cac",
+          "promo_value",
+          "customer_recency_days",
+          "customer_frequency_30d",
+          "customer_monetary_30d",
+          "current_price",
+          "current_units_sold",
+          "unit_cost"
+        ]
+      }
+    },
+    {
+      "model_id": "M-I1",
+      "block": "I",
+      "name": "Inventory Optimizer",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.038,
+        "p95": 0.044,
+        "mean": 0.038,
+        "min": 0.035,
+        "max": 0.108
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "annual_orders": {
+          "min": 7.38,
+          "max": 211.99,
+          "mean": 73.4329,
+          "median": 68.41
+        },
+        "economic_order_quantity": {
+          "min": 98.84,
+          "max": 4072.24,
+          "mean": 840.666,
+          "median": 656.455
+        },
+        "reorder_point": {
+          "min": 47.0,
+          "max": 11260.39,
+          "mean": 3674.3311,
+          "median": 3204.56
+        },
+        "safety_stock": {
+          "min": 0.98,
+          "max": 404.83,
+          "mean": 117.3871,
+          "median": 102.07
+        },
+        "target_service_level": {
+          "min": 0.85,
+          "max": 0.99,
+          "mean": 0.9203,
+          "median": 0.92
+        },
+        "total_annual_cost": {
+          "min": 453.81,
+          "max": 37197.08,
+          "mean": 16521.5675,
+          "median": 15120.74
+        }
+      },
+      "sample_input": {
+        "sku_id": "SKU-FD45B38F",
+        "annual_demand": 45787.0,
+        "unit_cost": 137.31,
+        "ordering_cost": 55.78,
+        "holding_cost_pct": 0.188,
+        "lead_time_days": 17.3,
+        "demand_std_daily": 29.09,
+        "service_level": 0.985
+      },
+      "sample_output": {
+        "economic_order_quantity": 444.83,
+        "reorder_point": 2432.75,
+        "safety_stock": 262.57,
+        "annual_orders": 102.93,
+        "total_annual_cost": 18261.05,
+        "target_service_level": 0.985
+      }
+    },
+    {
+      "model_id": "M-I2",
+      "block": "I",
+      "name": "Stockout Risk",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.024,
+        "p95": 0.029,
+        "mean": 0.024,
+        "min": 0.022,
+        "max": 0.059
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "days_of_cover": {
+          "min": 4.24,
+          "max": 2362.19,
+          "mean": 157.5094,
+          "median": 60.085
+        },
+        "expected_stockout_days": {
+          "min": 0.0,
+          "max": 100.42,
+          "mean": 23.9108,
+          "median": 6.27
+        },
+        "recommended_action": {
+          "top": [
+            [
+              "Emergency procurement; communicate ETAs to customers",
+              55
+            ],
+            [
+              "No action required",
+              41
+            ],
+            [
+              "Expedite reorder; consider partial shipment from alt supplier",
+              3
+            ],
+            [
+              "Place a replenishment order at next review cycle",
+              1
+            ]
+          ]
+        },
+        "risk_level": {
+          "top": [
+            [
+              "critical",
+              55
+            ],
+            [
+              "low",
+              41
+            ],
+            [
+              "high",
+              3
+            ],
+            [
+              "medium",
+              1
+            ]
+          ]
+        },
+        "stockout_probability": {
+          "min": 0.001,
+          "max": 0.999,
+          "mean": 0.5492,
+          "median": 0.904
+        }
+      },
+      "sample_input": {
+        "sku_id": "SKU-FD45B38F",
+        "on_hand_units": 2277.0,
+        "on_order_units": 4027.0,
+        "daily_demand_mean": 93.38,
+        "daily_demand_std": 16.05,
+        "lead_time_days_mean": 4.1,
+        "lead_time_days_std": 2.87,
+        "horizon_days": 58
+      },
+      "sample_output": {
+        "stockout_probability": 0.0442,
+        "expected_stockout_days": 0.0,
+        "days_of_cover": 67.51,
+        "risk_level": "low",
+        "recommended_action": "No action required"
+      }
+    },
+    {
+      "model_id": "M-I3",
+      "block": "I",
+      "name": "Supplier Risk Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.003,
+        "p95": 0.004,
+        "mean": 0.003,
+        "min": 0.002,
+        "max": 0.012
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "primary_risk_factor": {
+          "top": [
+            [
+              "quality",
+              47
+            ],
+            [
+              "concentration",
+              19
+            ],
+            [
+              "geopolitical",
+              16
+            ],
+            [
+              "single_source",
+              11
+            ],
+            [
+              "delivery",
+              7
+            ]
+          ]
+        },
+        "risk_band": {
+          "top": [
+            [
+              "medium",
+              71
+            ],
+            [
+              "low",
+              26
+            ],
+            [
+              "high",
+              3
+            ]
+          ]
+        },
+        "risk_score": {
+          "min": 110.0,
+          "max": 585.0,
+          "mean": 322.73,
+          "median": 314.5
+        }
+      },
+      "sample_input": {
+        "supplier_id": "SUP-11141FF1",
+        "months_active": 66,
+        "on_time_delivery_rate": 0.96,
+        "quality_defect_rate": 0.0591,
+        "payment_terms_days": 15,
+        "payment_delay_avg_days": 29.8,
+        "revenue_concentration_pct": 0.212,
+        "single_source_flag": true,
+        "geopolitical_risk": 0.623
+      },
+      "sample_output": {
+        "risk_score": 416.0,
+        "risk_band": "medium",
+        "primary_risk_factor": "single_source",
+        "contingency_actions": [
+          "Quarterly performance review",
+          "Identify back-up supplier for top SKUs"
+        ]
+      }
+    },
+    {
+      "model_id": "M-I4",
+      "block": "I",
+      "name": "Staffing Optimizer",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.005,
+        "p95": 0.006,
+        "mean": 0.005,
+        "min": 0.005,
+        "max": 0.015
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "estimated_labor_cost": {
+          "min": 313.0,
+          "max": 4103.05,
+          "mean": 1170.172,
+          "median": 997.06
+        },
+        "peak_hour": {
+          "min": 6.0,
+          "max": 21.0,
+          "mean": 12.13,
+          "median": 12.0
+        },
+        "peak_hour_staff": {
+          "min": 2.0,
+          "max": 14.0,
+          "mean": 6.39,
+          "median": 5.0
+        },
+        "total_staff_hours": {
+          "min": 20.0,
+          "max": 133.0,
+          "mean": 53.68,
+          "median": 49.5
+        }
+      },
+      "sample_input": {
+        "location_id": "LOC-B1F964D8",
+        "hourly_demand": [
+          64.7,
+          7.0,
+          46.2,
+          72.7,
+          53.2,
+          13.5,
+          25.6,
+          7.9,
+          27.7,
+          46.9,
+          43.2,
+          43.0,
+          71.0,
+          8.1,
+          42.3,
+          10.3,
+          10.0,
+          50.9,
+          5.0,
+          20.3,
+          75.0,
+          58.6,
+          70.7,
+          26.0
+        ],
+        "units_per_staff_hour": 6.62,
+        "min_staff_per_open_hour": 2,
+        "max_staff": 20,
+        "hourly_wage": 15.48,
+        "open_hour": 7,
+        "close_hour": 21
+      },
+      "sample_output": {
+        "hourly_staff": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          5,
+          8,
+          7,
+          7,
+          11,
+          2,
+          7,
+          2,
+          2,
+          8,
+          2,
+          4,
+          12,
+          9,
+          0,
+          0
+        ],
+        "total_staff_hours": 88.0,
+        "estimated_labor_cost": 1362.24,
+        "peak_hour": 20,
+        "peak_hour_staff": 12
+      }
+    },
+    {
+      "model_id": "M-I5",
+      "block": "I",
+      "name": "Delivery Routing (VRP)",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.041,
+        "p95": 0.049,
+        "mean": 0.042,
+        "min": 0.039,
+        "max": 0.067
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "method": {
+          "top": [
+            [
+              "clarke_wright_savings",
+              100
+            ]
+          ]
+        },
+        "n_vehicles_used": {
+          "min": 1.0,
+          "max": 3.0,
+          "mean": 1.24,
+          "median": 1.0
+        },
+        "total_distance_km": {
+          "min": 19.302,
+          "max": 35.368,
+          "mean": 27.5936,
+          "median": 27.7115
+        }
+      },
+      "sample_input": {
+        "depot_lat": 41.45003,
+        "depot_lon": 68.19991,
+        "stops": [
+          {
+            "stop_id": "S1",
+            "lat": 41.41256,
+            "lon": 68.15854,
+            "demand": 9.48
+          },
+          {
+            "stop_id": "S2",
+            "lat": 41.4947,
+            "lon": 68.15609,
+            "demand": 10.81
+          },
+          {
+            "stop_id": "S3",
+            "lat": 41.48257,
+            "lon": 68.16683,
+            "demand": 5.81
+          },
+          {
+            "stop_id": "S4",
+            "lat": 41.46627,
+            "lon": 68.20384,
+            "demand": 13.62
+          },
+          {
+            "stop_id": "S5",
+            "lat": 41.44224,
+            "lon": 68.20169,
+            "demand": 17.95
+          },
+          {
+            "stop_id": "S6",
+            "lat": 41.48937,
+            "lon": 68.16597,
+            "demand": 16.93
+          },
+          {
+            "stop_id": "S7",
+            "lat": 41.40476,
+            "lon": 68.22548,
+            "demand": 9.68
+          },
+          {
+            "stop_id": "S8",
+            "lat": 41.47766,
+            "lon": 68.221,
+            "demand": 15.62
+          }
+        ],
+        "vehicle_capacity": 120.6,
+        "n_vehicles": 5
+      },
+      "sample_output": {
+        "routes": [
+          {
+            "vehicle_id": 1,
+            "stop_sequence": [
+              "S5",
+              "S7",
+              "S1",
+              "S3",
+              "S2",
+              "S6",
+              "S8",
+              "S4"
+            ],
+            "distance_km": 30.103,
+            "load": 99.9
+          }
+        ],
+        "total_distance_km": 30.103,
+        "n_vehicles_used": 1,
+        "unrouted_stops": [],
+        "method": "clarke_wright_savings"
+      }
+    },
+    {
+      "model_id": "M-J1",
+      "block": "J",
+      "name": "Transaction Anomaly Detection",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.626,
+        "p95": 0.657,
+        "mean": 0.626,
+        "min": 0.576,
+        "max": 0.849
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "anomaly_score": {
+          "min": 0.405,
+          "max": 0.99,
+          "mean": 0.9008,
+          "median": 0.9575
+        },
+        "is_anomaly": {
+          "true": 99,
+          "false": 1
+        },
+        "recommended_action": {
+          "top": [
+            [
+              "Decline and flag for review",
+              85
+            ],
+            [
+              "Step-up authentication required",
+              14
+            ],
+            [
+              "Allow with monitoring",
+              1
+            ]
+          ]
+        },
+        "risk_level": {
+          "top": [
+            [
+              "critical",
+              85
+            ],
+            [
+              "high",
+              14
+            ],
+            [
+              "medium",
+              1
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-5BF594C1",
+        "transaction_id": "TXN-C5DE5C87",
+        "amount": 2123.53,
+        "mcc_code": "5411",
+        "txn_count_last_24h": 21,
+        "txn_count_last_7d": 27,
+        "avg_amount_last_30d": 246.0,
+        "distinct_merchants_last_24h": 14,
+        "is_foreign": false,
+        "is_cnp": false,
+        "hour_of_day": 5
+      },
+      "sample_output": {
+        "anomaly_score": 0.99,
+        "is_anomaly": true,
+        "risk_level": "critical",
+        "triggered_rules": [
+          "Amount exceeds 5\u00d7 30-day average",
+          "Velocity > 15 txns in 24h",
+          "Burst across many merchants in 24h"
+        ],
+        "recommended_action": "Decline and flag for review"
+      }
+    },
+    {
+      "model_id": "M-J2",
+      "block": "J",
+      "name": "Merchant Fraud Score",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.194,
+        "p95": 0.393,
+        "mean": 0.219,
+        "min": 0.169,
+        "max": 0.49
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "decision": {
+          "top": [
+            [
+              "monitor",
+              79
+            ],
+            [
+              "restrict",
+              16
+            ],
+            [
+              "suspend",
+              5
+            ]
+          ]
+        },
+        "fraud_probability": {
+          "min": 0.0854,
+          "max": 0.8264,
+          "mean": 0.3531,
+          "median": 0.3031
+        },
+        "fraud_score": {
+          "min": 85.0,
+          "max": 826.0,
+          "mean": 353.22,
+          "median": 303.0
+        },
+        "risk_band": {
+          "top": [
+            [
+              "low",
+              41
+            ],
+            [
+              "medium",
+              38
+            ],
+            [
+              "high",
+              16
+            ],
+            [
+              "severe",
+              5
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "merchant_id": "MER-9A5EBAC8",
+        "mcc_code": "5411",
+        "months_active": 24,
+        "chargeback_rate_30d": 0.0758,
+        "refund_rate_30d": 0.0989,
+        "avg_ticket_size": 528.37,
+        "txn_velocity_per_day": 21.37,
+        "pct_cnp_transactions": 0.204,
+        "pct_foreign_cards": 0.233,
+        "prior_complaints_count": 0
+      },
+      "sample_output": {
+        "fraud_score": 236.0,
+        "fraud_probability": 0.2355,
+        "risk_band": "low",
+        "decision": "monitor",
+        "risk_factors": [
+          "Chargeback rate 7.6% above 2% benchmark"
+        ]
+      }
+    },
+    {
+      "model_id": "M-J3",
+      "block": "J",
+      "name": "AML Suspicious Pattern Detection",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.003,
+        "p95": 0.005,
+        "mean": 0.003,
+        "min": 0.003,
+        "max": 0.014
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "confidence": {
+          "min": 0.503,
+          "max": 1.0,
+          "mean": 0.693,
+          "median": 0.673
+        },
+        "sar_recommended": {
+          "true": 79,
+          "false": 21
+        },
+        "suspicion_score": {
+          "min": 0.163,
+          "max": 0.9,
+          "mean": 0.6299,
+          "median": 0.65
+        },
+        "typology": {
+          "top": [
+            [
+              "layering",
+              41
+            ],
+            [
+              "structuring",
+              34
+            ],
+            [
+              "integration",
+              16
+            ],
+            [
+              "none",
+              9
+            ]
+          ]
+        }
+      },
+      "sample_input": {
+        "customer_id": "CUST-5BF594C1",
+        "cash_deposits_last_7d": 5,
+        "cash_amount_last_7d": 23861.09,
+        "structuring_threshold": 10000.0,
+        "near_threshold_deposits_30d": 10,
+        "rapid_in_out_count_30d": 4,
+        "distinct_counterparties_30d": 4,
+        "cross_border_count_30d": 11,
+        "high_risk_jurisdiction_count": 0
+      },
+      "sample_output": {
+        "suspicion_score": 0.65,
+        "typology": "structuring",
+        "sar_recommended": true,
+        "triggered_typologies": [
+          "structuring"
+        ],
+        "confidence": 0.857
+      }
+    },
+    {
+      "model_id": "M-J4",
+      "block": "J",
+      "name": "Synthetic Identity Detection",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.051,
+        "p95": 0.554,
+        "mean": 0.172,
+        "min": 0.049,
+        "max": 0.789
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "confidence_band": {
+          "top": [
+            [
+              "low",
+              98
+            ],
+            [
+              "medium",
+              2
+            ]
+          ]
+        },
+        "is_synthetic": {
+          "true": 0,
+          "false": 100
+        },
+        "synthetic_probability": {
+          "min": 0.01,
+          "max": 0.4163,
+          "mean": 0.0708,
+          "median": 0.0464
+        }
+      },
+      "sample_input": {
+        "applicant_id": "APP-AD8ACD2F",
+        "credit_file_age_months": 225,
+        "credit_inquiries_last_6m": 9,
+        "address_changes_last_24m": 0,
+        "ssn_age_norm": 0.826,
+        "phone_tenure_months": 72,
+        "email_tenure_months": 116,
+        "distinct_names_at_address": 3,
+        "employer_verifiable": true
+      },
+      "sample_output": {
+        "synthetic_probability": 0.0335,
+        "is_synthetic": false,
+        "confidence_band": "low",
+        "contributing_factors": [
+          "High inquiry velocity (\u22656 in 6 months)"
+        ],
+        "verification_steps": [
+          "Standard KYC sufficient"
+        ]
+      }
+    },
+    {
+      "model_id": "M-J5",
+      "block": "J",
+      "name": "Application Fraud Detection",
+      "version": "1.0.0",
+      "is_stub": false,
+      "n_rows": 100,
+      "n_success": 100,
+      "n_validation_errors": 0,
+      "n_runtime_errors": 0,
+      "success_rate": 1.0,
+      "latency_ms": {
+        "p50": 0.068,
+        "p95": 0.076,
+        "mean": 0.069,
+        "min": 0.062,
+        "max": 0.163
+      },
+      "explain_latency_ms": null,
+      "validation_error_samples": [],
+      "runtime_error_samples": [],
+      "runtime_error_traceback": null,
+      "output_summary": {
+        "decision": {
+          "top": [
+            [
+              "deny",
+              81
+            ],
+            [
+              "review",
+              19
+            ]
+          ]
+        },
+        "fraud_probability": {
+          "min": 0.3487,
+          "max": 0.9155,
+          "mean": 0.7394,
+          "median": 0.748
+        },
+        "income_discrepancy_pct": {
+          "min": -36.4,
+          "max": 140.65,
+          "mean": 25.2724,
+          "median": 15.29
+        },
+        "risk_score": {
+          "min": 349.0,
+          "max": 916.0,
+          "mean": 739.45,
+          "median": 748.0
+        }
+      },
+      "sample_input": {
+        "application_id": "APPL-7A89DD8C",
+        "applications_last_24h": 2,
+        "applications_last_30d": 2,
+        "device_seen_count_30d": 2,
+        "ip_seen_count_30d": 4,
+        "declared_income": 7091.0,
+        "bureau_income_estimate": 4791.15,
+        "document_quality_score": 0.969,
+        "velocity_score": 0.117,
+        "geolocation_mismatch": false
+      },
+      "sample_output": {
+        "fraud_probability": 0.7634,
+        "decision": "deny",
+        "fraud_indicators": [
+          "Declared income off bureau estimate by 48%"
+        ],
+        "income_discrepancy_pct": 48.0,
+        "risk_score": 763.0
+      }
+    }
+  ]
+}

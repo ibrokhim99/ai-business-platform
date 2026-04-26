@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.env
+!.env.example
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.xml
+
+# MyPy
+.mypy_cache/
+
+# MLflow
+mlflow.db
+mlruns/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.npm
+
+# Docker
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets (never commit these)
+*.pem
+*.key
+ssl/

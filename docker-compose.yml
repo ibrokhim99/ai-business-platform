@@ -1,0 +1,141 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL ────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-aibp}
+      POSTGRES_USER: ${POSTGRES_USER:-aibp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER:-aibp}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  # ── Redis ─────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "6379:6379"
+
+  # ── MinIO (S3-compatible artifact store) ─────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"   # MinIO Console UI
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── MLflow tracking server ────────────────────────────────────────────────
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.12.2
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow-artifacts
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - mlflow_data:/mlflow-artifacts
+      - mlflow_db:/mlflow.db
+    ports:
+      - "5050:5000"   # MLflow UI (host 5050, container 5000 — host 5000 used by macOS ControlCenter)
+
+  # ── FastAPI backend ───────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+      target: runtime
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-aibp}
+      POSTGRES_USER: ${POSTGRES_USER:-aibp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      REDIS_URL: redis://redis:6379/0
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev_secret_please_change}
+      LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+    volumes:
+      - ./backend:/app   # hot reload in dev
+      - ./data:/data:ro  # synthetic CSVs read by evidence_service
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"    # FastAPI + Swagger UI
+
+  # ── Celery worker ─────────────────────────────────────────────────────────
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: ../docker/celery.Dockerfile
+    command: celery -A app.tasks.celery_app worker -l INFO -Q training,default -c 2
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      ENVIRONMENT: development
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - db
+
+  # ── Flower (Celery monitor) ───────────────────────────────────────────────
+  flower:
+    image: mher/flower:2.0
+    command: celery flower --broker=redis://redis:6379/0 --port=5555
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+    ports:
+      - "5555:5555"   # Flower UI
+    depends_on:
+      - redis
+
+  # ── Nginx reverse proxy ───────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  minio_data:
+  mlflow_data:
+  mlflow_db:
