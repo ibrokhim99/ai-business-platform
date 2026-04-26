@@ -25,11 +25,18 @@ from typing import Any, AsyncIterator, Literal
 from app.config import settings
 from app.core.logging import get_logger
 from app.ml.registry import ModelRegistry
-from app.services.block_data import lookup_blocks_for_models
+from app.services.block_data import dataset_catalog, dataset_scope_counts, lookup_blocks_for_models
 from app.services.llm_prompts import ALL_TOOLS, build_system_prompt
 from app.services.ollama_client import OllamaClient, OllamaError
+from app.services.openai_client import get_openai_client
 from app.services.prediction_service import PredictionService
 from app.services.profile_to_input import ChatProfile, build as build_input
+from app.services.profile_resolver import (
+    InputResolution,
+    apply_profile_fields,
+    normalize_profile_fields,
+    resolve_profile_from_text,
+)
 
 log = get_logger()
 
@@ -93,6 +100,22 @@ class LlmChatService:
         request_id = request_id or str(uuid.uuid4())
         started_at = time.perf_counter()
 
+        resolution = await self._resolve_user_input(user_message)
+        if resolution.has_unsupported_input:
+            yield ChatEvent("text", {"delta": self._unsupported_input_message(resolution)})
+            yield ChatEvent(
+                "done",
+                {
+                    "chosen_models": [],
+                    "total_latency_ms": int((time.perf_counter() - started_at) * 1000),
+                    "reason": "no_evidence",
+                },
+            )
+            return
+        if resolution.fields:
+            explicit_patch = apply_profile_fields(profile, resolution.fields)
+            yield ChatEvent("profile_patch", {"fields": explicit_patch})
+
         # ── Build messages ────────────────────────────────────────────────────
         system_prompt = build_system_prompt(self._registry, profile)
         messages: list[dict[str, Any]] = [{"role": "system", "content": system_prompt}]
@@ -135,14 +158,13 @@ class LlmChatService:
             if name == "update_profile":
                 fields = args.get("fields") or {}
                 if isinstance(fields, dict) and fields:
+                    # The deterministic extractor is based on the latest user
+                    # turn and wins over tool-call guesses, especially for
+                    # amounts like "200 million so'm" that some LLMs compress
+                    # to 200_000.
+                    fields = {**fields, **resolution.fields}
+                    fields = apply_profile_fields(profile, fields)
                     yield ChatEvent("profile_patch", {"fields": fields})
-                    # Apply locally so synthesis sees updated profile too.
-                    for k, v in fields.items():
-                        if hasattr(profile, k):
-                            try:
-                                setattr(profile, k, v)
-                            except Exception:
-                                pass
             elif name == "ask_followup":
                 followup_text = (args.get("question_uz") or "").strip() or followup_text
                 followup_fields = args.get("fields_needed") or []
@@ -177,6 +199,19 @@ class LlmChatService:
                     "chosen_models": [],
                     "total_latency_ms": int((time.perf_counter() - started_at) * 1000),
                     "reason": "no_tools",
+                },
+            )
+            return
+
+        data_issue = self._profile_data_issue(profile)
+        if data_issue:
+            yield ChatEvent("text", {"delta": data_issue})
+            yield ChatEvent(
+                "done",
+                {
+                    "chosen_models": chosen_model_ids,
+                    "total_latency_ms": int((time.perf_counter() - started_at) * 1000),
+                    "reason": "no_evidence",
                 },
             )
             return
@@ -320,6 +355,141 @@ class LlmChatService:
         )
 
     # ── Helpers ───────────────────────────────────────────────────────────────
+
+    async def _resolve_user_input(self, user_message: str) -> InputResolution:
+        """Extract region/business from the latest user turn before tool choice.
+
+        Deterministic aliases provide a safe local fallback. When an OpenAI API
+        key is configured, a small JSON extraction call handles arbitrary user
+        wording and tells us when the requested scope is outside the CSV data.
+        """
+        deterministic = resolve_profile_from_text(user_message)
+        if not settings.openai_api_key:
+            return deterministic
+
+        try:
+            llm_resolution = await self._extract_input_with_openai(user_message)
+        except Exception as e:
+            log.warning("input_resolution_llm_failed", error=str(e)[:200])
+            return deterministic
+
+        if llm_resolution is None:
+            return deterministic
+        if llm_resolution.has_unsupported_input:
+            return llm_resolution
+        fields = {**deterministic.fields, **llm_resolution.fields}
+        return InputResolution(fields=normalize_profile_fields(fields))
+
+    async def _extract_input_with_openai(self, user_message: str) -> InputResolution | None:
+        catalog = dataset_catalog()
+        regions = ", ".join(catalog["regions"])
+        mcc_codes = ", ".join(catalog["mcc_codes"])
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You extract the latest intended business analysis scope from a user message. "
+                    "Ignore pasted previous answers, tables, evidence rows, and stale profile text. "
+                    "Corrections like 'I asked about...', 'not this hotel', or 'hotel emas' override older text. "
+                    "Return JSON only."
+                ),
+            },
+            {
+                "role": "user",
+                "content": (
+                    "Supported dataset region_id values: "
+                    f"{regions}.\n"
+                    "Supported dataset MCC values and meanings: "
+                    "5047=medical equipment, 5411=grocery, 5511=auto dealer, "
+                    "5621=womens clothing, 5651=clothing, 5712=furniture, "
+                    "5734=electronics, 5812=restaurant/cafe, 5814=fast food, "
+                    "5912=pharmacy, 5940=sports/bicycle, 5999=retail, "
+                    "7011=hotel, 7372=software.\n"
+                    f"Supported MCC code list: {mcc_codes}.\n"
+                    "JSON schema: "
+                    '{"region_id": string|null, "unsupported_region": string|null, '
+                    '"mcc_code": string|null, "unsupported_business": string|null}.\n'
+                    "If the user asks for a region not in the supported list, set unsupported_region. "
+                    "If the user asks for a business that is not semantically one of the supported MCC categories, "
+                    "set unsupported_business. Do not map a different business just to make it fit.\n"
+                    f"User message:\n{user_message}"
+                ),
+            },
+        ]
+        client = get_openai_client()
+        resp = await client.chat(messages, format="json", options={"temperature": 0})
+        content = ((resp.get("message") or {}).get("content") or "").strip()
+        if not content:
+            return None
+        payload = json.loads(content)
+        if not isinstance(payload, dict):
+            return None
+
+        fields: dict[str, Any] = {}
+        region_id = payload.get("region_id")
+        mcc_code = payload.get("mcc_code")
+        if isinstance(region_id, str) and region_id in catalog["regions"]:
+            fields["region_id"] = region_id
+        if isinstance(mcc_code, str) and mcc_code in catalog["mcc_codes"]:
+            fields["mcc_code"] = mcc_code
+
+        unsupported_region = payload.get("unsupported_region")
+        unsupported_business = payload.get("unsupported_business")
+        return InputResolution(
+            fields=normalize_profile_fields(fields),
+            unsupported_region=unsupported_region if isinstance(unsupported_region, str) and unsupported_region else None,
+            unsupported_business=unsupported_business if isinstance(unsupported_business, str) and unsupported_business else None,
+        )
+
+    def _unsupported_input_message(self, resolution: InputResolution) -> str:
+        parts: list[str] = []
+        if resolution.unsupported_region:
+            parts.append(f"hudud: {resolution.unsupported_region}")
+        if resolution.unsupported_business:
+            parts.append(f"soha: {resolution.unsupported_business}")
+        scope = ", ".join(parts) or "tanlangan so'rov"
+        return (
+            f"Bizda hozircha {scope} bo'yicha dataset mavjud emas. "
+            "Shuning uchun bu so'rov uchun model tahlili va tavsiya bermaymiz. "
+            "Iltimos, datasetda mavjud hudud yoki biznes turini tanlang."
+        )
+
+    def _profile_data_issue(self, profile: ChatProfile) -> str | None:
+        region_id = getattr(profile, "region_id", "") or ""
+        mcc_code = getattr(profile, "mcc_code", "") or ""
+        missing: list[str] = []
+        if not region_id:
+            missing.append("hudud")
+        if not mcc_code:
+            missing.append("biznes turi")
+        if missing:
+            return (
+                f"Model tahlili uchun {', '.join(missing)} kerak. "
+                "Iltimos, qaysi hudud va qaysi biznes turini tahlil qilishni aniq yozing."
+            )
+
+        catalog = dataset_catalog()
+        region_label = getattr(profile, "region_label", None) or region_id
+        mcc_label = getattr(profile, "mcc_label", None) or mcc_code
+        if region_id not in catalog["regions"]:
+            return (
+                f"Bizda hozircha {region_label} bo'yicha dataset mavjud emas. "
+                "Shuning uchun model tahlili va tavsiya bermaymiz."
+            )
+        if mcc_code not in catalog["mcc_codes"]:
+            return (
+                f"Bizda hozircha {mcc_label} bo'yicha dataset mavjud emas. "
+                "Shuning uchun model tahlili va tavsiya bermaymiz."
+            )
+
+        counts = dataset_scope_counts(region_id=region_id, mcc_code=mcc_code)
+        if not any(counts.values()):
+            return (
+                f"Bizda hozircha {region_label} hududida {mcc_label} bo'yicha "
+                "yetarli tarixiy dataset mavjud emas. Shuning uchun bu so'rov "
+                "uchun model tahlili va tavsiya bermaymiz."
+            )
+        return None
 
     def _build_data_context(self, model_ids: list[str], profile: ChatProfile) -> dict[str, Any] | None:
         """Return per-block data evidence the LLM should cite during synthesis.

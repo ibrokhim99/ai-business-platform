@@ -91,6 +91,10 @@ export const REGION_MAP: Record<string, Partial<BusinessProfile>> = {
   'andijan-01':   { region_label: 'Andijon — Markaz',     population: 410_000, avg_income: 450, lat: 40.7821, lon: 72.3442 },
   'namangan-01':  { region_label: 'Namangan — Markaz',    population: 470_000, avg_income: 430, lat: 40.9983, lon: 71.6726 },
   'jizzakh-01':   { region_label: 'Jizzax',               population: 180_000, avg_income: 410, lat: 40.1158, lon: 67.8422 },
+  'gulistan-01':  { region_label: 'Guliston — Markaz',    population: 190_000, avg_income: 420, lat: 40.4897, lon: 68.7842 },
+  'navoiy-01':    { region_label: 'Navoiy — Markaz',      population: 160_000, avg_income: 520, lat: 40.0844, lon: 65.3792 },
+  'nukus-01':     { region_label: 'Nukus — Markaz',       population: 330_000, avg_income: 410, lat: 42.4619, lon: 59.6166 },
+  'termez-01':    { region_label: 'Termiz — Markaz',      population: 190_000, avg_income: 400, lat: 37.2242, lon: 67.2783 },
 };
 
 export const MCC_MAP: Record<string, Partial<BusinessProfile>> = {
@@ -98,6 +102,7 @@ export const MCC_MAP: Record<string, Partial<BusinessProfile>> = {
   '5814': { mcc_label: 'Tez ovqatlanish',         niche: 'food',       avg_transaction_value: 8,  monthly_transactions: 2_400, gross_margin_pct: 55 },
   '5411': { mcc_label: 'Oziq-ovqat doʻkoni',      niche: 'grocery',    avg_transaction_value: 22, monthly_transactions: 1_400, gross_margin_pct: 28 },
   '5651': { mcc_label: 'Oilaviy kiyim doʻkoni',   niche: 'apparel',    avg_transaction_value: 38, monthly_transactions: 420,   gross_margin_pct: 52 },
+  '5621': { mcc_label: 'Ayollar kiyim doʻkoni',   niche: 'womens_clothing', avg_transaction_value: 42, monthly_transactions: 360, gross_margin_pct: 54 },
   '5712': { mcc_label: 'Mebel doʻkoni',           niche: 'furniture',  avg_transaction_value: 320,monthly_transactions: 80,    gross_margin_pct: 42 },
   '7011': { mcc_label: 'Mehmonxona',              niche: 'hotel',      avg_transaction_value: 95, monthly_transactions: 220,   gross_margin_pct: 65 },
   '7230': { mcc_label: 'Goʻzallik saloni',        niche: 'beauty',     avg_transaction_value: 18, monthly_transactions: 540,   gross_margin_pct: 70 },
@@ -106,11 +111,11 @@ export const MCC_MAP: Record<string, Partial<BusinessProfile>> = {
   '8011': { mcc_label: 'Tibbiy xizmatlar',        niche: 'medical',    avg_transaction_value: 65, monthly_transactions: 240,   gross_margin_pct: 55 },
   '7542': { mcc_label: 'Avtomobil yuvish',        niche: 'recreation', avg_transaction_value: 6,  monthly_transactions: 2_500, gross_margin_pct: 65 },
   '5912': { mcc_label: 'Dorixona',                niche: 'pharmacy',   avg_transaction_value: 18, monthly_transactions: 1_200, gross_margin_pct: 35 },
-  '5732': { mcc_label: 'Elektronika',             niche: 'electronics',avg_transaction_value: 220,monthly_transactions: 130,   gross_margin_pct: 28 },
+  '5734': { mcc_label: 'Elektronika',             niche: 'electronics',avg_transaction_value: 220,monthly_transactions: 130,   gross_margin_pct: 28 },
   '5511': { mcc_label: 'Avtomobil savdosi',       niche: 'auto_dealer',avg_transaction_value: 6500,monthly_transactions: 12,   gross_margin_pct: 18 },
   '7372': { mcc_label: 'Dasturiy taʻminot',       niche: 'software',   avg_transaction_value: 280,monthly_transactions: 90,    gross_margin_pct: 78 },
   '5940': { mcc_label: 'Velosiped / Sport',       niche: 'sports',     avg_transaction_value: 95, monthly_transactions: 180,   gross_margin_pct: 38 },
-  '5045': { mcc_label: 'Kompyuter / IT',          niche: 'electronics',avg_transaction_value: 320,monthly_transactions: 110,   gross_margin_pct: 30 },
+  '5047': { mcc_label: 'Tibbiyot jihozlari',      niche: 'medical_equipment',avg_transaction_value: 320,monthly_transactions: 110,   gross_margin_pct: 30 },
 };
 
 export function profileFromContext(ctx: { region_id?: string; mcc_code?: string; monthly_revenue?: number; initial_investment?: number; }): BusinessProfile {

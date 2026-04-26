@@ -327,9 +327,17 @@ const D: ModelDef[] = [
   },
   {
     modelId: 'M-D3', block: 'D', title: 'ROI hisoblagich', endpoint: '/financial/roi-estimator',
-    buildInput: (p) => ({ initial_investment: p.initial_investment, monthly_net_cash_flow: Math.max(100, p.monthly_revenue_estimate - p.monthly_fixed_costs - p.monthly_rent), discount_rate_annual_pct: p.discount_rate_annual_pct, horizon_years: Math.max(1, Math.round(p.horizon_months / 12)) }),
+    buildInput: (p) => {
+      const variableCosts = p.monthly_fixed_costs === 0 && p.monthly_rent === 0
+        ? p.monthly_revenue_estimate * Math.max(0, Math.min(100, 100 - p.gross_margin_pct)) / 100
+        : 0;
+      return { initial_investment: p.initial_investment, monthly_net_cash_flow: Math.max(100, p.monthly_revenue_estimate - variableCosts - p.monthly_fixed_costs - p.monthly_rent), discount_rate_annual_pct: p.discount_rate_annual_pct, horizon_years: Math.max(1, Math.round(p.horizon_months / 12)) };
+    },
     fallback: (p) => {
-      const net = Math.max(100, p.monthly_revenue_estimate - p.monthly_fixed_costs - p.monthly_rent);
+      const variableCosts = p.monthly_fixed_costs === 0 && p.monthly_rent === 0
+        ? p.monthly_revenue_estimate * Math.max(0, Math.min(100, 100 - p.gross_margin_pct)) / 100
+        : 0;
+      const net = Math.max(100, p.monthly_revenue_estimate - variableCosts - p.monthly_fixed_costs - p.monthly_rent);
       return { payback_months: p.initial_investment / net, npv: net * 24 - p.initial_investment, irr_pct: 28 };
     },
     formatHeadline: (r) => ({ label: 'Qaytarish', value: `${Number(r.payback_months ?? 0).toFixed(1)} oy`, tone: Number(r.payback_months ?? 99) < 18 ? 'pos' : 'neg' }),

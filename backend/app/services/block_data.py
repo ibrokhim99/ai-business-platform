@@ -201,3 +201,69 @@ def lookup_blocks_for_models(
         b: lookup_block(b, region_id=region_id, mcc_code=mcc_code, limit=limit)
         for b in sorted(blocks)
     }
+
+
+@lru_cache(maxsize=1)
+def dataset_catalog() -> dict[str, Any]:
+    """Return the region/MCC scope that exists in the CSV datasets.
+
+    The chat flow uses this before model execution to avoid silently running
+    models on stale or unsupported profile values.
+    """
+    regions: set[str] = set()
+    mcc_codes: set[str] = set()
+    pairs: set[tuple[str, str]] = set()
+    per_block: dict[str, dict[str, Any]] = {}
+
+    for letter in "abcdefghij":
+        cols, rows = _load_block(letter)
+        block_regions = {str(r.get("region_id")) for r in rows if r.get("region_id") is not None}
+        block_mccs = {str(r.get("mcc_code")) for r in rows if r.get("mcc_code") is not None}
+        block_pairs = {
+            (str(r.get("region_id")), str(r.get("mcc_code")))
+            for r in rows
+            if r.get("region_id") is not None and r.get("mcc_code") is not None
+        }
+        regions.update(block_regions)
+        mcc_codes.update(block_mccs)
+        pairs.update(block_pairs)
+        per_block[letter.upper()] = {
+            "regions": sorted(block_regions),
+            "mcc_codes": sorted(block_mccs),
+            "pairs": sorted(block_pairs),
+            "has_region": "region_id" in cols,
+            "has_mcc": "mcc_code" in cols,
+        }
+
+    return {
+        "regions": sorted(regions),
+        "mcc_codes": sorted(mcc_codes),
+        "pairs": sorted(pairs),
+        "per_block": per_block,
+    }
+
+
+def dataset_scope_counts(
+    *,
+    region_id: str | None,
+    mcc_code: str | None,
+    blocks: Iterable[str] = ("A", "B", "C", "D", "E", "F", "G"),
+) -> dict[str, int]:
+    """Return exact matched row counts by block for a region + MCC pair."""
+    if not region_id or not mcc_code:
+        return {}
+    counts: dict[str, int] = {}
+    for block in blocks:
+        letter = block.upper()[:1]
+        counts[letter] = lookup_block(letter, region_id=region_id, mcc_code=mcc_code, limit=0).matched_count
+    return counts
+
+
+def has_dataset_scope(
+    *,
+    region_id: str | None,
+    mcc_code: str | None,
+    blocks: Iterable[str] = ("A", "B", "C", "D", "E", "F", "G"),
+) -> bool:
+    """True when at least one scoped CSV row exists for region + MCC."""
+    return any(dataset_scope_counts(region_id=region_id, mcc_code=mcc_code, blocks=blocks).values())

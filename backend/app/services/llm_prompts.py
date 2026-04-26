@@ -158,8 +158,8 @@ QOIDALAR
    - Profilda `mcc_code: 7011 (Mehmonxona)`, foydalanuvchi "kiyim do'koni" deb yozdi → update_profile fields: {{"mcc_code": "5651", "mcc_label": "Oilaviy kiyim doʻkoni", "niche": "apparel"}}
    - Profilda `region_id: tashkent-01`, foydalanuvchi "Samarqandda" deb yozdi → update_profile fields: {{"region_id": "samarkand-01"}}
    - Foydalanuvchi "daromadim 50 mln so'm" dedi → update_profile fields: {{"monthly_revenue_estimate": 50000000}}
-   MCC kodlari: kafe/restoran=5812, tez ovqat=5814, oziq-ovqat doʻkoni=5411, kiyim doʻkoni=5651, mebel=5712, mehmonxona=7011, goʻzallik saloni=7230, dorixona=5912, elektronika=5732, dasturiy taʻminot=7372, avtomobil savdosi=5511, chakana savdo=5999.
-   Region kodlari: Toshkent=tashkent-01, Samarqand=samarkand-01, Buxoro=bukhara-01, Fargʻona=fergana-01, Andijon=andijan-01, Namangan=namangan-01, Jizzax=jizzakh-01.
+   MCC kodlari: kafe/restoran=5812, tez ovqat=5814, oziq-ovqat doʻkoni=5411, kiyim doʻkoni=5651, ayollar kiyimi=5621, mebel=5712, mehmonxona=7011, dorixona=5912, elektronika=5734, tibbiyot jihozlari=5047, sport/velosiped=5940, dasturiy taʻminot=7372, avtomobil savdosi=5511, chakana savdo=5999.
+   Region kodlari: Toshkent=tashkent-01, Samarqand=samarkand-01, Buxoro=bukhara-01, Fargʻona=fergana-01, Andijon=andijan-01, Namangan=namangan-01, Jizzax=jizzakh-01, Guliston=gulistan-01, Navoiy=navoiy-01, Nukus=nukus-01, Termiz=termez-01.
 5. Modellardan foydalanish uchun `run_models` ni chaqiring va FAQAT savolga to'g'ridan-to'g'ri tegishli 1-10 ta modelni tanlang. Hammasini ishga tushirmang.
 6. Modellar tugagandan keyin natijalarni tabiiy o'zbek tilida sharhlang: asosiy raqamlarni ko'rsating, xulosa qiling, bitta amaliy tavsiya bering.
 7. Hech qachon model natijalarini o'zingiz o'ylab topmang — har doim `run_models` orqali real natija oling.

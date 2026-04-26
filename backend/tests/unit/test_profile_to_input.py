@@ -38,3 +38,18 @@ def test_partial_profile_uses_defaults():
     for mid in ("M-A1", "M-B1", "M-C1", "M-D1", "M-E1", "M-F1", "M-G1", "M-H1", "M-I1", "M-J1"):
         result = build(mid, profile)
         assert isinstance(result, BaseModel)
+
+
+def test_roi_uses_margin_when_costs_are_missing():
+    profile = ChatProfile(
+        region_id="samarkand-01",
+        mcc_code="7011",
+        monthly_revenue_estimate=20_000_000,
+        initial_investment=200_000_000,
+        gross_margin_pct=65,
+    )
+
+    result = build("M-D3", profile)
+
+    assert result.initial_investment == 200_000_000
+    assert result.monthly_net_cash_flow == 13_000_000

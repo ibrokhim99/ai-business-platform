@@ -1,4 +1,4 @@
-from app.services.block_data import lookup_block, lookup_blocks_for_models
+from app.services.block_data import dataset_catalog, has_dataset_scope, lookup_block, lookup_blocks_for_models
 from app.services.evidence_service import EvidenceService
 
 
@@ -51,3 +51,13 @@ def test_lookup_blocks_for_models_returns_no_matches_for_unknown_region():
 
     assert lookups
     assert all(block.matched_count == 0 for block in lookups.values())
+
+
+def test_dataset_catalog_and_scope_are_exact():
+    catalog = dataset_catalog()
+
+    assert "samarkand-01" in catalog["regions"]
+    assert "qashqadaryo-01" not in catalog["regions"]
+    assert "5812" in catalog["mcc_codes"]
+    assert has_dataset_scope(region_id="samarkand-01", mcc_code="5812")
+    assert not has_dataset_scope(region_id="samarkand-01", mcc_code="7230")

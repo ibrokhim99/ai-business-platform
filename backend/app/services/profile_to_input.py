@@ -272,7 +272,10 @@ def _b_d2(p: ChatProfile) -> UnitEconomicsIn:
 
 
 def _b_d3(p: ChatProfile) -> ROIEstimatorIn:
-    net = max(100.0, p.monthly_revenue_estimate - p.monthly_fixed_costs - p.monthly_rent)
+    variable_costs = 0.0
+    if p.monthly_fixed_costs == 0 and p.monthly_rent == 0:
+        variable_costs = p.monthly_revenue_estimate * max(0.0, min(100.0, 100.0 - p.gross_margin_pct)) / 100.0
+    net = max(100.0, p.monthly_revenue_estimate - variable_costs - p.monthly_fixed_costs - p.monthly_rent)
     horizon_years = max(1, min(10, round(p.horizon_months / 12)))
     return ROIEstimatorIn(
         initial_investment=max(1.0, p.initial_investment),
