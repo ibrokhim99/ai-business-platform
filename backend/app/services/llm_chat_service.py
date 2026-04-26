@@ -246,6 +246,28 @@ class LlmChatService:
         # averaged $X in revenue") instead of guessing from model output alone.
         data_context = self._build_data_context(chosen_model_ids, profile)
 
+        # If we have zero matched rows in any chosen block, the synthesis would
+        # have nothing real to cite — refuse to answer rather than hallucinate.
+        # The frontend uses the `no_evidence` reason on the done event to hide
+        # the report/recommendation/data-sources blocks too, so the user only
+        # sees the refusal message instead of cards full of junk numbers.
+        if not data_context:
+            yield ChatEvent("text", {"delta": (
+                "Bizda hozircha tanlangan hudud va soha bo'yicha yetarli tarixiy "
+                "ma'lumot yo'q. Ma'lumotlar bazasida mos yozuvlar topilmadi, shuning "
+                "uchun aniq tahlil va tavsiya bera olmaymiz. Iltimos, boshqa hudud "
+                "yoki sohani sinab ko'ring."
+            )})
+            yield ChatEvent(
+                "done",
+                {
+                    "chosen_models": chosen_model_ids,
+                    "total_latency_ms": int((time.perf_counter() - started_at) * 1000),
+                    "reason": "no_evidence",
+                },
+            )
+            return
+
         synth_messages = list(messages)
         if run_reasoning:
             synth_messages.append({"role": "assistant", "content": f"[Tanlangan modellar sababi: {run_reasoning}]"})
@@ -265,6 +287,9 @@ class LlmChatService:
                 "ma'lumotlar) asosida foydalanuvchining savoliga to'liq O'zbek tilida "
                 "javob bering. dataset_evidence ichidagi haqiqiy raqamlarni keltiring "
                 "(masalan: \"shu hududda 47 ta o'xshash biznes mavjud, o'rtacha daromad X\"). "
+                "MUHIM: faqat model_results va dataset_evidence ichidagi raqamlarni "
+                "ishlating — boshqa raqamlar, foizlar yoki statistikani O'YLAB TOPMANG. "
+                "Agar biror ma'lumot yo'q bo'lsa, \"bu ma'lumot mavjud emas\" deb yozing. "
                 "Faqat tabiiy matn yozing — JSON, kod yoki tool chaqiruvini ishlatmang. "
                 "Bitta amaliy tavsiya bering."
             ),
@@ -316,7 +341,9 @@ class LlmChatService:
             return None
         out: dict[str, Any] = {}
         for block, bl in lookups.items():
-            if bl.total_examined == 0:
+            # Skip blocks with no rows OR no rows matching the user's profile —
+            # feeding empty stats/samples to the LLM invites hallucinated numbers.
+            if bl.total_examined == 0 or bl.matched_count == 0:
                 continue
             out[block] = {
                 "matched_count": bl.matched_count,

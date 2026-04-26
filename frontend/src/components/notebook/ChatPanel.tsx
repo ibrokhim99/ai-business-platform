@@ -6,7 +6,7 @@ import { MessageBubble } from '@/components/chat/Message';
 import { Composer } from '@/components/chat/Composer';
 import type { Message } from '@/lib/chat/types';
 import type { CsvSummary } from '@/lib/chat/csv';
-import { useSources } from '@/lib/chat/sources';
+import { useProfile } from '@/lib/chat/profile';
 import { ALL_MODELS } from '@/lib/chat/models';
 
 interface Props {
@@ -30,7 +30,7 @@ export const ChatPanel = forwardRef<HTMLDivElement, Props>(function ChatPanel(
 ) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastCount = useRef(0);
-  const { selected } = useSources();
+  const { profile } = useProfile();
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -47,9 +47,12 @@ export const ChatPanel = forwardRef<HTMLDivElement, Props>(function ChatPanel(
         <div className="flex items-center gap-2 text-sm">
           <Bot className="w-4 h-4 text-accent" />
           <span className="text-fg font-medium">Suhbat</span>
-          <span className="text-muted text-xs">
-            · {selected.length} ta manba tanlangan
-          </span>
+          {(profile.mcc_label || profile.region_label) && (
+            <span className="text-muted text-xs truncate">
+              {profile.mcc_label && `· ${profile.mcc_label}`}
+              {profile.region_label && ` · ${profile.region_label}`}
+            </span>
+          )}
         </div>
       </div>
 

@@ -242,6 +242,13 @@ class EvidenceService:
         for f in financial:
             fin_index.setdefault((f.region_id, f.mcc_code), []).append(f)
 
+        def _matches_requested_scope(row: EvidenceRow) -> bool:
+            if region_id and row.region_id != region_id:
+                return False
+            if mcc_code and row.mcc_code != mcc_code:
+                return False
+            return True
+
         candidates: list[tuple[float, EvidenceRow]] = []
         for m in market:
             fin_rows = fin_index.get((m.region_id, m.mcc_code), [])
@@ -282,23 +289,19 @@ class EvidenceService:
             candidates.append((sim, row))
 
         candidates.sort(key=lambda x: x[0], reverse=True)
-        all_rows = [r for _, r in candidates]
-        # Show variety: collapse to one row per (region, mcc) for the top list
-        seen: set[tuple[str, str]] = set()
-        top: list[EvidenceRow] = []
-        for _, r in candidates:
-            key = (r.region_id, r.mcc_code)
-            if key in seen: continue
-            seen.add(key)
-            top.append(r)
-            if len(top) >= limit: break
+        if region_id or mcc_code:
+            matched_candidates = [(sim, row) for sim, row in candidates if _matches_requested_scope(row)]
+        else:
+            matched_candidates = candidates
+        matched_rows = [row for _, row in matched_candidates]
+        top = matched_rows[:limit]
 
         summary = EvidenceSummary(
-            succeeded=sum(1 for r in all_rows if r.outcome == "succeeded"),
-            struggling=sum(1 for r in all_rows if r.outcome == "struggling"),
-            failed=sum(1 for r in all_rows if r.outcome == "failed"),
-            median_revenue=round(statistics.median(r.monthly_revenue for r in all_rows), 2) if all_rows else 0.0,
-            median_growth_pct=round(statistics.median(r.growth_rate_pct for r in all_rows), 2) if all_rows else 0.0,
+            succeeded=sum(1 for r in matched_rows if r.outcome == "succeeded"),
+            struggling=sum(1 for r in matched_rows if r.outcome == "struggling"),
+            failed=sum(1 for r in matched_rows if r.outcome == "failed"),
+            median_revenue=round(statistics.median(r.monthly_revenue for r in matched_rows), 2) if matched_rows else 0.0,
+            median_growth_pct=round(statistics.median(r.growth_rate_pct for r in matched_rows), 2) if matched_rows else 0.0,
         )
 
         # Per-block evidence — pull a few matched rows + stats from each block
@@ -327,7 +330,7 @@ class EvidenceService:
         return EvidenceResult(
             rows=top,
             summary=summary,
-            total_examined=len(all_rows),
+            total_examined=len(matched_rows),
             sources=all_sources,
             blocks=block_evidence,
         )

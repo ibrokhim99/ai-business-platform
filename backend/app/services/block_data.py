@@ -155,9 +155,10 @@ def lookup_block(
 ) -> BlockLookup:
     """Return the matched rows + stats from one block CSV for a profile.
 
-    Filtering strategy: AND on (region_id, mcc_code) where those columns
-    exist; if that yields nothing, fall back to MCC-only; if still empty,
-    return a small slice of the block as generic context.
+    Filtering strategy: exact AND on every provided filter where the column
+    exists. If the user asked for Samarqand hotels, we return only
+    Samarqand-hotel rows. If none exist, return matched_count=0 rather than
+    silently substituting other regions or other MCCs as evidence.
     """
     letter = block.upper()[:1]
     cols, rows = _load_block(letter.lower())
@@ -165,16 +166,7 @@ def lookup_block(
     if not rows:
         return BlockLookup(letter, 0, 0, {}, [], cols, source=f"block_{letter.lower()}.csv")
 
-    # Try strict (region + MCC), then loosen.
-    strict = _filter_rows(rows, {"region_id": region_id, "mcc_code": mcc_code})
-    matched = strict
-    if not matched and (region_id or mcc_code):
-        matched = _filter_rows(rows, {"mcc_code": mcc_code})
-    if not matched and (region_id or mcc_code):
-        matched = _filter_rows(rows, {"region_id": region_id})
-    if not matched:
-        # Generic context — first N rows, sorted by row order.
-        matched = rows[:50]
+    matched = _filter_rows(rows, {"region_id": region_id, "mcc_code": mcc_code})
 
     key_cols = _KEY_NUMERIC_COLS.get(letter, [c for c in cols if c not in ("region_id", "mcc_code")][:6])
     stats = _summary_stats(matched, key_cols)

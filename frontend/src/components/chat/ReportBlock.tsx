@@ -62,9 +62,9 @@ export function ReportBlock({ profile, results }: Props) {
         </div>
       </div>
 
-      {/* Sections */}
+      {/* Sections — hide blocks where no models ran for this turn. */}
       <div className="divide-y divide-line">
-        {BLOCK_ORDER.map((id) => (
+        {BLOCK_ORDER.filter((id) => grouped[id].length > 0).map((id) => (
           <Section key={id} block={id} items={grouped[id]} />
         ))}
       </div>

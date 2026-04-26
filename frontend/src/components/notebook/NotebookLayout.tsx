@@ -5,7 +5,7 @@ import { TopBar } from './TopBar';
 import { HistoryPanel } from './HistoryPanel';
 import { ChatPanel } from './ChatPanel';
 import { useConversations } from '@/lib/chat/store';
-import { useProfile } from '@/lib/chat/profile';
+import { useProfile, getProfileSnapshot } from '@/lib/chat/profile';
 import { streamAnswer, toBackendHistory, type ModelResult } from '@/lib/chat/brain';
 import { buildRecommendation, REQUIRED_MODEL_IDS } from '@/lib/chat/recommendation';
 import type { Block, BlockEvidence, EvidenceRow, EvidenceSummary, Message } from '@/lib/chat/types';
@@ -57,6 +57,11 @@ export function NotebookLayout() {
     let textBuf = '';
     let started = false;
     let streamDone = false;
+    // When the backend signals reason="no_evidence" on done, we suppress the
+    // recommendation/report/data-sources cards entirely — those would be
+    // garbage numbers from models that ran against an empty/unmatched profile.
+    // Only the refusal text streamed by the backend is shown.
+    let noEvidence = false;
     let evidence: {
       rows: EvidenceRow[];
       summary: EvidenceSummary;
@@ -67,6 +72,10 @@ export function NotebookLayout() {
     } | null = null;
 
     const composeBlocks = (): Block[] => {
+      if (noEvidence) return [];
+      // Read the LIVE profile here — the LLM may have emitted profile_patch
+      // mid-stream, so the closure-captured `profile` is stale by now.
+      const live = getProfileSnapshot();
       const ordered = Array.from(results.values());
       const blocks: Block[] = [];
       if (ordered.length) {
@@ -76,18 +85,18 @@ export function NotebookLayout() {
           (REQUIRED_MODEL_IDS as readonly string[]).includes(r.modelId),
         );
         if (anyRequiredPicked) {
-          const rec = buildRecommendation(profile, ordered, streamDone);
+          const rec = buildRecommendation(live, ordered, streamDone);
           blocks.push({ kind: 'recommendation', rec });
         }
         blocks.push({
           kind: 'report',
-          profile: { region_label: profile.region_label, mcc_label: profile.mcc_label },
+          profile: { region_label: live.region_label, mcc_label: live.mcc_label },
           results: ordered,
         });
         if (evidence) {
           blocks.push({
             kind: 'data-sources',
-            profile: { region_label: profile.region_label, mcc_label: profile.mcc_label },
+            profile: { region_label: live.region_label, mcc_label: live.mcc_label },
             rows: evidence.rows,
             summary: evidence.summary,
             totalExamined: evidence.totalExamined,
@@ -137,15 +146,24 @@ export function NotebookLayout() {
         },
         onDone: (e) => {
           streamDone = true;
+          if (e.reason === 'no_evidence') {
+            noEvidence = true;
+            flush();
+            return;
+          }
           flush();
           // Fetch the audit-trail evidence and re-flush once it lands.
           // The chat already streamed in; this is a non-blocking enrichment.
           if (results.size > 0 && !controller.signal.aborted) {
+            // Read the LIVE profile — the LLM may have patched it during the
+            // stream (e.g. user said "kiyim do'koni" → mcc_code=5651). Without
+            // this, evidence would be filtered to the stale starting profile.
+            const live = getProfileSnapshot();
             fetchEvidence({
-              region_id: profile.region_id,
-              mcc_code: profile.mcc_code,
-              monthly_revenue: profile.monthly_revenue_estimate,
-              initial_investment: profile.initial_investment,
+              region_id: live.region_id,
+              mcc_code: live.mcc_code,
+              monthly_revenue: live.monthly_revenue_estimate,
+              initial_investment: live.initial_investment,
               limit: 10,
               // Restrict per-block evidence to the blocks of models the LLM
               // actually chose, so we only show data that was relevant.
@@ -214,8 +232,6 @@ export function NotebookLayout() {
         onNew={() => newConversation()}
         toggleLeft={() => setLeftOpen((v) => !v)}
         leftOpen={leftOpen}
-        profile={profile}
-        onProfileChange={updateProfile}
       />
 
       <div className="flex-1 flex min-h-0 relative">

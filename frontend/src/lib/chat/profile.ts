@@ -38,25 +38,30 @@ export interface BusinessProfile {
   existing_debt_monthly: number;
 }
 
+// Profile starts empty — the LLM must call `ask_followup` to gather the
+// primary fields (region_id, mcc_code, monthly_revenue_estimate,
+// initial_investment) from the user before it can run any models. Secondary
+// technical defaults (margins, rates, horizons) remain so model inputs are
+// well-formed once the primary fields are filled in.
 export const DEFAULT_PROFILE: BusinessProfile = {
-  region_id: 'tashkent-01',
-  region_label: 'Toshkent — Yunusobod',
-  population: 320_000,
-  avg_income: 720,
-  mcc_code: '5812',
-  mcc_label: 'Restoran / Ovqatlanish',
-  niche: 'food',
+  region_id: '',
+  region_label: '',
+  population: 0,
+  avg_income: 0,
+  mcc_code: '',
+  mcc_label: '',
+  niche: '',
 
-  lat: 41.3111,
-  lon: 69.2797,
+  lat: 0,
+  lon: 0,
   radius_m: 500,
   walk_minutes: 10,
   facade_direction_deg: 180,
 
-  monthly_revenue_estimate: 15_000,
-  monthly_fixed_costs: 6_000,
-  monthly_rent: 1_800,
-  initial_investment: 50_000,
+  monthly_revenue_estimate: 0,
+  monthly_fixed_costs: 0,
+  monthly_rent: 0,
+  initial_investment: 0,
   business_age_months: 0,
   owner_experience_years: 3,
   owner_credit_history_score: 680,
@@ -131,7 +136,10 @@ export function profileFromContext(ctx: { region_id?: string; mcc_code?: string;
 // when any other component (or the LLM stream) updates it.
 import { useCallback, useSyncExternalStore } from 'react';
 
-const PROFILE_KEY = 'biziq_profile_v1';
+// v2 bump — defaults changed from preset Tashkent/restaurant to empty so the
+// LLM must ask the user for region/MCC/revenue/investment instead of running
+// against stale saved values from older sessions.
+const PROFILE_KEY = 'biziq_profile_v2';
 
 function loadInitial(): BusinessProfile {
   if (typeof window === 'undefined') return DEFAULT_PROFILE;
@@ -169,6 +177,14 @@ function subscribe(fn: () => void): () => void {
 }
 
 function getSnapshot(): BusinessProfile {
+  ensureInit();
+  return _profile;
+}
+
+/** Read the current profile outside React render — useful inside long-lived
+ *  closures (e.g. the SSE stream handler in NotebookLayout) that need the
+ *  latest profile after an LLM-driven `update_profile` patch. */
+export function getProfileSnapshot(): BusinessProfile {
   ensureInit();
   return _profile;
 }

@@ -63,27 +63,30 @@ from app.schemas.block_j import (
 class ChatProfile(BaseModel):
     """Mirrors `frontend/src/lib/chat/profile.ts` `BusinessProfile`.
 
-    All fields have defaults from frontend `DEFAULT_PROFILE` so the LLM can
-    work with any subset the user has provided so far.
+    Primary identity fields default to empty so the LLM is forced to call
+    `ask_followup` when the user hasn't specified region / niche / sizing —
+    rather than silently running every model against a stale Tashkent-restaurant
+    profile. Secondary technical defaults (margins, rates, horizons) remain so
+    model inputs are well-formed once the primary fields are filled in.
     """
-    region_id: str = "tashkent-01"
-    region_label: str = "Toshkent — Yunusobod"
-    population: int = 320_000
-    avg_income: float = 720.0
-    mcc_code: str = "5812"
-    mcc_label: str = "Restoran / Ovqatlanish"
-    niche: str = "food"
+    region_id: str = ""
+    region_label: str = ""
+    population: int = 0
+    avg_income: float = 0.0
+    mcc_code: str = ""
+    mcc_label: str = ""
+    niche: str = ""
 
-    lat: float = 41.3111
-    lon: float = 69.2797
+    lat: float = 0.0
+    lon: float = 0.0
     radius_m: int = 500
     walk_minutes: int = 10
     facade_direction_deg: float = 180.0
 
-    monthly_revenue_estimate: float = 15_000.0
-    monthly_fixed_costs: float = 6_000.0
-    monthly_rent: float = 1_800.0
-    initial_investment: float = 50_000.0
+    monthly_revenue_estimate: float = 0.0
+    monthly_fixed_costs: float = 0.0
+    monthly_rent: float = 0.0
+    initial_investment: float = 0.0
     business_age_months: int = 0
     owner_experience_years: float = 3.0
     owner_credit_history_score: float = 680.0

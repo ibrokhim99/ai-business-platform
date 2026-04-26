@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, LogOut, PenSquare, Share2, Settings, PanelLeft, Briefcase, Check } from 'lucide-react';
+import { ChevronDown, LogOut, PenSquare, Share2, Settings, PanelLeft } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { ThemeToggle } from './ThemeToggle';
-import type { BusinessProfile } from '@/lib/chat/profile';
-import { MCC_MAP, REGION_MAP } from '@/lib/chat/profile';
 
 interface Props {
   title: string;
@@ -13,16 +11,13 @@ interface Props {
   onNew: () => void;
   toggleLeft: () => void;
   leftOpen: boolean;
-  profile?: BusinessProfile;
-  onProfileChange?: (patch: Partial<BusinessProfile>) => void;
 }
 
-export function TopBar({ title, onTitleChange, onNew, toggleLeft, leftOpen, profile, onProfileChange }: Props) {
+export function TopBar({ title, onTitleChange, onNew, toggleLeft, leftOpen }: Props) {
   const { user, logout } = useAuth();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(title);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
 
   function commit() {
     setEditing(false);
@@ -67,69 +62,6 @@ export function TopBar({ title, onTitleChange, onNew, toggleLeft, leftOpen, prof
       </div>
 
       <div className="flex items-center gap-1">
-        {profile && onProfileChange && (
-          <div className="relative mr-1">
-            <button
-              onClick={() => setProfileOpen((v) => !v)}
-              className="hidden md:inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-line bg-elev hover:bg-elev2 text-xs text-fg transition"
-              title="Faol biznes profili"
-            >
-              <Briefcase className="w-3.5 h-3.5 text-accent" />
-              <span className="font-medium truncate max-w-[200px]">{profile.mcc_label}</span>
-              <span className="text-muted">·</span>
-              <span className="text-muted truncate max-w-[120px]">{profile.region_label}</span>
-              <ChevronDown className={`w-3 h-3 text-muted transition ${profileOpen ? 'rotate-180' : ''}`} />
-            </button>
-            {profileOpen && (
-              <>
-                <div className="fixed inset-0 z-[60]" onClick={() => setProfileOpen(false)} />
-                <div className="absolute right-0 top-full mt-1 z-[70] w-[320px] rounded-xl border border-line bg-elev shadow-pop py-2">
-                  <div className="px-3 pb-2 mb-1 border-b border-line">
-                    <div className="text-[11px] uppercase tracking-wider text-muted">Faol biznes profili</div>
-                    <div className="text-xs text-muted mt-0.5">
-                      Tahlil shu profil asosida bajariladi. Yozgan savolingizda LLM uni avtomatik yangilaydi.
-                    </div>
-                  </div>
-                  <div className="max-h-[260px] overflow-y-auto">
-                    <div className="px-3 py-1 text-[10px] uppercase tracking-wider text-muted">Soha (MCC)</div>
-                    {Object.entries(MCC_MAP).map(([code, meta]) => (
-                      <button
-                        key={code}
-                        onClick={() => {
-                          onProfileChange({ mcc_code: code, ...meta });
-                          setProfileOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-left text-sm hover:bg-panel ${
-                          profile.mcc_code === code ? 'text-accent font-medium' : 'text-fg'
-                        }`}
-                      >
-                        <span className="truncate">{meta.mcc_label}</span>
-                        {profile.mcc_code === code && <Check className="w-3.5 h-3.5 flex-shrink-0" />}
-                      </button>
-                    ))}
-                    <div className="px-3 py-1 mt-1.5 border-t border-line text-[10px] uppercase tracking-wider text-muted">Hudud</div>
-                    {Object.entries(REGION_MAP).map(([code, meta]) => (
-                      <button
-                        key={code}
-                        onClick={() => {
-                          onProfileChange({ region_id: code, ...meta });
-                          setProfileOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-left text-sm hover:bg-panel ${
-                          profile.region_id === code ? 'text-accent font-medium' : 'text-fg'
-                        }`}
-                      >
-                        <span className="truncate">{meta.region_label}</span>
-                        {profile.region_id === code && <Check className="w-3.5 h-3.5 flex-shrink-0" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
         <button
           onClick={onNew}
           className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-fg hover:bg-elev2 transition"

@@ -227,7 +227,14 @@ export function DataSourcesBlock({ profile, rows, summary, totalExamined, source
 
           {sources.length > 0 && (
             <div className="text-[11px] text-muted">
-              Manba: {sources.map((s) => <code key={s} className="px-1.5 py-0.5 rounded bg-panel border border-line text-[10px] mr-1">{s}</code>)}
+              <div>Manba:</div>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {sources.map((s) => (
+                  <code key={s} className="px-1.5 py-0.5 rounded bg-panel border border-line text-[10px]">
+                    {s}
+                  </code>
+                ))}
+              </div>
             </div>
           )}
         </div>
