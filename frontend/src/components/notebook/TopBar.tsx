@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, LogOut, PenSquare, Share2, Settings, PanelLeft } from 'lucide-react';
+import { ChevronDown, LogOut, PenSquare, PanelLeft } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -68,13 +68,6 @@ export function TopBar({ title, onTitleChange, onNew, toggleLeft, leftOpen }: Pr
         >
           <PenSquare className="w-4 h-4" /> Yangi
         </button>
-        <button className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-fg hover:bg-elev2 transition">
-          <Share2 className="w-4 h-4" /> Ulashish
-        </button>
-        <button className="p-2 rounded-lg hover:bg-elev2 text-muted hover:text-fg transition" aria-label="Sozlamalar">
-          <Settings className="w-[18px] h-[18px]" />
-        </button>
-
         <ThemeToggle />
 
         <div className="relative ml-1">

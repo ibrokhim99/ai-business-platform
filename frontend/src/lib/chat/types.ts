@@ -8,6 +8,9 @@ export interface EvidenceRow {
   mcc_code: string;
   niche: string;
   niche_label: string;
+  lat?: number;
+  lon?: number;
+  radius_m?: number;
   monthly_revenue: number;
   initial_investment: number;
   monthly_net_cash_flow: number;
@@ -24,6 +27,37 @@ export interface EvidenceSummary {
   failed: number;
   median_revenue: number;
   median_growth_pct: number;
+}
+
+export interface AlternativeBusiness {
+  region_id: string;
+  mcc_code: string;
+  niche: string;
+  niche_label: string;
+  monthly_revenue: number;
+  initial_investment: number;
+  monthly_net_cash_flow: number;
+  growth_rate_pct: number;
+  competitor_count: number;
+  gross_margin_pct: number;
+  success_rate: number;
+  support_count: number;
+  rationale: string;
+}
+
+export interface BusinessMapMarker {
+  id: string;
+  region_id: string;
+  mcc_code: string;
+  niche_label: string;
+  lat: number;
+  lon: number;
+  radius_m: number;
+  monthly_revenue: number;
+  monthly_net_cash_flow: number;
+  growth_rate_pct: number;
+  competitor_count: number;
+  outcome: EvidenceRow['outcome'];
 }
 
 /** Per-block dataset evidence — what real CSV rows informed the answer. */
@@ -46,6 +80,14 @@ export type Block =
   | { kind: 'file-attached'; name: string; sizeBytes: number; rows?: number; cols?: number }
   | { kind: 'report'; profile: { region_label: string; mcc_label: string }; results: ModelResult[] }
   | { kind: 'recommendation'; rec: RecommendationCard }
+  | {
+      kind: 'business-map';
+      title: string;
+      profile: { region_label: string; mcc_label: string };
+      center: { lat: number; lon: number };
+      radius_m: number;
+      markers: BusinessMapMarker[];
+    }
   | {
       kind: 'data-sources';
       profile: { region_label: string; mcc_label: string };

@@ -17,15 +17,17 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import Any, AsyncIterator, Literal
 
 from app.config import settings
 from app.core.logging import get_logger
 from app.ml.registry import ModelRegistry
 from app.services.block_data import dataset_catalog, dataset_scope_counts, lookup_blocks_for_models
+from app.services.evidence_service import get_evidence_service
 from app.services.llm_prompts import ALL_TOOLS, build_system_prompt
 from app.services.ollama_client import OllamaClient, OllamaError
 from app.services.openai_client import get_openai_client
@@ -74,6 +76,113 @@ class ChatTurn:
 def _block_for(model_id: str) -> str:
     # "M-A1" -> "A"
     return model_id.split("-", 1)[1][0] if "-" in model_id else ""
+
+
+_BANK_PRODUCT_INTENT_RE = re.compile(
+    r"bank\s+mahsulot|mahsulot\s+tavsiya|qaysi\s+bank|kredit|loan|"
+    r"overdraft|leasing|lizing|garant|qarz",
+    re.IGNORECASE,
+)
+
+_BANK_PRODUCT_VALIDATION_MODELS = [
+    "M-A5",  # niche opportunity before recommending a product
+    "M-D1",  # viability / survival probability
+    "M-D3",  # ROI and payback
+    "M-D5",  # cash-flow path
+    "M-F1",  # credit risk
+    "M-F2",  # loan sizing
+    "M-F3",  # DTI trajectory
+    "M-F5",  # bank product recommender
+]
+
+_BUSINESS_PLAN_INTENT_RE = re.compile(
+    r"ochmoqchiman|ochmoqchi|ochish|ochaman|boshlamoq|boshlash|"
+    r"tashkil\s+qil|reja|plan|start",
+    re.IGNORECASE,
+)
+
+_BUSINESS_PLAN_VALIDATION_MODELS = [
+    "M-A5",  # opportunity score
+    "M-D1",  # viability / survival probability
+    "M-D3",  # ROI and payback
+    "M-D5",  # cash-flow path
+    "M-E4",  # entry barriers
+    "M-C1",  # location score
+]
+
+
+def _is_bank_product_advice(user_message: str, model_ids: list[str]) -> bool:
+    """True when a product recommendation must be gated by business viability."""
+    if "M-F5" in model_ids:
+        return True
+    return bool(_BANK_PRODUCT_INTENT_RE.search(user_message))
+
+
+def _augment_model_ids_for_advice(user_message: str, model_ids: list[str]) -> list[str]:
+    """Add validation models before product advice so weak niches can redirect.
+
+    The LLM may choose only M-F5 for "which bank product?" questions. That is
+    too narrow: bank advice should first establish whether the requested
+    business makes sense in the selected area, then recommend financing only if
+    the business is defensible.
+    """
+    if not _is_bank_product_advice(user_message, model_ids):
+        return model_ids
+
+    out: list[str] = []
+    for mid in [*_BANK_PRODUCT_VALIDATION_MODELS, *model_ids]:
+        if mid not in out:
+            out.append(mid)
+        if len(out) >= settings.chat_max_models_per_call:
+            break
+    return out
+
+
+def _default_model_ids_for_business_plan(user_message: str, model_ids: list[str]) -> list[str]:
+    """Run a compact viability analysis when a user states a business plan.
+
+    Some LLMs treat "Samarqandda mehmonxona ochmoqchiman..." as profile setup
+    instead of an analysis request. For planning verbs, we deterministically run
+    the core opportunity and finance models so the user gets calculations.
+    """
+    if model_ids or not _BUSINESS_PLAN_INTENT_RE.search(user_message):
+        return model_ids
+    return _BUSINESS_PLAN_VALIDATION_MODELS[:settings.chat_max_models_per_call]
+
+
+def _merge_input_resolutions(
+    deterministic: InputResolution,
+    llm_resolution: InputResolution | None,
+) -> InputResolution:
+    """Prefer OpenAI extraction, but never discard a valid deterministic match.
+
+    The OpenAI prompt is intentionally strict about supported dataset scopes,
+    which means it can mark human-friendly phrases like "Samarqand markazi" as
+    unsupported even when the local alias parser already resolved them to a
+    valid dataset region_id. In that case, the supported deterministic match
+    should win.
+    """
+    if llm_resolution is None:
+        return deterministic
+
+    unsupported_region = llm_resolution.unsupported_region
+    unsupported_business = llm_resolution.unsupported_business
+
+    if unsupported_region and deterministic.fields.get("region_id"):
+        unsupported_region = None
+    if unsupported_business and deterministic.fields.get("mcc_code"):
+        unsupported_business = None
+
+    if unsupported_region or unsupported_business:
+        fields = {**deterministic.fields, **llm_resolution.fields}
+        return InputResolution(
+            fields=normalize_profile_fields(fields),
+            unsupported_region=unsupported_region,
+            unsupported_business=unsupported_business,
+        )
+
+    fields = {**deterministic.fields, **llm_resolution.fields}
+    return InputResolution(fields=normalize_profile_fields(fields))
 
 
 class LlmChatService:
@@ -175,6 +284,17 @@ class LlmChatService:
                 run_reasoning = (args.get("reasoning_uz") or "").strip()
 
         chosen_model_ids = self._sanitize_model_ids(chosen_model_ids)
+        chosen_model_ids = self._sanitize_model_ids(
+            _augment_model_ids_for_advice(user_message, chosen_model_ids)
+        )
+        chosen_model_ids = self._sanitize_model_ids(
+            _default_model_ids_for_business_plan(user_message, chosen_model_ids)
+        )
+        if chosen_model_ids and not run_reasoning:
+            run_reasoning = (
+                "Foydalanuvchi biznes ochish rejasini va moliyaviy ko'rsatkichlarni "
+                "berdi; imkoniyat, hayotiylik, ROI va pul oqimini tekshirish kerak."
+            )
 
         # ── Branch: ask_followup wins if no models were also chosen ──────────
         if followup_text and not chosen_model_ids:
@@ -305,7 +425,10 @@ class LlmChatService:
 
         synth_messages = list(messages)
         if run_reasoning:
-            synth_messages.append({"role": "assistant", "content": f"[Tanlangan modellar sababi: {run_reasoning}]"})
+            synth_messages.append({
+                "role": "assistant",
+                "content": f"[Tanlangan modellar sababi: {run_reasoning}]",
+            })
         synth_messages.append({
             "role": "tool",
             "content": json.dumps({"model_results": results}, ensure_ascii=False, default=str),
@@ -328,6 +451,17 @@ class LlmChatService:
                 "uni ROI deb atamang. M-D3 `roi_pct` — ROI; M-D3 `payback_months` "
                 "— investitsiya qaytish muddati. Agar M-D1 va M-D3 ikkalasi ishlagan "
                 "bo'lsa, moliyaviy bo'limda ikkalasini alohida yozing. "
+                "Agar M-F5 bank mahsuloti modeli ishlagan bo'lsa yoki foydalanuvchi "
+                "biznes ochish rejasini yozgan bo'lsa, avval biznes hisob-kitobini "
+                "yozing: M-A5 imkoniyat, M-D1 hayotiylik, M-D3 ROI/payback, "
+                "M-D5 pul oqimi, keyin bank mahsulotini yoki yakuniy tavsiyani ayting. "
+                "Agar M-A5 `rank` poor, M-D1 `verdict` high_risk, "
+                "M-D1 `survival_probability_2y` < 0.5, "
+                "M-D3 `verdict` unprofitable yoki M-D3 `roi_pct` < 0 bo'lsa, "
+                "so'ralgan biznes ichida nima qilish kerakligini tavsiya qilmang. "
+                "Buning o'rniga biznes shu hududda zaif/valid emasligini ayting va "
+                "`dataset_evidence.business_evidence.alternatives` ichidagi muqobil "
+                "bizneslardan 1-3 tasini taklif qiling. "
                 "Agar biror ma'lumot yo'q bo'lsa, \"bu ma'lumot mavjud emas\" deb yozing. "
                 "Faqat tabiiy matn yozing — JSON, kod yoki tool chaqiruvini ishlatmang. "
                 "Bitta amaliy tavsiya bering."
@@ -377,12 +511,7 @@ class LlmChatService:
             log.warning("input_resolution_llm_failed", error=str(e)[:200])
             return deterministic
 
-        if llm_resolution is None:
-            return deterministic
-        if llm_resolution.has_unsupported_input:
-            return llm_resolution
-        fields = {**deterministic.fields, **llm_resolution.fields}
-        return InputResolution(fields=normalize_profile_fields(fields))
+        return _merge_input_resolutions(deterministic, llm_resolution)
 
     async def _extract_input_with_openai(self, user_message: str) -> InputResolution | None:
         catalog = dataset_catalog()
@@ -526,6 +655,24 @@ class LlmChatService:
                 "sample_rows": bl.sample_rows,
                 "source": bl.source,
             }
+        try:
+            evidence = get_evidence_service().find_similar(
+                region_id=region_id,
+                mcc_code=mcc_code,
+                monthly_revenue=getattr(profile, "monthly_revenue_estimate", None),
+                initial_investment=getattr(profile, "initial_investment", None),
+                limit=5,
+                blocks=sorted(lookups),
+            )
+            if evidence.total_examined > 0:
+                out["business_evidence"] = {
+                    "summary": asdict(evidence.summary),
+                    "total_examined": evidence.total_examined,
+                    "rows": [asdict(row) for row in evidence.rows[:5]],
+                    "alternatives": [asdict(alt) for alt in evidence.alternatives[:3]],
+                }
+        except Exception as e:
+            log.warning("business_evidence_context_failed", error=str(e))
         return out or None
 
     def _sanitize_model_ids(self, ids: list[str]) -> list[str]:

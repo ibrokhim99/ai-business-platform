@@ -3,8 +3,9 @@ EvidenceService — surfaces the synthetic dataset rows that back a prediction.
 
 Loads `data/test/block_a.csv` and `data/test/block_d.csv` once on first use,
 joins them on (region_id, mcc_code), classifies each row as
-succeeded / struggling / failed using cash-flow + growth signals, and ranks
-candidates by similarity to a query profile.
+succeeded / struggling / failed using cash-flow + growth signals, ranks
+candidates by similarity to a query profile, and surfaces same-area
+alternative businesses when the requested one looks weak.
 
 This is what makes the chat reply auditable: the user can see the actual
 synthetic businesses whose outcomes informed the recommendation.
@@ -12,7 +13,6 @@ synthetic businesses whose outcomes informed the recommendation.
 from __future__ import annotations
 
 import csv
-import math
 import statistics
 from dataclasses import dataclass, field
 from functools import lru_cache
@@ -61,6 +61,9 @@ class _MarketRow:
     avg_revenue_per_outlet: float
     growth_rate_pct: float
     competitor_count: int
+    lat: float
+    lon: float
+    radius_m: int
 
 
 @dataclass(frozen=True)
@@ -102,6 +105,9 @@ def _load_market() -> list[_MarketRow]:
                 avg_revenue_per_outlet=_safe_float(r.get("avg_revenue_per_outlet")),
                 growth_rate_pct=_safe_float(r.get("growth_rate_pct")),
                 competitor_count=_safe_int(r.get("competitor_count")),
+                lat=_safe_float(r.get("location_lat")),
+                lon=_safe_float(r.get("location_lon")),
+                radius_m=_safe_int(r.get("radius_m"), 500),
             ))
     return out
 
@@ -173,6 +179,9 @@ class EvidenceRow:
     mcc_code: str
     niche: str
     niche_label: str
+    lat: float
+    lon: float
+    radius_m: int
     monthly_revenue: float
     initial_investment: float
     monthly_net_cash_flow: float
@@ -193,6 +202,23 @@ class EvidenceSummary:
 
 
 @dataclass(frozen=True)
+class AlternativeBusiness:
+    region_id: str
+    mcc_code: str
+    niche: str
+    niche_label: str
+    monthly_revenue: float
+    initial_investment: float
+    monthly_net_cash_flow: float
+    growth_rate_pct: float
+    competitor_count: int
+    gross_margin_pct: float
+    success_rate: float
+    support_count: int
+    rationale: str
+
+
+@dataclass(frozen=True)
 class BlockEvidence:
     """Per-block snapshot of the rows that informed a specific model's output."""
     block: str
@@ -210,6 +236,32 @@ class EvidenceResult:
     total_examined: int
     sources: list[str]
     blocks: list[BlockEvidence] = field(default_factory=list)
+    alternatives: list[AlternativeBusiness] = field(default_factory=list)
+
+
+def _mean(values: Iterable[float | int]) -> float:
+    seq = list(values)
+    return statistics.mean(seq) if seq else 0.0
+
+
+def _positive_ratio(value: float, ceiling: float) -> float:
+    if value <= 0 or ceiling <= 0:
+        return 0.0
+    return min(value / ceiling, 1.0)
+
+
+def _inverse_ratio(value: float, ceiling: float) -> float:
+    if ceiling <= 0:
+        return 1.0
+    return max(0.0, 1.0 - min(value / ceiling, 1.0))
+
+
+def _build_rationale(success_rate: float, growth_rate_pct: float, monthly_net_cash_flow: float) -> str:
+    return (
+        f"{round(success_rate * 100)}% o'xshash holat muvaffaqiyatli, "
+        f"o'rtacha o'sish {growth_rate_pct:.1f}%, "
+        f"oylik sof pul oqimi {monthly_net_cash_flow:,.0f}."
+    )
 
 
 class EvidenceService:
@@ -277,6 +329,9 @@ class EvidenceService:
                 mcc_code=m.mcc_code,
                 niche=m.niche,
                 niche_label=_NICHE_LABELS.get(m.niche, m.niche.title() or "—"),
+                lat=round(m.lat, 6),
+                lon=round(m.lon, 6),
+                radius_m=m.radius_m,
                 monthly_revenue=round(cand_rev, 2),
                 initial_investment=round(cand_inv, 2),
                 monthly_net_cash_flow=round(cand_ncf, 2),
@@ -302,6 +357,11 @@ class EvidenceService:
             failed=sum(1 for r in matched_rows if r.outcome == "failed"),
             median_revenue=round(statistics.median(r.monthly_revenue for r in matched_rows), 2) if matched_rows else 0.0,
             median_growth_pct=round(statistics.median(r.growth_rate_pct for r in matched_rows), 2) if matched_rows else 0.0,
+        )
+        alternatives = self._find_alternatives(
+            candidates=[row for _, row in candidates],
+            region_id=region_id,
+            exclude_mcc_code=mcc_code,
         )
 
         # Per-block evidence — pull a few matched rows + stats from each block
@@ -333,7 +393,107 @@ class EvidenceService:
             total_examined=len(matched_rows),
             sources=all_sources,
             blocks=block_evidence,
+            alternatives=alternatives,
         )
+
+    def _find_alternatives(
+        self,
+        *,
+        candidates: list[EvidenceRow],
+        region_id: str | None,
+        exclude_mcc_code: str | None,
+        limit: int = 3,
+    ) -> list[AlternativeBusiness]:
+        """Rank same-region business categories that historically look healthier.
+
+        We aggregate dataset rows per (region, MCC), keep only the same region as
+        the user's requested area, and score alternatives by a blend of:
+        success rate, growth, positive net cash flow, and lower competition.
+        """
+        if not region_id:
+            return []
+
+        grouped: dict[tuple[str, str, str, str], list[EvidenceRow]] = {}
+        for row in candidates:
+            if row.region_id != region_id:
+                continue
+            if exclude_mcc_code and row.mcc_code == exclude_mcc_code:
+                continue
+            grouped.setdefault((row.region_id, row.mcc_code, row.niche, row.niche_label), []).append(row)
+
+        if not grouped:
+            return []
+
+        stats_by_group: list[dict[str, float | int | str]] = []
+        for (cand_region, cand_mcc, cand_niche, cand_label), rows in grouped.items():
+            success_rate = sum(1 for row in rows if row.outcome == "succeeded") / len(rows)
+            avg_revenue = _mean(row.monthly_revenue for row in rows)
+            avg_investment = _mean(row.initial_investment for row in rows)
+            avg_cashflow = _mean(row.monthly_net_cash_flow for row in rows)
+            avg_growth = _mean(row.growth_rate_pct for row in rows)
+            avg_competition = _mean(row.competitor_count for row in rows)
+            avg_margin = _mean(row.gross_margin_pct for row in rows)
+            stats_by_group.append({
+                "region_id": cand_region,
+                "mcc_code": cand_mcc,
+                "niche": cand_niche,
+                "niche_label": cand_label,
+                "monthly_revenue": avg_revenue,
+                "initial_investment": avg_investment,
+                "monthly_net_cash_flow": avg_cashflow,
+                "growth_rate_pct": avg_growth,
+                "competitor_count": avg_competition,
+                "gross_margin_pct": avg_margin,
+                "success_rate": success_rate,
+                "support_count": len(rows),
+            })
+
+        max_growth = max((max(float(s["growth_rate_pct"]), 0.0) for s in stats_by_group), default=0.0)
+        max_cashflow = max((max(float(s["monthly_net_cash_flow"]), 0.0) for s in stats_by_group), default=0.0)
+        max_competition = max((float(s["competitor_count"]) for s in stats_by_group), default=0.0)
+
+        ranked: list[tuple[float, float, float, AlternativeBusiness]] = []
+        for stat in stats_by_group:
+            success_rate = float(stat["success_rate"])
+            growth_rate_pct = float(stat["growth_rate_pct"])
+            monthly_net_cash_flow = float(stat["monthly_net_cash_flow"])
+            competitor_count = float(stat["competitor_count"])
+
+            qualifies = success_rate >= 0.55 or (
+                success_rate >= 0.45 and monthly_net_cash_flow > 0 and growth_rate_pct > 0
+            )
+            if not qualifies:
+                continue
+
+            score = (
+                0.55 * success_rate
+                + 0.20 * _positive_ratio(growth_rate_pct, max_growth)
+                + 0.20 * _positive_ratio(monthly_net_cash_flow, max_cashflow)
+                + 0.05 * _inverse_ratio(competitor_count, max_competition)
+            )
+            ranked.append((
+                score,
+                success_rate,
+                monthly_net_cash_flow,
+                AlternativeBusiness(
+                    region_id=str(stat["region_id"]),
+                    mcc_code=str(stat["mcc_code"]),
+                    niche=str(stat["niche"]),
+                    niche_label=str(stat["niche_label"]),
+                    monthly_revenue=round(float(stat["monthly_revenue"]), 2),
+                    initial_investment=round(float(stat["initial_investment"]), 2),
+                    monthly_net_cash_flow=round(monthly_net_cash_flow, 2),
+                    growth_rate_pct=round(growth_rate_pct, 2),
+                    competitor_count=int(round(competitor_count)),
+                    gross_margin_pct=round(float(stat["gross_margin_pct"]), 2),
+                    success_rate=round(success_rate, 3),
+                    support_count=int(stat["support_count"]),
+                    rationale=_build_rationale(success_rate, growth_rate_pct, monthly_net_cash_flow),
+                ),
+            ))
+
+        ranked.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
+        return [alt for _, _, _, alt in ranked[:limit]]
 
 
 _singleton: EvidenceService | None = None

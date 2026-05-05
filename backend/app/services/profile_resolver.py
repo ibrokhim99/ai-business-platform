@@ -123,6 +123,9 @@ def _parse_amount(raw_number: str, raw_unit: str | None) -> float:
 
 def _infer_amount_fields(text: str) -> dict[str, Any]:
     fields: dict[str, Any] = {}
+    revenue_re = re.compile(r"oylik\s+daromad|daromad|revenue|tushum|savdo")
+    investment_re = re.compile(r"sarmoya|invest|investment|boshlang[ʻ'`]?ich|kapital")
+    loan_re = re.compile(r"kredit|loan|qarz")
     amount_re = re.compile(
         r"(?P<num>\d+(?:[\s_,.]\d+)?)\s*"
         r"(?P<unit>mlrd|milliard|billion|mln\.?|million|ming|thousand|k)?"
@@ -135,18 +138,23 @@ def _infer_amount_fields(text: str) -> dict[str, Any]:
         if amount <= 0:
             continue
 
-        before = text[max(0, match.start() - 48):match.start()].lower()
-        after = text[match.end():match.end() + 48].lower()
-        context = f"{before} {after}"
+        before = text[max(0, match.start() - 24):match.start()].lower()
+        after = text[match.end():match.end() + 24].lower()
 
-        if re.search(r"kredit|loan|qarz", context):
+        if loan_re.search(before) or loan_re.search(after):
             fields["requested_loan_amount"] = amount
             continue
-        if re.search(r"oylik\s+daromad|daromad|revenue|tushum|savdo", context):
+        if revenue_re.search(before):
             fields["monthly_revenue_estimate"] = amount
             continue
-        if re.search(r"sarmoya|invest|investment|boshlang[ʻ'`]?ich|kapital", context):
+        if investment_re.search(before):
             fields["initial_investment"] = amount
+            continue
+        if investment_re.search(after):
+            fields["initial_investment"] = amount
+            continue
+        if revenue_re.search(after):
+            fields["monthly_revenue_estimate"] = amount
 
     if (
         "requested_loan_amount" in fields

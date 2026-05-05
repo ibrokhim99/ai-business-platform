@@ -118,6 +118,21 @@ export async function fetchEvidence(body: {
     sample_rows: Array<Record<string, unknown>>;
     source: string;
   }>;
+  alternatives: Array<{
+    region_id: string;
+    mcc_code: string;
+    niche: string;
+    niche_label: string;
+    monthly_revenue: number;
+    initial_investment: number;
+    monthly_net_cash_flow: number;
+    growth_rate_pct: number;
+    competitor_count: number;
+    gross_margin_pct: number;
+    success_rate: number;
+    support_count: number;
+    rationale: string;
+  }>;
 }> {
   const response = await apiFetch('/evidence/similar-businesses', {
     method: 'POST',

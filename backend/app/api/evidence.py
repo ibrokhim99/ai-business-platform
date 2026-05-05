@@ -61,4 +61,5 @@ async def similar_businesses(body: SimilarBusinessesIn):
         "total_examined": result.total_examined,
         "sources": result.sources,
         "blocks": [asdict(b) for b in result.blocks],
+        "alternatives": [asdict(a) for a in result.alternatives],
     }
