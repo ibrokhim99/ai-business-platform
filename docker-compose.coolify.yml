@@ -77,7 +77,7 @@ services:
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
-      CORS_ORIGINS: ${CORS_ORIGINS:-["https://ai-business-platform.mock.glmv.dev","https://aibek.mock.glmv.dev"]}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://ai-business-platform.mock.glmv.dev,https://aibek.mock.glmv.dev}
       ENVIRONMENT: production
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     volumes:
@@ -92,10 +92,11 @@ services:
       mlflow:
         condition: service_started
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
-      interval: 30s
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      start_period: 120s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 30
 
   celery_worker:
     build:
