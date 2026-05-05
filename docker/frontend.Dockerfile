@@ -16,6 +16,7 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 COPY package*.json ./
 RUN npm ci
 COPY . .
+RUN mkdir -p public
 RUN npm run build
 
 # ── Production stage ──────────────────────────────────────────────────────────
@@ -26,12 +27,11 @@ ARG NEXT_PUBLIC_API_URL=/api/v1
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder --chown=appuser:appgroup /app/.next ./.next
+COPY --from=builder --chown=appuser:appgroup /app/public ./public
+COPY --from=builder --chown=appuser:appgroup /app/node_modules ./node_modules
+COPY --from=builder --chown=appuser:appgroup /app/package.json ./package.json
 
-RUN chown -R appuser:appgroup /app
 USER appuser
 
 EXPOSE 3000
