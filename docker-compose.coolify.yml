@@ -32,6 +32,9 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?}
     volumes:
       - minio_data:/data
+    expose:
+      - "9000"
+      - "9001"
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 15s
@@ -49,6 +52,8 @@ services:
     volumes:
       - mlflow_data:/mlflow-artifacts
       - mlflow_db:/mlflow-db
+    expose:
+      - "5000"
 
   backend:
     build:
@@ -77,6 +82,8 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     volumes:
       - ./data:/data:ro
+    expose:
+      - "8000"
     depends_on:
       db:
         condition: service_healthy
@@ -111,6 +118,8 @@ services:
     command: celery flower --broker=redis://redis:6379/0 --port=5555
     environment:
       CELERY_BROKER_URL: redis://redis:6379/0
+    expose:
+      - "5555"
     depends_on:
       redis:
         condition: service_healthy
@@ -124,6 +133,8 @@ services:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://aibek.mock.glmv.dev/api/v1}
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://aibek.mock.glmv.dev/api/v1}
+    expose:
+      - "3000"
     depends_on:
       backend:
         condition: service_healthy
@@ -137,6 +148,8 @@ services:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
+    expose:
+      - "80"
     depends_on:
       backend:
         condition: service_healthy
