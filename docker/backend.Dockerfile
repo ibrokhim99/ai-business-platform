@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir ".[dev]" --target /opt/venv 2>&1 | tail -5 || tru
 RUN pip install --no-cache-dir \
     fastapi==0.111.0 uvicorn[standard]==0.29.0 python-multipart==0.0.9 \
     pydantic==2.7.1 pydantic-settings==2.2.1 \
-    sqlalchemy==2.0.30 asyncpg==0.29.0 alembic==1.13.1 \
+    sqlalchemy==2.0.30 asyncpg==0.29.0 psycopg2-binary==2.9.9 alembic==1.13.1 \
     python-jose[cryptography]==3.3.0 passlib[bcrypt]==1.7.4 \
     redis[hiredis]==5.0.4 celery==5.4.0 \
     numpy==1.26.4 scipy==1.13.0 scikit-learn==1.4.2 pandas==2.2.2 \
