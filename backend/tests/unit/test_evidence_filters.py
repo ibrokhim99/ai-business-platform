@@ -33,6 +33,8 @@ def test_evidence_service_rows_stay_within_requested_region_and_mcc():
     assert result.total_examined == len(result.rows)
     assert all(row.region_id == "samarkand-01" for row in result.rows)
     assert all(row.mcc_code == "7011" for row in result.rows)
+    assert all(-90 <= row.lat <= 90 and -180 <= row.lon <= 180 for row in result.rows)
+    assert all(row.radius_m > 0 for row in result.rows)
     assert all(block.matched_count > 0 for block in result.blocks)
     assert all(
         row["region_id"] == "samarkand-01" and str(row["mcc_code"]) == "7011"

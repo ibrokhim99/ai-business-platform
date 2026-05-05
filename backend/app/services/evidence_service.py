@@ -61,6 +61,9 @@ class _MarketRow:
     avg_revenue_per_outlet: float
     growth_rate_pct: float
     competitor_count: int
+    lat: float
+    lon: float
+    radius_m: int
 
 
 @dataclass(frozen=True)
@@ -102,6 +105,9 @@ def _load_market() -> list[_MarketRow]:
                 avg_revenue_per_outlet=_safe_float(r.get("avg_revenue_per_outlet")),
                 growth_rate_pct=_safe_float(r.get("growth_rate_pct")),
                 competitor_count=_safe_int(r.get("competitor_count")),
+                lat=_safe_float(r.get("location_lat")),
+                lon=_safe_float(r.get("location_lon")),
+                radius_m=_safe_int(r.get("radius_m"), 500),
             ))
     return out
 
@@ -173,6 +179,9 @@ class EvidenceRow:
     mcc_code: str
     niche: str
     niche_label: str
+    lat: float
+    lon: float
+    radius_m: int
     monthly_revenue: float
     initial_investment: float
     monthly_net_cash_flow: float
@@ -320,6 +329,9 @@ class EvidenceService:
                 mcc_code=m.mcc_code,
                 niche=m.niche,
                 niche_label=_NICHE_LABELS.get(m.niche, m.niche.title() or "—"),
+                lat=round(m.lat, 6),
+                lon=round(m.lon, 6),
+                radius_m=m.radius_m,
                 monthly_revenue=round(cand_rev, 2),
                 initial_investment=round(cand_inv, 2),
                 monthly_net_cash_flow=round(cand_ncf, 2),
