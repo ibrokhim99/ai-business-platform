@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, HTTPException, status
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select
 
 from app.core.security import (
@@ -44,8 +45,11 @@ async def login(body: TokenRequest, db: DBDep):
     email: str = body.email
 
     # 1. Try the real database first
-    result = await db.execute(select(User).where(User.email == email))
-    db_user: User | None = result.scalar_one_or_none()
+    try:
+        result = await db.execute(select(User).where(User.email == email))
+        db_user: User | None = result.scalar_one_or_none()
+    except SQLAlchemyError:
+        db_user = None
 
     if db_user is not None:
         if not db_user.is_active:

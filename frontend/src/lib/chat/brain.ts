@@ -2,7 +2,6 @@ import type { BusinessProfile } from './profile';
 import type { ModelDef, BlockId, Spark } from './models';
 import { ALL_MODELS } from './models';
 import { initialResults, type ModelResult } from './runner';
-import { getToken, logout } from '@/lib/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
@@ -41,9 +40,7 @@ export async function streamAnswer(
   profile: BusinessProfile,
   cb: StreamCallbacks,
 ): Promise<void> {
-  const token = getToken();
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const resp = await fetch(`${API_BASE}/chat/stream`, {
     method: 'POST',
@@ -53,9 +50,7 @@ export async function streamAnswer(
   });
 
   if (resp.status === 401) {
-    logout();
-    window.location.href = '/login';
-    cb.onError?.('Sessiya tugadi. Iltimos, qaytadan kiring.');
+    cb.onError?.('API ruxsat soʻrovini rad etdi.');
     return;
   }
   if (!resp.ok || !resp.body) {

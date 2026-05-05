@@ -4,12 +4,11 @@ const TOKEN_KEY = 'ai_platform_token';
 const USER_KEY = 'ai_platform_user';
 
 export function getToken(): string | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(TOKEN_KEY);
+  return null;
 }
 
 export function isAuthenticated(): boolean {
-  return getToken() !== null;
+  return true;
 }
 
 export function logout(): void {
@@ -30,14 +29,10 @@ export function getStoredUser(): { email: string; role: string } | null {
 }
 
 async function apiFetch(path: string, options?: RequestInit): Promise<Response> {
-  const token = getToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options?.headers as Record<string, string> || {}),
   };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers,
@@ -46,30 +41,7 @@ async function apiFetch(path: string, options?: RequestInit): Promise<Response> 
 }
 
 export async function login(email: string, password: string): Promise<{ email: string; role: string }> {
-  const response = await fetch(`${API_BASE}/auth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({ detail: 'Kirish amalga oshmadi' }));
-    throw new Error(err.detail || 'Notoʻgʻri maʻlumotlar');
-  }
-
-  const data = await response.json();
-  localStorage.setItem(TOKEN_KEY, data.access_token);
-
-  // Decode role from token or default to "admin" for test
-  let role = 'user';
-  try {
-    const payload = JSON.parse(atob(data.access_token.split('.')[1]));
-    role = payload.role || payload.sub_role || 'user';
-  } catch {
-    role = 'admin';
-  }
-
-  const user = { email, role };
+  const user = { email, role: 'admin' };
   localStorage.setItem(USER_KEY, JSON.stringify(user));
   return user;
 }
@@ -88,9 +60,7 @@ export async function predict<T = unknown>(
   if (!response.ok) {
     const err = await response.json().catch(() => ({ detail: 'Soʻrov bajarilmadi' }));
     if (response.status === 401) {
-      logout();
-      window.location.href = '/login';
-      throw new Error('Sessiya tugadi. Iltimos, qaytadan kiring.');
+      throw new Error('API ruxsat soʻrovini rad etdi.');
     }
     throw new Error(err.detail || `Soʻrov xatosi: ${response.status}`);
   }

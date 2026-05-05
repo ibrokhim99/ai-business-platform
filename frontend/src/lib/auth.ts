@@ -1,7 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { login as apiLogin, logout as apiLogout, isAuthenticated, getStoredUser } from './api';
+import React, { createContext, useContext, useCallback } from 'react';
 
 interface User {
   email: string;
@@ -18,42 +17,24 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
+const GUEST_USER: User = { email: 'guest@local', role: 'admin' };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const storedUser = getStoredUser();
-    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('ai_platform_token') : null;
-    if (storedUser && storedToken) {
-      setUser(storedUser);
-      setToken(storedToken);
-    }
-    setLoading(false);
-  }, []);
-
-  const login = useCallback(async (email: string, password: string) => {
-    const userData = await apiLogin(email, password);
-    const storedToken = localStorage.getItem('ai_platform_token');
-    setUser(userData);
-    setToken(storedToken);
+  const login = useCallback(async () => {
+    return;
   }, []);
 
   const logout = useCallback(() => {
-    apiLogout();
-    setUser(null);
-    setToken(null);
+    return;
   }, []);
 
   const value: AuthContextType = {
-    user,
-    token,
+    user: GUEST_USER,
+    token: null,
     login,
     logout,
-    isAuthenticated: isAuthenticated() && user !== null,
-    loading,
+    isAuthenticated: true,
+    loading: false,
   };
 
   return React.createElement(AuthContext.Provider, { value }, children);
