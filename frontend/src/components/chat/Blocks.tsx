@@ -11,6 +11,7 @@ import type { Block } from '@/lib/chat/types';
 import { ReportBlock } from './ReportBlock';
 import { RecommendationBlock } from './RecommendationBlock';
 import { DataSourcesBlock } from './DataSourcesBlock';
+import { BusinessMapBlock } from './BusinessMapBlock';
 
 const PALETTE = ['#6366f1', '#06b6d4', '#8b5cf6', '#f59e0b', '#ef4444', '#10b981', '#ec4899'];
 
@@ -217,6 +218,7 @@ export function BlockRenderer({ block, onSuggestionPick }: { block: Block; onSug
     case 'file-attached': return <FileAttachedBlock b={block} />;
     case 'report':        return <ReportBlock profile={block.profile} results={block.results} />;
     case 'recommendation': return <RecommendationBlock rec={block.rec} />;
+    case 'business-map':  return <BusinessMapBlock block={block} />;
     case 'data-sources':  return (
       <DataSourcesBlock
         profile={block.profile}

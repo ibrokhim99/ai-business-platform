@@ -96,6 +96,29 @@ textarea { resize: none; }
 .md strong { font-weight: 600; color: rgb(var(--fg)); }
 .md a { color: rgb(var(--accent)); text-decoration: underline; text-decoration-color: rgb(var(--accent) / 0.4); }
 
+/* Leaflet business map markers */
+.business-map-marker-wrap {
+  background: transparent;
+  border: 0;
+}
+
+.business-map-marker {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 3px solid #fff;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.28);
+}
+
+.business-map-marker-succeeded { background: #10b981; }
+.business-map-marker-struggling { background: #f59e0b; }
+.business-map-marker-failed { background: #ef4444; }
+
+.leaflet-container {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Helvetica, Arial, sans-serif;
+}
+
 /* Subtle focus ring shared across inputs/buttons */
 .focus-ring:focus-visible {
   outline: none;
