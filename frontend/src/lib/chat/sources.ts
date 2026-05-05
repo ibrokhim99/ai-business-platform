@@ -24,7 +24,7 @@ export interface Source {
   createdAt: number;
 }
 
-const KEY = 'biziq_sources_v3_uz';
+const KEY = 'biziq_sources_v4_uz';
 
 const SEED: Source[] = [
   {
@@ -49,10 +49,10 @@ const SEED: Source[] = [
     createdAt: Date.now() - 86_400_000 * 9,
   },
   {
-    id: 'seed-salon-fargona', type: 'profile', selected: false,
-    name: 'Goʻzallik saloni — Fargʻona', subtitle: 'MCC 7230 · Markaz',
-    context: 'Goʻzallik saloni (MCC 7230), Fargʻona markazi. Oylik daromad ~$8k.',
-    region_id: 'fergana-01', mcc_code: '7230', monthly_revenue: 8_000, initial_investment: 25_000,
+    id: 'seed-dorixona-fargona', type: 'profile', selected: false,
+    name: 'Dorixona — Fargʻona', subtitle: 'MCC 5912 · Markaz',
+    context: 'Dorixona (MCC 5912), Fargʻona markazi. Oylik daromad ~$8k.',
+    region_id: 'fergana-01', mcc_code: '5912', monthly_revenue: 8_000, initial_investment: 25_000,
     createdAt: Date.now() - 86_400_000 * 12,
   },
 ];

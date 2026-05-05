@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env
+**/.env
+**/.next
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+frontend/tsconfig.tsbuildinfo
+reports

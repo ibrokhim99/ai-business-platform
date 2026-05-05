@@ -57,8 +57,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: ../docker/backend.Dockerfile
+      context: .
+      dockerfile: docker/backend.Dockerfile
       target: runtime
     environment:
       POSTGRES_HOST: db
@@ -77,7 +77,6 @@ services:
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
-      CORS_ORIGINS: ${CORS_ORIGINS:-https://ai-business-platform.mock.glmv.dev,https://aibek.mock.glmv.dev}
       ENVIRONMENT: production
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     volumes:

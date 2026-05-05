@@ -33,11 +33,7 @@ MCC_DEFAULTS: dict[str, dict[str, Any]] = {
     "5651": {"mcc_label": "Oilaviy kiyim doʻkoni", "niche": "apparel", "avg_transaction_value": 38, "monthly_transactions": 420, "gross_margin_pct": 52},
     "5712": {"mcc_label": "Mebel doʻkoni", "niche": "furniture", "avg_transaction_value": 320, "monthly_transactions": 80, "gross_margin_pct": 42},
     "7011": {"mcc_label": "Mehmonxona", "niche": "hotel", "avg_transaction_value": 95, "monthly_transactions": 220, "gross_margin_pct": 65},
-    "7230": {"mcc_label": "Goʻzallik saloni", "niche": "beauty", "avg_transaction_value": 18, "monthly_transactions": 540, "gross_margin_pct": 70},
-    "7999": {"mcc_label": "Dam olish xizmatlari", "niche": "recreation", "avg_transaction_value": 25, "monthly_transactions": 600, "gross_margin_pct": 60},
     "5999": {"mcc_label": "Maxsus chakana savdo", "niche": "retail", "avg_transaction_value": 28, "monthly_transactions": 480, "gross_margin_pct": 48},
-    "8011": {"mcc_label": "Tibbiy xizmatlar", "niche": "medical", "avg_transaction_value": 65, "monthly_transactions": 240, "gross_margin_pct": 55},
-    "7542": {"mcc_label": "Avtomobil yuvish", "niche": "recreation", "avg_transaction_value": 6, "monthly_transactions": 2_500, "gross_margin_pct": 65},
     "5912": {"mcc_label": "Dorixona", "niche": "pharmacy", "avg_transaction_value": 18, "monthly_transactions": 1_200, "gross_margin_pct": 35},
     "5734": {"mcc_label": "Elektronika", "niche": "electronics", "avg_transaction_value": 220, "monthly_transactions": 130, "gross_margin_pct": 28},
     "5511": {"mcc_label": "Avtomobil savdosi", "niche": "auto_dealer", "avg_transaction_value": 6500, "monthly_transactions": 12, "gross_margin_pct": 18},
@@ -65,7 +61,7 @@ _REGION_ALIASES: list[tuple[str, str | None, str]] = [
 ]
 
 _MCC_ALIASES: list[tuple[str, str | None, str]] = [
-    (r"\bbuty\s+salon\b|\bbeauty\s+salon\b|go[ʻ'`]?zallik\s+salon|go[ʻ'`]?zallik|salon", "7230", "Goʻzallik saloni"),
+    (r"\bbuty\s+salon\b|\bbeauty\s+salon\b|go[ʻ'`]?zallik\s+salon|go[ʻ'`]?zallik|salon", None, "Goʻzallik saloni"),
     (r"\bmehmonxona\b|\bmehmonhona\b|\bhotel\b", "7011", "Mehmonxona"),
     (r"tez\s+ovqat|fast\s*food", "5814", "Tez ovqatlanish"),
     (r"kafe|rest[ao]u?r[ao]n\w*", "5812", "Restoran / Ovqatlanish"),

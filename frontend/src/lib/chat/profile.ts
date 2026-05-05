@@ -105,11 +105,7 @@ export const MCC_MAP: Record<string, Partial<BusinessProfile>> = {
   '5621': { mcc_label: 'Ayollar kiyim doʻkoni',   niche: 'womens_clothing', avg_transaction_value: 42, monthly_transactions: 360, gross_margin_pct: 54 },
   '5712': { mcc_label: 'Mebel doʻkoni',           niche: 'furniture',  avg_transaction_value: 320,monthly_transactions: 80,    gross_margin_pct: 42 },
   '7011': { mcc_label: 'Mehmonxona',              niche: 'hotel',      avg_transaction_value: 95, monthly_transactions: 220,   gross_margin_pct: 65 },
-  '7230': { mcc_label: 'Goʻzallik saloni',        niche: 'beauty',     avg_transaction_value: 18, monthly_transactions: 540,   gross_margin_pct: 70 },
-  '7999': { mcc_label: 'Dam olish xizmatlari',    niche: 'recreation', avg_transaction_value: 25, monthly_transactions: 600,   gross_margin_pct: 60 },
   '5999': { mcc_label: 'Maxsus chakana savdo',    niche: 'retail',     avg_transaction_value: 28, monthly_transactions: 480,   gross_margin_pct: 48 },
-  '8011': { mcc_label: 'Tibbiy xizmatlar',        niche: 'medical',    avg_transaction_value: 65, monthly_transactions: 240,   gross_margin_pct: 55 },
-  '7542': { mcc_label: 'Avtomobil yuvish',        niche: 'recreation', avg_transaction_value: 6,  monthly_transactions: 2_500, gross_margin_pct: 65 },
   '5912': { mcc_label: 'Dorixona',                niche: 'pharmacy',   avg_transaction_value: 18, monthly_transactions: 1_200, gross_margin_pct: 35 },
   '5734': { mcc_label: 'Elektronika',             niche: 'electronics',avg_transaction_value: 220,monthly_transactions: 130,   gross_margin_pct: 28 },
   '5511': { mcc_label: 'Avtomobil savdosi',       niche: 'auto_dealer',avg_transaction_value: 6500,monthly_transactions: 12,   gross_margin_pct: 18 },
@@ -141,10 +137,9 @@ export function profileFromContext(ctx: { region_id?: string; mcc_code?: string;
 // when any other component (or the LLM stream) updates it.
 import { useCallback, useSyncExternalStore } from 'react';
 
-// v2 bump — defaults changed from preset Tashkent/restaurant to empty so the
-// LLM must ask the user for region/MCC/revenue/investment instead of running
-// against stale saved values from older sessions.
-const PROFILE_KEY = 'biziq_profile_v2';
+// v3 bump — supported MCCs now mirror the CSV catalog, so stale saved profiles
+// with removed MCCs are discarded instead of causing permanent no-data replies.
+const PROFILE_KEY = 'biziq_profile_v3';
 
 function loadInitial(): BusinessProfile {
   if (typeof window === 'undefined') return DEFAULT_PROFILE;

@@ -4,7 +4,7 @@ FROM python:3.12-slim AS builder
 WORKDIR /build
 RUN pip install --upgrade pip hatchling
 
-COPY pyproject.toml .
+COPY backend/pyproject.toml .
 RUN pip install --no-cache-dir ".[dev]" --target /opt/venv 2>&1 | tail -5 || true
 # Install core deps only (excludes heavy ML libs for faster dev build)
 RUN pip install --no-cache-dir \
@@ -33,7 +33,8 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-COPY . .
+COPY backend/ .
+COPY data /app/data
 
 RUN chown -R appuser:appgroup /app
 USER appuser

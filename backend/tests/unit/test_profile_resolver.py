@@ -1,20 +1,21 @@
 from app.services.profile_resolver import (
+    MCC_DEFAULTS,
     apply_profile_fields,
     infer_profile_patch_from_text,
     normalize_profile_fields,
     resolve_profile_from_text,
 )
+from app.services.block_data import dataset_catalog
 from app.services.profile_to_input import ChatProfile
 
 
-def test_infer_beauty_salon_over_hotel_words():
-    fields = infer_profile_patch_from_text("Samarqandda buty salon uchun tahlil qil")
+def test_unsupported_beauty_salon_is_not_mapped_to_missing_dataset_mcc():
+    resolution = resolve_profile_from_text("Samarqandda buty salon uchun tahlil qil")
 
-    assert fields["region_id"] == "samarkand-01"
-    assert fields["region_label"] == "Samarqand — Markaz"
-    assert fields["mcc_code"] == "7230"
-    assert fields["mcc_label"] == "Goʻzallik saloni"
-    assert fields["niche"] == "beauty"
+    assert resolution.fields["region_id"] == "samarkand-01"
+    assert resolution.fields["region_label"] == "Samarqand — Markaz"
+    assert "mcc_code" not in resolution.fields
+    assert resolution.unsupported_business == "Goʻzallik saloni"
 
 
 def test_apply_profile_fields_overwrites_stale_hotel_profile():
@@ -25,12 +26,18 @@ def test_apply_profile_fields_overwrites_stale_hotel_profile():
         niche="hotel",
     )
 
-    fields = apply_profile_fields(profile, {"mcc_code": "7230"})
+    fields = apply_profile_fields(profile, {"mcc_code": "5912"})
 
-    assert fields["mcc_label"] == "Goʻzallik saloni"
-    assert profile.mcc_code == "7230"
-    assert profile.mcc_label == "Goʻzallik saloni"
-    assert profile.niche == "beauty"
+    assert fields["mcc_label"] == "Dorixona"
+    assert profile.mcc_code == "5912"
+    assert profile.mcc_label == "Dorixona"
+    assert profile.niche == "pharmacy"
+
+
+def test_profile_resolver_mcc_defaults_are_dataset_supported():
+    catalog = dataset_catalog()
+
+    assert set(MCC_DEFAULTS).issubset(set(catalog["mcc_codes"]))
 
 
 def test_infer_restaurant_typo_overwrites_stale_hotel_profile():

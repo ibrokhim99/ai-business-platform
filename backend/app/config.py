@@ -1,5 +1,3 @@
-import json
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,19 +8,6 @@ class Settings(BaseSettings):
     environment: str = "development"
     log_level: str = "INFO"
     api_prefix: str = "/api/v1"
-    cors_origins: str = "http://localhost:3000,http://localhost:8000"
-
-    @property
-    def cors_origin_list(self) -> list[str]:
-        raw = self.cors_origins.strip()
-        if raw.startswith("["):
-            try:
-                parsed = json.loads(raw)
-                if isinstance(parsed, list):
-                    return [str(item).strip() for item in parsed if str(item).strip()]
-            except json.JSONDecodeError:
-                return []
-        return [item.strip() for item in raw.split(",") if item.strip()]
 
     # Database
     postgres_host: str = "db"
